@@ -18,7 +18,7 @@ export const Footer = () => {
               <a href="https://github.com/andreay99" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
                 GitHub
               </a>
-              <a href="https://linkedin.com/in/andreayanezsoto" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
+              <a href="https://www.linkedin.com/in/andrea-yanez-soto-8b4653218" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
                 LinkedIn
               </a>
               <a href="https://devpost.com/andreay99" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-accent transition-colors">
