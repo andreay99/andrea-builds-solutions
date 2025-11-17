@@ -221,7 +221,33 @@ const Home = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {["Python", "JavaScript", "TypeScript", "SQL", "C++", "Java"].map((skill) => (
+                      {["Python", "JavaScript", "TypeScript", "Java", "SQL", "Node.js", "C++"].map((skill) => (
+                        <Badge key={skill} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/80 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle>Frameworks & Tools</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {["Flask", "FastAPI", "Next.js", "PyTorch", "TensorFlow", "HuggingFace", "OpenCV", "MongoDB", "Git", "GitHub Actions", "Postman"].map((skill) => (
+                        <Badge key={skill} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/80 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle>Cloud & DevOps</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {["Azure", "AWS", "CI/CD", "Docker"].map((skill) => (
                         <Badge key={skill} variant="secondary">{skill}</Badge>
                       ))}
                     </div>
@@ -234,8 +260,23 @@ const Home = () => {
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
-                      {["TensorFlow", "PyTorch", "OpenCV", "NLP", "Computer Vision", "Deep Learning"].map((skill) => (
+                      {["Facial Recognition", "NLP", "Computer Vision", "Real-Time Processing", "Deep Learning", "Agentic Systems"].map((skill) => (
                         <Badge key={skill} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+
+              <div className="mt-6">
+                <Card className="bg-card/80 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle>Spoken Languages</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {["English", "Spanish", "Portuguese", "Korean"].map((language) => (
+                        <Badge key={language} variant="secondary">{language}</Badge>
                       ))}
                     </div>
                   </CardContent>
