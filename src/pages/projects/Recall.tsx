@@ -19,7 +19,7 @@ const Recall = () => {
         <div className="mb-8">
           <h1 className="mb-4">Recall</h1>
           <p className="text-xl text-muted-foreground mb-6">
-            Assistive Memory with Facial Recognition
+            AI-powered digital memory assistant for people with Alzheimer's and Dementia
           </p>
           <div className="flex flex-wrap gap-2 mb-6">
             <Badge variant="secondary" className="bg-orange-light text-orange-dark">
@@ -33,52 +33,58 @@ const Recall = () => {
             <Badge>HackPrinceton 2025</Badge>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="outline">Flask</Badge>
-            <Badge variant="outline">MongoDB</Badge>
+            <Badge variant="outline">Raspberry Pi 3</Badge>
             <Badge variant="outline">OpenCV</Badge>
+            <Badge variant="outline">Flask REST API</Badge>
+            <Badge variant="outline">MongoDB</Badge>
+            <Badge variant="outline">OpenAI Whisper</Badge>
+            <Badge variant="outline">Grok-3</Badge>
+            <Badge variant="outline">ElevenLabs</Badge>
+            <Badge variant="outline">Next.js</Badge>
             <Badge variant="outline">Python</Badge>
-            <Badge variant="outline">ElevenLabs TTS</Badge>
-            <Badge variant="outline">Raspberry Pi</Badge>
           </div>
         </div>
 
         <CaseStudySection title="Overview">
           <p>
-            Recall is an assistive memory system designed to help users remember people through real-time facial recognition technology. Built during HackPrinceton 2025, the project won two major awards for innovative use of Grok (xAI) and Arm technologies.
+            Recall is a digital memory assistant designed to help people with Alzheimer's and Dementia maintain their sense of identity and independence. Built during HackPrinceton 2025, Recall won Best Use of Grok (xAI) and Best Use of Arm (MLH) awards for its innovative approach to assistive technology.
           </p>
           <p>
-            The system combines computer vision, machine learning, and text-to-speech capabilities to provide a seamless memory aid that runs on edge devices like Raspberry Pi, making it accessible and portable.
+            The system acts as a fully autonomous memory journal that passively captures significant events throughout the day, recognizes loved ones through facial recognition, and creates contextually relevant conversation summaries—all without manual intervention. Running 24/7 on a Raspberry Pi with a Logitech Brio webcam, Recall works silently in the background, eliminating the burden of note-taking while respecting user privacy.
           </p>
         </CaseStudySection>
 
         <CaseStudySection title="Problem">
           <p>
-            Many individuals, particularly those with memory challenges or professionals who meet numerous people daily, struggle to remember names and faces. Traditional solutions like manual note-taking are intrusive and impractical in real-time social situations.
+            Memory loss affects millions of people with Alzheimer's and Dementia, creating a gap between their daily experiences and what they can recall. These individuals often face the heartbreaking reality of forgetting loved ones and losing their sense of autonomy and connection.
           </p>
           <p>
-            The challenge was to create a system that could:
+            Traditional memory aids require constant manual intervention—writing notes, setting reminders, relying on caregivers. This strips users of their independence and dignity. The challenge was to create a system that could:
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Accurately detect and recognize faces in real-time</li>
-            <li>Maintain a reliable database of profiles with minimal false positives</li>
-            <li>Work on edge devices with limited computational resources</li>
-            <li>Provide information discreetly without disrupting social interactions</li>
+            <li>Operate completely autonomously without user intervention</li>
+            <li>Recognize familiar faces and distinguish them from strangers</li>
+            <li>Capture and summarize conversations intelligently</li>
+            <li>Run on portable edge hardware for real-world deployment</li>
+            <li>Respect privacy by not storing raw video or audio data</li>
+            <li>Provide both visual and audible outputs for accessibility</li>
           </ul>
         </CaseStudySection>
 
         <CaseStudySection title="Solution">
           <p>
-            I developed a comprehensive facial recognition pipeline using OpenCV for face detection and feature extraction, integrated with a MongoDB backend for efficient profile storage and retrieval. The system streams camera frames from a Raspberry Pi to recognition endpoints built with Flask.
+            I built Recall as a complete multimodal AI system running on a Raspberry Pi 3 with a Logitech Brio webcam. The system operates fully autonomously, intelligently deciding when to record based on visual and audio cues—no buttons to press, no apps to open.
           </p>
           <p>
-            Key features include:
+            <strong>Core Architecture:</strong>
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Real-time face detection and matching with optimized thresholds</li>
-            <li>Profile management system with photo augmentation for improved accuracy</li>
-            <li>ElevenLabs TTS integration for spoken prompts and reminders</li>
-            <li>RESTful API endpoints for setup and recognition workflows</li>
-            <li>Edge deployment optimization for low-latency inference</li>
+            <li><strong>Edge Computing:</strong> Raspberry Pi captures live video, offloading heavy processing to custom Flask REST API endpoints (deployed via ngrok) for facial detection and environment awareness</li>
+            <li><strong>Facial Recognition Pipeline:</strong> OpenCV detects faces and generates 128-dimensional embeddings stored in MongoDB. Cosine similarity search matches faces against known profiles, triggering conversation recording only for familiar faces</li>
+            <li><strong>Smart Audio Capture:</strong> Voice Activity Detection (VAD) with silence detection captures complete conversations without wasting storage on insignificant audio</li>
+            <li><strong>AI Processing:</strong> OpenAI Whisper transcribes audio, Grok-3 generates contextual summaries, and ElevenLabs TTS (Matilda voice) converts summaries to speech delivered through wired earbuds</li>
+            <li><strong>Privacy-First Design:</strong> All video processing happens in temporary batches—no livestream data is saved, only transcribed summaries</li>
+            <li><strong>Timeline Dashboard:</strong> Next.js web app (deployed on Vercel) displays detailed, informative timelines of daily events and interactions</li>
           </ul>
         </CaseStudySection>
 
@@ -92,21 +98,27 @@ const Recall = () => {
         <CaseStudySection title="Key Challenges">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-foreground mb-2">False Positive Reduction</h4>
+              <h4 className="font-semibold text-foreground mb-2">First-Time Hardware Integration</h4>
               <p>
-                Initial tests showed high false positive rates in face matching. I implemented threshold tuning based on precision/recall evaluation and added data augmentation techniques to improve model robustness. This reduced false positives by 40%.
+                This was our team's first experience working with hardware. Setting up the Raspberry Pi was time-intensive—we had to upgrade from an 8GB to 32GB SD card due to memory constraints when installing heavy ML libraries, re-flash the OS multiple times, and configure SSH for wireless operation.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2">Edge Device Optimization</h4>
+              <h4 className="font-semibold text-foreground mb-2">Unstable Connectivity</h4>
               <p>
-                Running inference on Raspberry Pi required significant optimization. I measured and reduced latency by implementing efficient feature extraction pipelines and optimizing the MongoDB query structure, achieving sub-second recognition times.
+                WiFi issues made SSH connections unreliable. We pivoted to using a mobile hotspot for all Raspberry Pi programming, ensuring stable remote development while maintaining the portability of the device.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2">Real-Time Streaming</h4>
+              <h4 className="font-semibold text-foreground mb-2">Privacy-Conscious Architecture</h4>
               <p>
-                Streaming camera frames efficiently while maintaining recognition accuracy was challenging. I implemented a buffering system and optimized frame processing to balance speed and accuracy, ensuring smooth real-time operation.
+                We didn't want to save raw images or audio files due to privacy concerns. The solution was to process everything in temporary batches and store only captioned conversation summaries, eliminating long-term storage of sensitive data while preserving contextual information.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-2">Platform-Specific Compatibility</h4>
+              <p>
+                Debugging Python 3.14 and ARM Mac compatibility issues required careful dependency management and testing across different environments to ensure consistent performance.
               </p>
             </div>
           </div>
@@ -115,37 +127,48 @@ const Recall = () => {
         <CaseStudySection title="Impact & Recognition">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">40%</div>
-              <p className="text-sm">Reduction in false positives through threshold optimization</p>
+              <div className="text-3xl font-bold text-accent mb-2">24/7</div>
+              <p className="text-sm">Fully autonomous operation without user intervention</p>
             </div>
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">&lt;1s</div>
-              <p className="text-sm">Recognition latency on edge devices</p>
+              <div className="text-3xl font-bold text-accent mb-2">128D</div>
+              <p className="text-sm">Face embedding dimensions for accurate matching</p>
             </div>
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">2</div>
-              <p className="text-sm">Major hackathon awards won</p>
+              <div className="text-3xl font-bold text-accent mb-2">2 Awards</div>
+              <p className="text-sm">Best Use of Grok (xAI) & Best Use of Arm (MLH)</p>
             </div>
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">36hrs</div>
-              <p className="text-sm">Development time at HackPrinceton</p>
+              <div className="text-3xl font-bold text-accent mb-2">Zero Storage</div>
+              <p className="text-sm">Privacy-first design: no raw video/audio saved</p>
+            </div>
+            <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="text-3xl font-bold text-accent mb-2">5 Services</div>
+              <p className="text-sm">Integrated APIs: OpenCV, Whisper, Grok, ElevenLabs, MongoDB</p>
+            </div>
+            <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="text-3xl font-bold text-accent mb-2">Millions</div>
+              <p className="text-sm">Potential users affected by Alzheimer's & Dementia</p>
             </div>
           </div>
         </CaseStudySection>
 
         <CaseStudySection title="What I Learned">
           <p>
-            This project deepened my understanding of computer vision pipelines and the challenges of deploying ML models on edge devices. I learned the importance of:
+            Building Recall from scratch in 36 hours taught me end-to-end system architecture for production-grade AI applications. Key technical skills gained:
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Balancing accuracy and performance in real-time systems</li>
-            <li>Systematic evaluation using precision/recall metrics</li>
-            <li>Edge computing optimization techniques</li>
-            <li>API design for streaming applications</li>
-            <li>Integration of multiple services (CV, database, TTS) into a cohesive system</li>
+            <li><strong>Hardware Integration:</strong> First experience working with Raspberry Pi hardware, from OS flashing to SSH configuration and peripheral management</li>
+            <li><strong>Edge Computing:</strong> Learned to offload computation strategically—extracting embeddings on Pi while handling heavy inference on remote servers via Flask APIs</li>
+            <li><strong>ML in Production:</strong> Designed MongoDB schemas for storing 128-dimensional face embeddings, implemented cosine similarity search for real-time matching</li>
+            <li><strong>API Orchestration:</strong> Coordinated 5 different services (OpenCV, Whisper, Grok, ElevenLabs, MongoDB) into a seamless pipeline with proper error handling</li>
+            <li><strong>Multipart File Handling:</strong> Mastered Flask multipart/form-data uploads for video frames and audio streams</li>
+            <li><strong>Prompt Engineering:</strong> Crafted prompts for Grok-3 to generate concise, contextually relevant conversation summaries</li>
+            <li><strong>Privacy-First Design:</strong> Architected a system that provides powerful memory assistance without compromising user privacy</li>
+            <li><strong>Cross-Platform Development:</strong> Debugged Python 3.14 + ARM Mac compatibility issues, managed dependencies across different environments</li>
           </ul>
           <p>
-            The experience of rapid prototyping under time constraints at a hackathon taught me to make quick architectural decisions while maintaining code quality and documentation.
+            Most importantly, I learned the value of building for real social impact. Designing for users with Alzheimer's and Dementia required deep empathy and a commitment to preserving dignity and autonomy through technology.
           </p>
         </CaseStudySection>
 
