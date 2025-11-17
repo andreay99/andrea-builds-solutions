@@ -11,6 +11,7 @@ export const AIHeroBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [mousePosition, setMousePosition] = useState({ nx: 0, ny: 0 });
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
@@ -142,8 +143,22 @@ export const AIHeroBackground = () => {
 
       // Draw lines
       lines.forEach((line) => {
-        const endX = centerX + Math.cos(line.angle) * line.length;
-        const endY = centerY + Math.sin(line.angle) * line.length;
+        let angle = line.angle;
+        let length = line.length;
+
+        // Apply mouse influence only to labeled lines
+        if (!isMobile && line.hasLabel) {
+          // Subtle rotation based on horizontal mouse position
+          const rotationInfluence = mousePosition.nx * 0.08; // ~4-5 degrees max
+          angle += rotationInfluence;
+          
+          // Subtle radial extension based on vertical mouse position
+          const lengthInfluence = mousePosition.ny * 15; // ~15px max
+          length += lengthInfluence;
+        }
+
+        const endX = centerX + Math.cos(angle) * length;
+        const endY = centerY + Math.sin(angle) * length;
 
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
@@ -180,7 +195,7 @@ export const AIHeroBackground = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, mousePosition]);
 
   useEffect(() => {
     if (isMobile || !containerRef.current) return;
@@ -193,19 +208,19 @@ export const AIHeroBackground = () => {
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       const ny = (e.clientY - rect.top) / rect.height - 0.5;
 
-      const translateX = nx * 20;
-      const translateY = ny * 20;
-      const rotateZ = nx * 4;
+      setMousePosition({ nx, ny });
+    };
 
-      if (containerRef.current) {
-        containerRef.current.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotateZ}deg)`;
-      }
+    const handleMouseLeave = () => {
+      setMousePosition({ nx: 0, ny: 0 });
     };
 
     heroSection.addEventListener('mousemove', handleMouseMove);
+    heroSection.addEventListener('mouseleave', handleMouseLeave);
 
     return () => {
       heroSection.removeEventListener('mousemove', handleMouseMove);
+      heroSection.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, [isMobile]);
 
@@ -214,10 +229,6 @@ export const AIHeroBackground = () => {
       ref={containerRef}
       id="hero-orbit"
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ 
-        transition: 'transform 120ms ease-out',
-        willChange: 'transform'
-      }}
     >
       <canvas
         ref={canvasRef}
