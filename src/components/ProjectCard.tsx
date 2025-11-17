@@ -14,15 +14,15 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({ title, description, techStack, awards, link }: ProjectCardProps) => {
   return (
-    <Card className="hover-lift hover:shadow-lg transition-all duration-300 border-border">
-      <CardHeader>
+    <Card className="hover-lift hover:shadow-2xl transition-all duration-500 border-2 border-foreground/10 rounded-none bg-card">
+      <CardHeader className="space-y-6 pb-8">
         <div className="flex items-start justify-between gap-4">
-          <div className="flex-1">
-            <CardTitle className="text-2xl mb-2">{title}</CardTitle>
+          <div className="flex-1 space-y-4">
+            <CardTitle className="text-3xl md:text-4xl font-serif">{title}</CardTitle>
             {awards && awards.length > 0 && (
-              <div className="flex flex-wrap gap-2 mb-3">
+              <div className="flex flex-wrap gap-2">
                 {awards.map((award, index) => (
-                  <Badge key={index} variant="secondary" className="bg-orange-light text-orange-dark">
+                  <Badge key={index} variant="secondary" className="rounded-none border border-foreground/20 bg-transparent text-foreground/80 text-xs uppercase tracking-wider">
                     <Award className="h-3 w-3 mr-1" />
                     {award}
                   </Badge>
@@ -31,17 +31,17 @@ export const ProjectCard = ({ title, description, techStack, awards, link }: Pro
             )}
           </div>
         </div>
-        <CardDescription className="text-base leading-relaxed">{description}</CardDescription>
+        <CardDescription className="text-base md:text-lg leading-relaxed text-foreground/70">{description}</CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="flex flex-wrap gap-2 mb-4">
+      <CardContent className="space-y-6">
+        <div className="flex flex-wrap gap-2">
           {techStack.map((tech, index) => (
-            <Badge key={index} variant="outline" className="text-xs">
+            <Badge key={index} variant="outline" className="text-xs rounded-none border-foreground/20">
               {tech}
             </Badge>
           ))}
         </div>
-        <Button asChild variant="default" className="w-full group">
+        <Button asChild variant="default" className="w-full group rounded-none border-2 border-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
           <Link to={link}>
             View Full Case Study
             <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
