@@ -11,7 +11,8 @@ export const AIHeroBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [mousePosition, setMousePosition] = useState({ nx: 0, ny: 0 });
+  const targetRotationRef = useRef(0);
+  const currentRotationRef = useRef(0);
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
@@ -46,10 +47,11 @@ export const AIHeroBackground = () => {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Generate lines
+    // Generate lines with sensitivity multipliers
     const lines: Line[] = [];
     const numLines = 40;
     const labeledLines = ['AI', 'ML', 'SYSTEMS', 'BUILDER'];
+    const sensitivities = [1.0, 0.8, 0.6, 0.5]; // Per-group variation
     
     for (let i = 0; i < numLines; i++) {
       const angle = (Math.PI * 2 * i) / numLines;
@@ -138,23 +140,24 @@ export const AIHeroBackground = () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
+      // Smooth lerp towards target rotation
+      currentRotationRef.current += (targetRotationRef.current - currentRotationRef.current) * 0.12;
+
       // Clear canvas
       ctx.clearRect(0, 0, rect.width, rect.height);
 
       // Draw lines
-      lines.forEach((line) => {
+      lines.forEach((line, index) => {
         let angle = line.angle;
-        let length = line.length;
+        const length = line.length;
 
-        // Apply mouse influence only to labeled lines
+        // Apply mouse influence only to labeled lines (horizontal only)
         if (!isMobile && line.hasLabel) {
-          // Subtle rotation based on horizontal mouse position
-          const rotationInfluence = mousePosition.nx * 0.08; // ~4-5 degrees max
+          const sensitivity = sensitivities[index] || 1.0;
+          // Clamp rotation to ±3 degrees (±0.0524 radians)
+          const maxRotation = 0.0524; // 3 degrees in radians
+          const rotationInfluence = Math.max(-maxRotation, Math.min(maxRotation, currentRotationRef.current * sensitivity));
           angle += rotationInfluence;
-          
-          // Subtle radial extension based on vertical mouse position
-          const lengthInfluence = mousePosition.ny * 15; // ~15px max
-          length += lengthInfluence;
         }
 
         const endX = centerX + Math.cos(angle) * length;
@@ -195,7 +198,7 @@ export const AIHeroBackground = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isMobile, mousePosition]);
+  }, [isMobile]);
 
   useEffect(() => {
     if (isMobile || !containerRef.current) return;
@@ -206,13 +209,13 @@ export const AIHeroBackground = () => {
     const handleMouseMove = (e: MouseEvent) => {
       const rect = heroSection.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
-      const ny = (e.clientY - rect.top) / rect.height - 0.5;
-
-      setMousePosition({ nx, ny });
+      
+      // Only use horizontal position, map to rotation range
+      targetRotationRef.current = nx * 0.1; // Will be clamped in draw loop
     };
 
     const handleMouseLeave = () => {
-      setMousePosition({ nx: 0, ny: 0 });
+      targetRotationRef.current = 0;
     };
 
     heroSection.addEventListener('mousemove', handleMouseMove);
