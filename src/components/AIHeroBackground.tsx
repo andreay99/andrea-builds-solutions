@@ -12,9 +12,11 @@ export const AIHeroBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   
-  // Individual rotation tracking for each labeled ray
+  // Individual rotation and translation tracking for each labeled ray
   const targetRotations = useRef([0, 0, 0, 0]); // AI, ML, SYSTEMS, BUILDER
   const currentRotations = useRef([0, 0, 0, 0]);
+  const targetTranslations = useRef([0, 0, 0, 0]);
+  const currentTranslations = useRef([0, 0, 0, 0]);
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
@@ -142,9 +144,10 @@ export const AIHeroBackground = () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Smooth lerp each labeled ray independently
+      // Smooth lerp each labeled ray independently (rotation and translation)
       for (let i = 0; i < 4; i++) {
         currentRotations.current[i] += (targetRotations.current[i] - currentRotations.current[i]) * 0.12;
+        currentTranslations.current[i] += (targetTranslations.current[i] - currentTranslations.current[i]) * 0.12;
       }
 
       // Clear canvas
@@ -154,16 +157,18 @@ export const AIHeroBackground = () => {
       lines.forEach((line, index) => {
         let angle = line.angle;
         const length = line.length;
+        let offsetX = 0;
 
         // Apply mouse influence only to labeled lines (horizontal only)
         if (!isMobile && line.hasLabel && index < 4) {
           const sensitivity = sensitivities[index];
-          // Each labeled ray has its own rotation value
+          // Each labeled ray has its own rotation and translation
           const rotationInfluence = currentRotations.current[index] * sensitivity;
           angle += rotationInfluence;
+          offsetX = currentTranslations.current[index] * sensitivity;
         }
 
-        const endX = centerX + Math.cos(angle) * length;
+        const endX = centerX + Math.cos(angle) * length + offsetX;
         const endY = centerY + Math.sin(angle) * length;
 
         ctx.beginPath();
@@ -213,19 +218,27 @@ export const AIHeroBackground = () => {
       const rect = heroSection.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       
-      // Set individual targets for each labeled ray based on sensitivity
+      // Set individual targets for rotation and translation
       const maxRotation = 0.07; // ~4 degrees in radians
+      const maxTranslation = 10; // 10px max horizontal shift
       const baseRotation = nx * maxRotation;
+      const baseTranslation = nx * maxTranslation;
       
       // Each ray gets its own target based on its sensitivity
       targetRotations.current[0] = baseRotation * 1.0; // AI
       targetRotations.current[1] = baseRotation * 0.8; // ML
       targetRotations.current[2] = baseRotation * 0.6; // SYSTEMS
       targetRotations.current[3] = baseRotation * 0.5; // BUILDER
+      
+      targetTranslations.current[0] = baseTranslation * 1.0; // AI
+      targetTranslations.current[1] = baseTranslation * 0.8; // ML
+      targetTranslations.current[2] = baseTranslation * 0.6; // SYSTEMS
+      targetTranslations.current[3] = baseTranslation * 0.5; // BUILDER
     };
 
     const handleMouseLeave = () => {
       targetRotations.current = [0, 0, 0, 0];
+      targetTranslations.current = [0, 0, 0, 0];
     };
 
     heroSection.addEventListener('mousemove', handleMouseMove);
