@@ -36,28 +36,33 @@ const Home = () => {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-32 pb-20 section-container">
-        <div className="max-w-4xl">
-          <div className="inline-block mb-4">
-            <span className="text-sm font-medium text-accent">Available for internships</span>
+      <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container">
+        <div className="max-w-7xl space-y-16 md:space-y-24">
+          <div className="space-y-6 md:space-y-8">
+            <h1 className="font-serif leading-none">
+              Andrea<br />
+              Yanez<br />
+              Soto
+            </h1>
           </div>
-          <h1 className="mb-6 text-balance">
-            Andrea Yanez Soto
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground mb-4 text-balance">
-            CS student specializing in AI/ML and full-stack development.
-          </p>
-          <p className="text-lg text-muted-foreground mb-8 text-balance">
-            Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
-          </p>
-          <div className="flex flex-wrap gap-4">
-            <Button asChild size="lg" className="group">
+          
+          <div className="max-w-2xl space-y-8">
+            <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
+              CS student specializing in AI/ML and full-stack development.
+            </p>
+            <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
+              Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
+            </p>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-6 pt-8">
+            <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
               <Link to="/projects">
                 View Projects
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline">
+            <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground hover:bg-foreground hover:text-background transition-all">
               <a href="/resume.pdf" download>
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
@@ -68,15 +73,15 @@ const Home = () => {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="py-20 bg-secondary/30">
+      <section className="py-32 md:py-48">
         <div className="section-container">
-          <div className="mb-12">
-            <h2 className="mb-4">Featured Projects</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl">
+          <div className="mb-20 md:mb-32">
+            <h2 className="mb-8 font-serif">Featured Projects</h2>
+            <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
               A selection of my recent work in AI/ML, full-stack development, and data analysis.
             </p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {featuredProjects.map((project, index) => (
               <ProjectCard key={index} {...project} />
             ))}
@@ -85,24 +90,24 @@ const Home = () => {
       </section>
 
       {/* Quick Stats */}
-      <section className="py-20">
+      <section className="py-32 md:py-48 border-t border-foreground/10">
         <div className="section-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">4+</div>
-              <div className="text-sm text-muted-foreground">Projects Completed</div>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-16 md:gap-24">
+            <div>
+              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">4+</div>
+              <div className="text-sm uppercase tracking-wider text-foreground/60">Projects Completed</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">2</div>
-              <div className="text-sm text-muted-foreground">Hackathon Awards</div>
+            <div>
+              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">2</div>
+              <div className="text-sm uppercase tracking-wider text-foreground/60">Hackathon Awards</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">5+</div>
-              <div className="text-sm text-muted-foreground">Tech Stacks</div>
+            <div>
+              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">5+</div>
+              <div className="text-sm uppercase tracking-wider text-foreground/60">Tech Stacks</div>
             </div>
-            <div className="text-center">
-              <div className="text-4xl font-bold text-accent mb-2">4</div>
-              <div className="text-sm text-muted-foreground">Languages</div>
+            <div>
+              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">4</div>
+              <div className="text-sm uppercase tracking-wider text-foreground/60">Languages</div>
             </div>
           </div>
         </div>

@@ -8,54 +8,39 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 15%;
+    /* Elegant cream/beige aesthetic with pure black text */
+    --background: 40 20% 95%;
+    --foreground: 0 0% 8%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
+    --card: 40 20% 97%;
+    --card-foreground: 0 0% 8%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
+    --popover: 40 20% 97%;
+    --popover-foreground: 0 0% 8%;
 
-    --primary: 220 15% 15%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 0 0% 8%;
+    --primary-foreground: 40 20% 95%;
 
-    --secondary: 220 10% 96%;
-    --secondary-foreground: 220 15% 15%;
+    --secondary: 40 15% 88%;
+    --secondary-foreground: 0 0% 8%;
 
-    --muted: 220 10% 96%;
-    --muted-foreground: 220 10% 45%;
+    --muted: 40 15% 88%;
+    --muted-foreground: 0 0% 35%;
 
-    --accent: 25 95% 53%;
-    --accent-foreground: 0 0% 100%;
+    --accent: 0 0% 8%;
+    --accent-foreground: 40 20% 95%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 70% 50%;
+    --destructive-foreground: 40 20% 95%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 25 95% 53%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 0 0% 8%;
 
-    --radius: 0.5rem;
-
-    /* Premium additions */
-    --orange-primary: 25 95% 53%;
-    --orange-light: 25 100% 96%;
-    --orange-dark: 25 90% 45%;
-    
-    --neutral-50: 220 10% 98%;
-    --neutral-100: 220 10% 96%;
-    --neutral-200: 220 10% 90%;
-    --neutral-300: 220 10% 80%;
-    --neutral-400: 220 10% 60%;
-    --neutral-500: 220 10% 45%;
-    --neutral-600: 220 15% 30%;
-    --neutral-700: 220 15% 20%;
-    --neutral-800: 220 15% 15%;
-    --neutral-900: 220 20% 10%;
+    --radius: 0rem;
 
     /* Transitions */
-    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 }
 
@@ -66,23 +51,29 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: 'Inter', -apple-system, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
+    letter-spacing: -0.01em;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-bold tracking-tight;
+    @apply font-serif font-bold tracking-tight;
+    letter-spacing: -0.03em;
   }
 
   h1 {
-    @apply text-4xl md:text-5xl lg:text-6xl;
+    @apply text-6xl md:text-8xl lg:text-9xl;
+    line-height: 0.9;
   }
 
   h2 {
-    @apply text-3xl md:text-4xl lg:text-5xl;
+    @apply text-5xl md:text-7xl lg:text-8xl;
+    line-height: 0.95;
   }
 
   h3 {
-    @apply text-2xl md:text-3xl;
+    @apply text-4xl md:text-5xl lg:text-6xl;
+    line-height: 1;
   }
 
   p {
