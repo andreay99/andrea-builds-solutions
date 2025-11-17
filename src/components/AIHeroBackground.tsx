@@ -11,8 +11,10 @@ export const AIHeroBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const targetRotationRef = useRef(0);
-  const currentRotationRef = useRef(0);
+  
+  // Individual rotation tracking for each labeled ray
+  const targetRotations = useRef([0, 0, 0, 0]); // AI, ML, SYSTEMS, BUILDER
+  const currentRotations = useRef([0, 0, 0, 0]);
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
@@ -140,8 +142,10 @@ export const AIHeroBackground = () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      // Smooth lerp towards target rotation
-      currentRotationRef.current += (targetRotationRef.current - currentRotationRef.current) * 0.12;
+      // Smooth lerp each labeled ray independently
+      for (let i = 0; i < 4; i++) {
+        currentRotations.current[i] += (targetRotations.current[i] - currentRotations.current[i]) * 0.12;
+      }
 
       // Clear canvas
       ctx.clearRect(0, 0, rect.width, rect.height);
@@ -152,11 +156,10 @@ export const AIHeroBackground = () => {
         const length = line.length;
 
         // Apply mouse influence only to labeled lines (horizontal only)
-        if (!isMobile && line.hasLabel) {
-          const sensitivity = sensitivities[index] || 1.0;
-          // Clamp rotation to ±3 degrees (±0.0524 radians)
-          const maxRotation = 0.0524; // 3 degrees in radians
-          const rotationInfluence = Math.max(-maxRotation, Math.min(maxRotation, currentRotationRef.current * sensitivity));
+        if (!isMobile && line.hasLabel && index < 4) {
+          const sensitivity = sensitivities[index];
+          // Each labeled ray has its own rotation value
+          const rotationInfluence = currentRotations.current[index] * sensitivity;
           angle += rotationInfluence;
         }
 
@@ -210,12 +213,19 @@ export const AIHeroBackground = () => {
       const rect = heroSection.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       
-      // Only use horizontal position, map to rotation range
-      targetRotationRef.current = nx * 0.1; // Will be clamped in draw loop
+      // Set individual targets for each labeled ray based on sensitivity
+      const maxRotation = 0.07; // ~4 degrees in radians
+      const baseRotation = nx * maxRotation;
+      
+      // Each ray gets its own target based on its sensitivity
+      targetRotations.current[0] = baseRotation * 1.0; // AI
+      targetRotations.current[1] = baseRotation * 0.8; // ML
+      targetRotations.current[2] = baseRotation * 0.6; // SYSTEMS
+      targetRotations.current[3] = baseRotation * 0.5; // BUILDER
     };
 
     const handleMouseLeave = () => {
-      targetRotationRef.current = 0;
+      targetRotations.current = [0, 0, 0, 0];
     };
 
     heroSection.addEventListener('mousemove', handleMouseMove);
