@@ -9,7 +9,7 @@ interface Line {
 
 export const AIHeroBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   const animationFrameRef = useRef<number>();
 
@@ -140,27 +140,13 @@ export const AIHeroBackground = () => {
       // Clear canvas
       ctx.clearRect(0, 0, rect.width, rect.height);
 
-      // Calculate mouse influence (subtle parallax)
-      let offsetX = 0;
-      let offsetY = 0;
-
-      if (!isMobile && mousePosition.x !== 0 && mousePosition.y !== 0) {
-        const mouseX = mousePosition.x - centerX;
-        const mouseY = mousePosition.y - centerY;
-        offsetX = (mouseX / rect.width) * 15; // Max 15px shift
-        offsetY = (mouseY / rect.height) * 15;
-      }
-
-      const actualCenterX = centerX + offsetX;
-      const actualCenterY = centerY + offsetY;
-
       // Draw lines
       lines.forEach((line) => {
-        const endX = actualCenterX + Math.cos(line.angle) * line.length;
-        const endY = actualCenterY + Math.sin(line.angle) * line.length;
+        const endX = centerX + Math.cos(line.angle) * line.length;
+        const endY = centerY + Math.sin(line.angle) * line.length;
 
         ctx.beginPath();
-        ctx.moveTo(actualCenterX, actualCenterY);
+        ctx.moveTo(centerX, centerY);
         ctx.lineTo(endX, endY);
         
         if (line.hasLabel) {
@@ -181,7 +167,7 @@ export const AIHeroBackground = () => {
 
       // Draw center node
       ctx.fillStyle = '#000000';
-      ctx.fillRect(actualCenterX - 4, actualCenterY - 4, 8, 8);
+      ctx.fillRect(centerX - 4, centerY - 4, 8, 8);
 
       animationFrameRef.current = requestAnimationFrame(draw);
     };
@@ -194,26 +180,50 @@ export const AIHeroBackground = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [mousePosition, isMobile]);
+  }, [isMobile]);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
-    if (isMobile) return;
-    
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (rect) {
-      setMousePosition({
-        x: e.clientX - rect.left,
-        y: e.clientY - rect.top,
-      });
-    }
-  };
+  useEffect(() => {
+    if (isMobile || !containerRef.current) return;
+
+    const heroSection = containerRef.current.parentElement;
+    if (!heroSection) return;
+
+    const handleMouseMove = (e: MouseEvent) => {
+      const rect = heroSection.getBoundingClientRect();
+      const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
+
+      const translateX = nx * 20;
+      const translateY = ny * 20;
+      const rotateZ = nx * 4;
+
+      if (containerRef.current) {
+        containerRef.current.style.transform = `translate3d(${translateX}px, ${translateY}px, 0) rotate(${rotateZ}deg)`;
+      }
+    };
+
+    heroSection.addEventListener('mousemove', handleMouseMove);
+
+    return () => {
+      heroSection.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, [isMobile]);
 
   return (
-    <canvas
-      ref={canvasRef}
-      onMouseMove={handleMouseMove}
+    <div 
+      ref={containerRef}
+      id="hero-orbit"
       className="absolute inset-0 w-full h-full pointer-events-none"
-      style={{ width: '100%', height: '100%' }}
-    />
+      style={{ 
+        transition: 'transform 120ms ease-out',
+        willChange: 'transform'
+      }}
+    >
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full"
+        style={{ width: '100%', height: '100%' }}
+      />
+    </div>
   );
 };
