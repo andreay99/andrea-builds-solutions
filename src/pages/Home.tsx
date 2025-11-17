@@ -47,7 +47,7 @@ const Home = () => {
           <div className="section-container relative z-10">
             <div className="max-w-7xl space-y-16 md:space-y-24">
               <div className="space-y-6 md:space-y-8">
-                <h1 className="font-serif leading-none">
+                <h1 className="font-serif leading-tight">
                   Andrea<br />
                   Yanez<br />
                   Soto
