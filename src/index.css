@@ -9,7 +9,7 @@ All colors MUST be HSL.
 @layer base {
   :root {
     /* Premium neutral aesthetic with subtle warmth */
-    --background: 40 20% 96%;
+    --background: 36 38% 96%;
     --foreground: 0 0% 10%;
 
     --card: 40 15% 98%;
