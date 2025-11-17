@@ -161,11 +161,9 @@ export const AIHeroBackground = () => {
 
         // Apply mouse influence only to labeled lines (horizontal only)
         if (!isMobile && line.hasLabel && index < 4) {
-          const sensitivity = sensitivities[index];
-          // Each labeled ray has its own rotation and translation
-          const rotationInfluence = currentRotations.current[index] * sensitivity;
-          angle += rotationInfluence;
-          offsetX = currentTranslations.current[index] * sensitivity;
+          // Use the current rotation and translation directly (sensitivity already applied in targets)
+          angle += currentRotations.current[index];
+          offsetX = currentTranslations.current[index];
         }
 
         const endX = centerX + Math.cos(angle) * length + offsetX;
