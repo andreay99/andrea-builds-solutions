@@ -3,6 +3,7 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { ArrowRight, Download } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
+import { PageTransition } from "@/components/PageTransition";
 
 const Home = () => {
   const featuredProjects = [
@@ -39,7 +40,8 @@ const Home = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
 
   return (
-    <div className="min-h-screen">
+    <PageTransition>
+      <div className="min-h-screen">
       {/* Hero Section */}
       <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container overflow-hidden">
         <motion.div 
@@ -150,7 +152,8 @@ const Home = () => {
           </div>
         </div>
       </section>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 
