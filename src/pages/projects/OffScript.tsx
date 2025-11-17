@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { OffScriptArchitecture } from "@/components/OffScriptArchitecture";
 import offscriptInterface from "@/assets/offscript-interface.png";
+import offscriptCodeEditor from "@/assets/offscript-code-editor.png";
+import offscriptTranscript from "@/assets/offscript-transcript.png";
+import offscriptRatings from "@/assets/offscript-ratings.png";
 
 const OffScript = () => {
   return (
@@ -60,6 +63,58 @@ const OffScript = () => {
           <p className="text-sm text-muted-foreground mt-4">
             Watch OffScript in action: voice-based interview simulation with real-time code editing, AI feedback, and comprehensive performance analytics.
           </p>
+        </CaseStudySection>
+
+        <CaseStudySection title="Screenshots Gallery">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300">
+                <img 
+                  src={offscriptCodeEditor} 
+                  alt="Monaco Code Editor Interface" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Monaco Code Editor</h4>
+                <p className="text-sm text-muted-foreground">
+                  Professional-grade code editor with syntax highlighting, auto-completion, and real-time synchronization. Debounced updates ensure smooth AI context sharing.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300">
+                <img 
+                  src={offscriptTranscript} 
+                  alt="Live Interview Transcript" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Live Transcript</h4>
+                <p className="text-sm text-muted-foreground">
+                  Real-time conversation visualization with alternating message bubbles. Clean chat interface keeps code context invisible while maintaining natural dialogue flow.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300">
+                <img 
+                  src={offscriptRatings} 
+                  alt="Performance Ratings Dashboard" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Ratings Dashboard</h4>
+                <p className="text-sm text-muted-foreground">
+                  Gemini AI-powered performance analysis with letter grades across Communication, Problem Solving, and Implementation. Detailed feedback and progress charts.
+                </p>
+              </div>
+            </div>
+          </div>
         </CaseStudySection>
 
         <CaseStudySection title="Problem">
