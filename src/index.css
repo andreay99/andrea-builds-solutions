@@ -50,6 +50,14 @@ All colors MUST be HSL.
 }
 
 @layer base {
+  html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+
   * {
     @apply border-border;
   }
@@ -110,31 +118,43 @@ All colors MUST be HSL.
     transform: translateY(-2px);
   }
   
-  .hero-section-bg {
-    background-color: #F9F5EF;
+  .snap-section {
+    scroll-snap-align: start;
+    min-height: 100vh;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .hero-section {
+    background-color: #f9f5ef;
     background-image: url('/src/assets/abstract-tech-background.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 90%;
   }
   
-  .hero-section-bg::before {
+  .hero-section::before {
     content: '';
     position: absolute;
     inset: 0;
-    background-color: #F9F5EF;
+    background-color: #f9f5ef;
     opacity: 0.9;
   }
   
-  .scroll-container {
-    height: 100vh;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scroll-behavior: smooth;
+  .projects-section {
+    background-color: #f3eee6;
+    background-image: none;
   }
   
-  .snap-section {
-    scroll-snap-align: start;
-    min-height: 100vh;
+  .experience-section {
+    background-color: #e9e2d7;
+    background-image: none;
+  }
+  
+  .contact-section {
+    background-color: #f9f5ef;
+    background-image: none;
   }
 }

@@ -39,10 +39,9 @@ const Home = () => {
   ];
 
   return (
-    <main className="scroll-container">
+    <main>
       {/* Hero Section */}
-      <section className="snap-section relative bg-surface-1 flex items-center justify-center">
-        <div className="absolute inset-0 bg-[url('/src/assets/abstract-tech-background.jpg')] bg-no-repeat bg-center opacity-10" style={{ backgroundSize: '90%' }} />
+      <section className="snap-section hero-section relative">
         <ScrollSection>
           <div className="section-container relative z-10">
             <div className="max-w-7xl space-y-16 md:space-y-24">
@@ -87,7 +86,7 @@ const Home = () => {
       </section>
 
       {/* Projects Section */}
-      <section id="projects" className="snap-section bg-surface-2 flex items-center justify-center py-24">
+      <section id="projects" className="snap-section projects-section">
         <ScrollSection>
           <div className="section-container w-full">
             <div className="mb-20 md:mb-32">
@@ -126,7 +125,7 @@ const Home = () => {
       </section>
 
       {/* Experience Section */}
-      <section id="experience" className="snap-section bg-surface-3 flex items-center justify-center py-24">
+      <section id="experience" className="snap-section experience-section">
         <ScrollSection>
           <div className="section-container w-full max-w-5xl">
             <div className="mb-20">
@@ -235,7 +234,7 @@ const Home = () => {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="snap-section bg-surface-1 flex items-center justify-center py-24">
+      <section id="contact" className="snap-section contact-section">
         <ScrollSection>
           <div className="section-container w-full max-w-4xl">
             <div className="mb-20">
