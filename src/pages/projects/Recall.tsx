@@ -3,7 +3,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, Award } from "lucide-react";
 import { Link } from "react-router-dom";
-import recallArchitecture from "@/assets/recall-architecture.png";
+import { InteractiveArchitecture } from "@/components/InteractiveArchitecture";
 
 const Recall = () => {
   return (
@@ -83,13 +83,9 @@ const Recall = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Technical Architecture">
-          <img 
-            src={recallArchitecture} 
-            alt="Recall System Architecture" 
-            className="w-full rounded-lg border border-border"
-          />
+          <InteractiveArchitecture />
           <p className="text-sm text-muted-foreground mt-4">
-            System architecture showing the flow from Raspberry Pi camera through Flask API endpoints, OpenCV processing, MongoDB storage, and ElevenLabs TTS output.
+            Hover over each component to learn more about its role in the system. The diagram shows the complete data flow from camera capture to audio output.
           </p>
         </CaseStudySection>
 
