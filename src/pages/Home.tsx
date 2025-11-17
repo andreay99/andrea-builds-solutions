@@ -41,7 +41,7 @@ const Home = () => {
   return (
     <main className="scroll-container">
       {/* Hero Section */}
-      <section className="snap-section relative bg-surface-1 flex items-center justify-center">
+      <section className="snap-section relative bg-surface-1 flex items-center justify-center pt-24 md:pt-32">
         <div className="absolute inset-0 bg-[url('/src/assets/abstract-tech-background.jpg')] bg-no-repeat bg-center opacity-10" style={{ backgroundSize: '90%' }} />
         <ScrollSection>
           <div className="section-container relative z-10">
