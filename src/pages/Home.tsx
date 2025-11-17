@@ -332,7 +332,7 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <Button asChild className="w-full" variant="default">
-                    <a href="https://linkedin.com/in/andreayanezsoto" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.linkedin.com/in/andrea-yanez-soto-8b4653218" target="_blank" rel="noopener noreferrer">
                       View Profile
                       <ExternalLink className="ml-2 h-4 w-4" />
                     </a>
