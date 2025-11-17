@@ -157,9 +157,51 @@ const Home = () => {
                 </CardHeader>
                 <CardContent>
                   <ul className="space-y-2 text-muted-foreground">
-                    <li>• Applying machine learning to analyze solar flare activity from NASA satellite data</li>
-                    <li>• Developing prediction models for solar eruptions using advanced ML techniques</li>
-                    <li>• Contributing to NASA's mission to understand and predict space weather events</li>
+                    <li>• Selected to conduct AI-powered solar eruption research using NASA satellite data</li>
+                    <li>• Applying machine learning to analyze solar flare activity and develop prediction models</li>
+                    <li>• Program led by Dr. Qin Li and supported by NASA MIRO at NJIT</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <div className="flex justify-between items-start flex-wrap gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">Training Lead</CardTitle>
+                      <CardDescription className="text-base mt-1">
+                        Apple • Edison, NJ
+                      </CardDescription>
+                    </div>
+                    <Badge variant="secondary">Jul 2025 - Present</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li>• Led technical training program that improved launch sales</li>
+                    <li>• Delivered performance metrics to leadership, accelerating tool adoption</li>
+                    <li>• Provided mentorship and structured guidance to new technicians</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <div className="flex justify-between items-start flex-wrap gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">Technical Specialist</CardTitle>
+                      <CardDescription className="text-base mt-1">
+                        Apple • Edison, NJ
+                      </CardDescription>
+                    </div>
+                    <Badge variant="secondary">Aug 2024 - Present</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li>• Troubleshot software and hardware issues across macOS, iPadOS, and iOS, raising satisfaction by 15%</li>
+                    <li>• Collaborated with engineers to resolve escalated technical issues</li>
+                    <li>• Mentored peers in structured problem-solving, increasing team efficiency by 40%</li>
                   </ul>
                 </CardContent>
               </Card>
