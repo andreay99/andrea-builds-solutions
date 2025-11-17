@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { PageTransition } from "@/components/PageTransition";
 import { MagneticButton } from "@/components/MagneticButton";
+import { BackgroundEffects } from "@/components/BackgroundEffects";
 
 const Home = () => {
   const featuredProjects = [
@@ -42,7 +43,8 @@ const Home = () => {
 
   return (
     <PageTransition>
-      <div className="min-h-screen">
+      <BackgroundEffects />
+      <div className="min-h-screen relative z-10">
       {/* Hero Section */}
       <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container overflow-hidden">
         <motion.div 

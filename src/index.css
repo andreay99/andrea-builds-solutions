@@ -8,37 +8,41 @@ All colors MUST be HSL.
 
 @layer base {
   :root {
-    /* Elegant cream/beige aesthetic with pure black text */
-    --background: 40 20% 95%;
-    --foreground: 0 0% 8%;
+    /* Deep space/tech inspired aesthetic */
+    --background: 240 15% 8%;
+    --foreground: 40 20% 95%;
 
-    --card: 40 20% 97%;
-    --card-foreground: 0 0% 8%;
+    --card: 240 12% 12%;
+    --card-foreground: 40 20% 95%;
 
-    --popover: 40 20% 97%;
-    --popover-foreground: 0 0% 8%;
+    --popover: 240 12% 12%;
+    --popover-foreground: 40 20% 95%;
 
-    --primary: 0 0% 8%;
-    --primary-foreground: 40 20% 95%;
+    --primary: 40 20% 95%;
+    --primary-foreground: 240 15% 8%;
 
-    --secondary: 40 15% 88%;
-    --secondary-foreground: 0 0% 8%;
+    --secondary: 240 10% 16%;
+    --secondary-foreground: 40 20% 95%;
 
-    --muted: 40 15% 88%;
-    --muted-foreground: 0 0% 35%;
+    --muted: 240 10% 16%;
+    --muted-foreground: 40 10% 65%;
 
-    --accent: 0 0% 8%;
+    --accent: 210 100% 50%;
     --accent-foreground: 40 20% 95%;
 
     --destructive: 0 70% 50%;
     --destructive-foreground: 40 20% 95%;
 
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 0 0% 8%;
+    --border: 40 10% 25%;
+    --input: 40 10% 25%;
+    --ring: 210 100% 50%;
 
     --radius: 0rem;
 
+    /* Gradients for space/tech theme */
+    --gradient-space: linear-gradient(135deg, hsl(240 15% 8%), hsl(260 20% 12%), hsl(240 15% 8%));
+    --gradient-ai: radial-gradient(ellipse at top, hsl(210 100% 15% / 0.3), transparent 50%);
+    
     /* Transitions */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
