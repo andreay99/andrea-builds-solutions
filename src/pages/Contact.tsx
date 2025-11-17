@@ -10,8 +10,15 @@ const Contact = () => {
       <div className="section-container max-w-4xl">
         <div className="mb-12">
           <h1 className="mb-4">Get in Touch</h1>
+          <p className="text-lg text-muted-foreground mb-4">
+            I'm a Computer Science student at Stevens Institute of Technology specializing in AI/ML and full-stack development. 
+            With expertise in facial recognition, natural language processing, and computer vision, I build intelligent systems 
+            that solve real-world problems.
+          </p>
           <p className="text-lg text-muted-foreground">
-            I'm always interested in discussing new opportunities, collaborations, or interesting projects.
+            I'm passionate about leveraging cutting-edge AI technologies and cloud platforms to create innovative solutions. 
+            Whether you're looking to collaborate on an exciting project, discuss emerging technologies, or explore opportunities 
+            in software engineering and AI, I'd love to connect!
           </p>
         </div>
 
