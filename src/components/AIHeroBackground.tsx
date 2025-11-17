@@ -57,16 +57,28 @@ export const AIHeroBackground = () => {
     const labeledLines = ['AI', 'ML', 'SYSTEMS', 'BUILDER'];
     const sensitivities = [1.0, 0.8, 0.6, 0.5]; // Per-group variation
     
-    for (let i = 0; i < numLines; i++) {
-      const angle = (Math.PI * 2 * i) / numLines;
+    // First, add the 4 labeled lines evenly spaced around the circle
+    for (let i = 0; i < labeledLines.length; i++) {
+      const angle = (Math.PI * 2 * i) / labeledLines.length; // Evenly distribute: 0°, 90°, 180°, 270°
       const length = 150 + Math.random() * 100;
-      const hasLabel = i < labeledLines.length;
       
       lines.push({
         angle,
         length,
-        hasLabel,
-        label: hasLabel ? labeledLines[i] : undefined,
+        hasLabel: true,
+        label: labeledLines[i],
+      });
+    }
+    
+    // Then add the remaining background lines
+    for (let i = labeledLines.length; i < numLines; i++) {
+      const angle = (Math.PI * 2 * i) / numLines;
+      const length = 150 + Math.random() * 100;
+      
+      lines.push({
+        angle,
+        length,
+        hasLabel: false,
       });
     }
 
