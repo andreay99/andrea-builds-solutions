@@ -45,7 +45,7 @@ const Home = () => {
     <PageTransition>
       <BackgroundEffects />
       <div className="min-h-screen relative z-10">
-      {/* Hero Section */}
+      {/* Hero Section - transparent background */}
       <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container overflow-hidden">
         <motion.div 
           className="max-w-7xl space-y-16 md:space-y-24"
@@ -104,8 +104,8 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Featured Projects Section */}
-      <section className="py-32 md:py-48">
+      {/* Featured Projects Section - solid background panel */}
+      <section className="py-32 md:py-48 bg-secondary/80 backdrop-blur-sm relative">
         <div className="section-container">
           <motion.div 
             className="mb-20 md:mb-32"
@@ -135,8 +135,8 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Quick Stats */}
-      <section className="py-32 md:py-48 border-t border-foreground/10">
+      {/* Quick Stats - different solid background */}
+      <section className="py-32 md:py-48 bg-card/90 backdrop-blur-sm relative">
         <div className="section-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-16 md:gap-24">
             {[
