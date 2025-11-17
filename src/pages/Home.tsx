@@ -45,11 +45,10 @@ const Home = () => {
     <PageTransition>
       <BackgroundEffects />
       <div className="min-h-screen relative z-10">
-      {/* Hero Section - transparent background */}
+      {/* Hero Section - transparent background shows illustration */}
       <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container overflow-hidden">
         <motion.div 
           className="max-w-7xl space-y-16 md:space-y-24"
-          style={{ y: heroY, opacity: heroOpacity }}
         >
           <motion.div 
             className="space-y-6 md:space-y-8"
@@ -104,8 +103,15 @@ const Home = () => {
         </motion.div>
       </section>
 
-      {/* Featured Projects Section - solid background panel */}
-      <section className="py-32 md:py-48 bg-secondary/80 backdrop-blur-sm relative">
+      {/* Featured Projects Section - rounded panel */}
+      <section className="relative -mt-16">
+        <motion.div 
+          className="mx-4 md:mx-8 bg-white/95 backdrop-blur-sm rounded-[2.5rem] shadow-2xl py-32 md:py-48 relative z-10"
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
         <div className="section-container">
           <motion.div 
             className="mb-20 md:mb-32"
@@ -133,10 +139,18 @@ const Home = () => {
             ))}
           </div>
         </div>
+        </motion.div>
       </section>
 
-      {/* Quick Stats - different solid background */}
-      <section className="py-32 md:py-48 bg-card/90 backdrop-blur-sm relative">
+      {/* Quick Stats - another rounded panel with different tone */}
+      <section className="relative -mt-16">
+        <motion.div 
+          className="mx-4 md:mx-8 bg-secondary/95 backdrop-blur-sm rounded-[2.5rem] shadow-2xl py-32 md:py-48 relative z-20"
+          initial={{ opacity: 0, y: 100 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+        >
         <div className="section-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-16 md:gap-24">
             {[
@@ -158,6 +172,7 @@ const Home = () => {
             ))}
           </div>
         </div>
+        </motion.div>
       </section>
       </div>
     </PageTransition>

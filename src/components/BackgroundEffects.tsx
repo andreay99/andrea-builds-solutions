@@ -1,19 +1,14 @@
-import spaceBackground from "@/assets/space-background.jpg";
+import abstractBackground from "@/assets/abstract-background.jpg";
 
 export const BackgroundEffects = () => {
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden">
-      {/* Fixed background image with low opacity */}
+    <div className="fixed inset-0 -z-10 overflow-hidden bg-[#F5F3F0]">
+      {/* Subtle abstract illustration - extremely low opacity */}
       <div 
-        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.15]"
+        className="absolute inset-0 bg-cover bg-center bg-fixed opacity-[0.10]"
         style={{ 
-          backgroundImage: `url(${spaceBackground})`,
+          backgroundImage: `url(${abstractBackground})`,
         }}
-      />
-      
-      {/* Dark gradient overlay */}
-      <div 
-        className="absolute inset-0 bg-gradient-to-b from-background/50 via-background/80 to-background"
       />
     </div>
   );
