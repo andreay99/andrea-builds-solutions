@@ -6,6 +6,7 @@ import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, B
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { MagneticButton } from "@/components/MagneticButton";
+import { AIHeroBackground } from "@/components/AIHeroBackground";
 import { useRef } from "react";
 
 const Home = () => {
@@ -42,7 +43,7 @@ const Home = () => {
     <main className="scroll-container">
       {/* Hero Section */}
       <section className="snap-section relative bg-surface-1 flex items-center justify-center pt-24 md:pt-32">
-        <div className="absolute inset-0 bg-[url('/src/assets/abstract-tech-background.jpg')] bg-no-repeat bg-center opacity-10" style={{ backgroundSize: '90%' }} />
+        <AIHeroBackground />
         <ScrollSection>
           <div className="section-container relative z-10">
             <div className="max-w-7xl space-y-16 md:space-y-24">
