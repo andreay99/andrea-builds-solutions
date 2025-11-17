@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import bikeshareArchitecture from "@/assets/bikeshare-architecture.png";
 
 const Bikeshare = () => {
@@ -77,10 +78,10 @@ const Bikeshare = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Technical Architecture">
-          <img 
+          <ParallaxImage 
             src={bikeshareArchitecture} 
             alt="Bikeshare Analysis Architecture" 
-            className="w-full rounded-lg border border-border"
+            className="w-full"
           />
           <p className="text-sm text-muted-foreground mt-4">
             Data flow from raw trip data through SQLite database to analytical queries producing insights on usage patterns, peak hours, and anomalies.
