@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { ProjectCard } from "@/components/ProjectCard";
 import { ArrowRight, Download } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion, useScroll, useTransform } from "framer-motion";
 
 const Home = () => {
   const featuredProjects = [
@@ -33,29 +34,51 @@ const Home = () => {
     }
   ];
 
+  const { scrollYProgress } = useScroll();
+  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
+  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container">
-        <div className="max-w-7xl space-y-16 md:space-y-24">
-          <div className="space-y-6 md:space-y-8">
+      <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container overflow-hidden">
+        <motion.div 
+          className="max-w-7xl space-y-16 md:space-y-24"
+          style={{ y: heroY, opacity: heroOpacity }}
+        >
+          <motion.div 
+            className="space-y-6 md:space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
+          >
             <h1 className="font-serif leading-none">
               Andrea<br />
               Yanez<br />
               Soto
             </h1>
-          </div>
+          </motion.div>
           
-          <div className="max-w-2xl space-y-8">
+          <motion.div 
+            className="max-w-2xl space-y-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
+          >
             <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
               CS student specializing in AI/ML and full-stack development.
             </p>
             <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
               Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
             </p>
-          </div>
+          </motion.div>
 
-          <div className="flex flex-col sm:flex-row gap-6 pt-8">
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-6 pt-8"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
+          >
             <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
               <Link to="/projects">
                 View Projects
@@ -68,22 +91,36 @@ const Home = () => {
                 Download Resume
               </a>
             </Button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </section>
 
       {/* Featured Projects Section */}
       <section className="py-32 md:py-48">
         <div className="section-container">
-          <div className="mb-20 md:mb-32">
+          <motion.div 
+            className="mb-20 md:mb-32"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 0.7, ease: "easeOut" }}
+          >
             <h2 className="mb-8 font-serif">Featured Projects</h2>
             <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
               A selection of my recent work in AI/ML, full-stack development, and data analysis.
             </p>
-          </div>
+          </motion.div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
             {featuredProjects.map((project, index) => (
-              <ProjectCard key={index} {...project} />
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" }}
+              >
+                <ProjectCard {...project} />
+              </motion.div>
             ))}
           </div>
         </div>
@@ -93,22 +130,23 @@ const Home = () => {
       <section className="py-32 md:py-48 border-t border-foreground/10">
         <div className="section-container">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-16 md:gap-24">
-            <div>
-              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">4+</div>
-              <div className="text-sm uppercase tracking-wider text-foreground/60">Projects Completed</div>
-            </div>
-            <div>
-              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">2</div>
-              <div className="text-sm uppercase tracking-wider text-foreground/60">Hackathon Awards</div>
-            </div>
-            <div>
-              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">5+</div>
-              <div className="text-sm uppercase tracking-wider text-foreground/60">Tech Stacks</div>
-            </div>
-            <div>
-              <div className="text-6xl md:text-7xl font-serif font-bold mb-4">4</div>
-              <div className="text-sm uppercase tracking-wider text-foreground/60">Languages</div>
-            </div>
+            {[
+              { value: "4+", label: "Projects Completed" },
+              { value: "2", label: "Hackathon Awards" },
+              { value: "5+", label: "Tech Stacks" },
+              { value: "4", label: "Languages" }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
+              >
+                <div className="text-6xl md:text-7xl font-serif font-bold mb-4">{stat.value}</div>
+                <div className="text-sm uppercase tracking-wider text-foreground/60">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </section>
