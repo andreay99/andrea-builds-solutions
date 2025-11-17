@@ -3,8 +3,8 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, Award } from "lucide-react";
 import { Link } from "react-router-dom";
-import offscriptArchitecture from "@/assets/offscript-architecture.png";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { OffScriptArchitecture } from "@/components/OffScriptArchitecture";
 
 const OffScript = () => {
   return (
@@ -98,13 +98,9 @@ const OffScript = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Technical Architecture">
-          <img 
-            src={offscriptArchitecture} 
-            alt="OffScript System Architecture" 
-            className="w-full rounded-lg border border-border"
-          />
+          <OffScriptArchitecture />
           <p className="text-sm text-muted-foreground mt-4">
-            Architecture showing the Next.js frontend, FastAPI backend, Gemini AI integration, and bidirectional real-time feedback pipeline.
+            Hover over each component to learn more about its role in the system. The diagram shows the complete flow from user interaction through voice AI, code editing, and automated assessment.
           </p>
         </CaseStudySection>
 
