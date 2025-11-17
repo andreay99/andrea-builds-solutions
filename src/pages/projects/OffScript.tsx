@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import offscriptArchitecture from "@/assets/offscript-architecture.png";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 const OffScript = () => {
   return (
@@ -19,7 +20,7 @@ const OffScript = () => {
         <div className="mb-8">
           <h1 className="mb-4">OffScript</h1>
           <p className="text-xl text-muted-foreground mb-6">
-            AI-Powered Technical Interview Simulator
+            Voice-based technical interview simulator - practice coding while speaking your thought process aloud
           </p>
           <div className="flex flex-wrap gap-2 mb-6">
             <Badge variant="secondary" className="bg-orange-light text-orange-dark">
@@ -28,51 +29,71 @@ const OffScript = () => {
             </Badge>
           </div>
           <div className="flex flex-wrap gap-2">
-            <Badge variant="outline">Next.js</Badge>
+            <Badge variant="outline">Next.js 15</Badge>
             <Badge variant="outline">TypeScript</Badge>
+            <Badge variant="outline">Vapi AI</Badge>
+            <Badge variant="outline">Monaco Editor</Badge>
             <Badge variant="outline">FastAPI</Badge>
+            <Badge variant="outline">SQLite</Badge>
             <Badge variant="outline">Gemini AI</Badge>
-            <Badge variant="outline">React</Badge>
+            <Badge variant="outline">ElevenLabs</Badge>
+            <Badge variant="outline">Tailwind CSS</Badge>
           </div>
         </div>
 
         <CaseStudySection title="Overview">
           <p>
-            OffScript is a real-time AI interview simulator designed to help software engineers prepare for technical interviews. Built during HackHarvard 2025, the platform provides dynamic question generation, real-time feedback, and comprehensive interview practice across multiple domains.
+            OffScript is a voice-based technical interview simulator that helps engineers practice the way interviews actually happen—through conversation. Built during HackHarvard 2025, OffScript addresses a critical gap: talented engineers who can solve problems but struggle to explain their solutions in real-time interviews.
           </p>
           <p>
-            The system leverages Gemini AI to create realistic interview scenarios and provide instant, actionable feedback on responses, helping candidates improve their technical communication and problem-solving skills.
+            The platform combines real-time voice interaction with a professional code editor, allowing candidates to practice coding while speaking their thought process aloud. Using Vapi AI for voice, Gemini AI for automated assessment, and a sophisticated FastAPI backend, OffScript provides the most realistic technical interview practice available.
+          </p>
+        </CaseStudySection>
+
+        <CaseStudySection title="Demo Video">
+          <VideoPlayer
+            videoId="vRH8DOrgPo8"
+            title="OffScript Demo - HackHarvard 2025"
+          />
+          <p className="text-sm text-muted-foreground mt-4">
+            Watch OffScript in action: voice-based interview simulation with real-time code editing, AI feedback, and comprehensive performance analytics.
           </p>
         </CaseStudySection>
 
         <CaseStudySection title="Problem">
           <p>
-            Preparing for technical interviews is challenging and often lacks realistic practice environments. Many candidates struggle with:
+            The painful reality: talented engineers were failing interviews not because they couldn&apos;t solve problems, but because they couldn&apos;t explain their solutions. Friends who aced LeetCode problems in silence would freeze when asked to talk through their approach in real interviews.
+          </p>
+          <p>
+            Traditional platforms prepare you for the problems, but not the performance. Key challenges candidates face:
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Access to quality practice interviews with immediate feedback</li>
-            <li>Understanding how to articulate technical concepts clearly</li>
-            <li>Experiencing the pressure of real-time technical discussions</li>
-            <li>Getting personalized feedback on communication patterns</li>
+            <li>Speaking thought process aloud while coding (unnatural for most engineers)</li>
+            <li>Articulating technical concepts clearly under pressure</li>
+            <li>Experiencing realistic interview environments with immediate feedback</li>
+            <li>Understanding communication patterns and areas for improvement</li>
+            <li>Accessing affordable practice that mimics real interview conditions</li>
           </ul>
           <p>
-            Existing solutions either lack interactivity, provide generic feedback, or are prohibitively expensive for most candidates.
+            Landing your dream job shouldn&apos;t depend on whether you&apos;re naturally good at thinking out loud.
           </p>
         </CaseStudySection>
 
         <CaseStudySection title="Solution">
           <p>
-            I spearheaded the development of OffScript as the technical lead, building a full-stack application that simulates realistic technical interviews using cutting-edge AI technology.
+            As technical lead, I architected OffScript from the ground up—building a production-grade voice-based interview platform with breakthrough conversational coding technology.
           </p>
           <p>
-            Core features include:
+            <strong>Key Innovations:</strong>
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Dynamic question generation across multiple technical domains</li>
-            <li>Real-time AI evaluation of responses with detailed feedback</li>
-            <li>Interactive frontend built with Next.js and TypeScript</li>
-            <li>Robust backend API using FastAPI for low-latency responses</li>
-            <li>Session management and progress tracking</li>
+            <li><strong>Invisible Code Context Streaming:</strong> Solved the problem of maintaining AI awareness of code changes without cluttering conversation transcripts. Used Vapi AI&apos;s metadata fields to stream live code updates (debounced to 2 seconds) invisibly to the AI while keeping conversations natural</li>
+            <li><strong>Three-Panel Interview Environment:</strong> Monaco Code Editor for professional coding experience, real-time transcript visualization, and collapsible problem panels—all synchronized in real-time</li>
+            <li><strong>Real-Time State Coordination:</strong> Complex state management coordinating voice AI (speaking/listening), live code editing, and transcript updates using React refs and debounced hooks</li>
+            <li><strong>Intelligent Rating System:</strong> Gemini AI automatically analyzes complete interview transcripts, generating structured feedback with letter grades across Communication, Problem Solving, and Implementation</li>
+            <li><strong>Company-Specific Problem Sets:</strong> Curated questions from Google, Meta, Amazon, and other top tech companies</li>
+            <li><strong>FastAPI Backend Orchestration:</strong> Four specialized endpoints handling random problem generation, Vapi webhook processing, transcript management, and AI-powered ratings with SQLite persistence</li>
+            <li><strong>Production Polish:</strong> Mobile detection with desktop warnings, dark/light theme switching, Cloudflare CDN caching, comprehensive error handling</li>
           </ul>
         </CaseStudySection>
 
@@ -90,21 +111,27 @@ const OffScript = () => {
         <CaseStudySection title="Key Challenges">
           <div className="space-y-4">
             <div>
-              <h4 className="font-semibold text-foreground mb-2">Real-Time Feedback Latency</h4>
+              <h4 className="font-semibold text-foreground mb-2">The Invisible Code Context Problem</h4>
               <p>
-                Achieving sub-second response times for AI evaluation was critical for user experience. I optimized the API pipeline and implemented efficient caching strategies, improving feedback latency by 60% compared to initial benchmarks.
+                Biggest technical hurdle: maintaining AI awareness of code changes without disrupting natural conversation. Traditional approaches spammed transcripts with code updates, making conversations unreadable. Solution: discovered Vapi&apos;s metadata field capabilities, allowing invisible code streaming to AI while keeping conversations clean. Required extensive experimentation with debounce timing and state coordination.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2">Team Coordination</h4>
+              <h4 className="font-semibold text-foreground mb-2">Real-Time State Synchronization</h4>
               <p>
-                As the technical lead, I coordinated three engineers across frontend and backend development during a 36-hour hackathon. I established clear communication protocols, defined API contracts early, and implemented parallel development workflows to maximize efficiency.
+                Coordinating state between voice AI (speaking/listening), Monaco Editor (live typing), and transcript management was incredibly complex. Had to prevent code updates while AI was speaking, handle rapid typing without overwhelming the system, and maintain conversation continuity. Solution involved React refs, custom debounced hooks, and careful effect dependency management across multiple components.
               </p>
             </div>
             <div>
-              <h4 className="font-semibold text-foreground mb-2">AI Prompt Engineering</h4>
+              <h4 className="font-semibold text-foreground mb-2">Voice AI Integration Complexity</h4>
               <p>
-                Crafting prompts that generate realistic interview questions and provide constructive feedback required extensive iteration. I developed a prompt template system that ensures consistency while maintaining flexibility across different technical domains.
+                Getting Vapi to work seamlessly with custom interview flow required deep understanding of their event system. Faced issues with call initialization timing, metadata handling, transcript formatting, and error recovery. The 81 commits in the repository tell the story of iterative debugging to achieve smooth voice interactions.
+              </p>
+            </div>
+            <div>
+              <h4 className="font-semibold text-foreground mb-2">Cross-Service Architecture</h4>
+              <p>
+                Building reliable communication between Next.js frontend, FastAPI backend, Vapi AI, and Gemini rating services created numerous integration challenges. Implemented comprehensive error handling, automatic transcript uploads, rating pipeline automation, and database transaction management to ensure zero data loss.
               </p>
             </div>
           </div>
@@ -113,38 +140,47 @@ const OffScript = () => {
         <CaseStudySection title="Impact & Recognition">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">60%</div>
-              <p className="text-sm">Improvement in feedback latency</p>
+              <div className="text-3xl font-bold text-accent mb-2">First</div>
+              <p className="text-sm">Platform maintaining natural conversation while tracking live code changes</p>
             </div>
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">36hrs</div>
-              <p className="text-sm">MVP development time</p>
+              <div className="text-3xl font-bold text-accent mb-2">45min</div>
+              <p className="text-sm">Session length with graceful handling of interruptions and errors</p>
             </div>
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">3</div>
-              <p className="text-sm">Engineers coordinated</p>
+              <div className="text-3xl font-bold text-accent mb-2">81</div>
+              <p className="text-sm">Commits during HackHarvard showing rapid iteration cycle</p>
             </div>
             <div className="p-6 bg-secondary/30 rounded-lg">
-              <div className="text-3xl font-bold text-accent mb-2">100%</div>
-              <p className="text-sm">Functional MVP delivered</p>
+              <div className="text-3xl font-bold text-accent mb-2">3 Grades</div>
+              <p className="text-sm">Communication, Problem Solving, Implementation scores</p>
+            </div>
+            <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="text-3xl font-bold text-accent mb-2">5 Companies</div>
+              <p className="text-sm">Google, Meta, Amazon, and more problem sets available</p>
+            </div>
+            <div className="p-6 bg-secondary/30 rounded-lg">
+              <div className="text-3xl font-bold text-accent mb-2">4 Services</div>
+              <p className="text-sm">Vapi AI, Gemini, FastAPI, SQLite orchestrated seamlessly</p>
             </div>
           </div>
         </CaseStudySection>
 
         <CaseStudySection title="What I Learned">
           <p>
-            Leading the development of OffScript taught me valuable lessons in full-stack development and team leadership:
+            Building OffScript taught me advanced system integration and real-time coordination challenges I&apos;d never encountered before:
           </p>
           <ul className="list-disc list-inside space-y-2 ml-4">
-            <li>Effective team coordination and parallel development strategies</li>
-            <li>API design principles for real-time applications</li>
-            <li>Modern frontend development with Next.js and TypeScript</li>
-            <li>Integration of large language models into production systems</li>
-            <li>Rapid prototyping under tight time constraints</li>
-            <li>Balancing feature scope with delivery timelines</li>
+            <li><strong>Voice UI Design Principles:</strong> Crafting interfaces that support simultaneous voice and visual interaction requires completely different design paradigms than traditional UIs</li>
+            <li><strong>Real-Time AI Coordination:</strong> Managing multiple AI services (Vapi voice, Gemini ratings) while maintaining data consistency and smooth UX required sophisticated state management patterns</li>
+            <li><strong>Interview Psychology:</strong> Through testing, learned how UI elements affect candidate stress—collapsible panels reduce overwhelm, timer placement impacts anxiety, and transcript visibility provides reassurance</li>
+            <li><strong>Production Voice Integration:</strong> Deep dive into Vapi AI&apos;s Web SDK, understanding event systems, metadata streaming, and building robust error recovery for 45-minute sessions</li>
+            <li><strong>Invisible Context Sharing:</strong> Discovered creative solutions for maintaining AI context without disrupting user experience—a pattern applicable to many AI applications</li>
+            <li><strong>FastAPI Backend Architecture:</strong> Built webhook handlers, implemented SQLite with transaction management, and created automated rating pipelines</li>
+            <li><strong>Hackathon-Scale Engineering:</strong> Delivered production-quality integrations under extreme time pressure by prioritizing modular architecture and rapid iteration (81 commits)</li>
           </ul>
           <p>
-            The experience reinforced the importance of clear communication, well-defined interfaces, and agile decision-making in fast-paced development environments.
+            Most importantly, I learned that the hardest technical challenges often have elegant solutions—the invisible code context problem seemed insurmountable until we discovered Vapi&apos;s metadata fields.
           </p>
         </CaseStudySection>
 
