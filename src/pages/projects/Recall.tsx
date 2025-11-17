@@ -47,10 +47,25 @@ const Recall = () => {
 
         <CaseStudySection title="Overview">
           <p>
-            Recall is a digital memory assistant designed to help people with Alzheimer's and Dementia maintain their sense of identity and independence. Built during HackPrinceton 2025, Recall won Best Use of Grok (xAI) and Best Use of Arm (MLH) awards for its innovative approach to assistive technology.
+            Recall is a digital memory assistant designed to help people with Alzheimer&apos;s and Dementia maintain their sense of identity and independence. Built during HackPrinceton 2025, Recall won Best Use of Grok (xAI) and Best Use of Arm (MLH) awards for its innovative approach to assistive technology.
           </p>
           <p>
             The system acts as a fully autonomous memory journal that passively captures significant events throughout the day, recognizes loved ones through facial recognition, and creates contextually relevant conversation summaries—all without manual intervention. Running 24/7 on a Raspberry Pi with a Logitech Brio webcam, Recall works silently in the background, eliminating the burden of note-taking while respecting user privacy.
+          </p>
+        </CaseStudySection>
+
+        <CaseStudySection title="Demo Video">
+          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
+            <iframe
+              className="absolute top-0 left-0 w-full h-full rounded-lg border border-border"
+              src="https://www.youtube.com/embed/fHIO8pLaHdE"
+              title="Recall Demo - HackPrinceton F25"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+            />
+          </div>
+          <p className="text-sm text-muted-foreground mt-4">
+            Watch Recall in action: autonomous facial recognition, conversation capture, and AI-powered memory summaries delivered via text-to-speech.
           </p>
         </CaseStudySection>
 
