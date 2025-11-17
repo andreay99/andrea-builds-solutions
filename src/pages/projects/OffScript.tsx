@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { OffScriptArchitecture } from "@/components/OffScriptArchitecture";
 import offscriptLanding from "@/assets/offscript-landing.png";
+import offscriptInterface from "@/assets/offscript-interface.png";
+import offscriptRatings from "@/assets/offscript-ratings.png";
+import offscriptTranscript from "@/assets/offscript-transcript.png";
 
 const OffScript = () => {
   return (
@@ -55,11 +58,63 @@ const OffScript = () => {
           <VideoPlayer
             videoId="vRH8DOrgPo8"
             title="OffScript Demo - HackHarvard 2025"
-            posterImage={offscriptLanding}
+            posterImage={offscriptInterface}
           />
           <p className="text-sm text-muted-foreground mt-4">
             Watch OffScript in action: voice-based interview simulation with real-time code editing, AI feedback, and comprehensive performance analytics.
           </p>
+        </CaseStudySection>
+
+        <CaseStudySection title="Product Screenshots">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <img 
+                  src={offscriptInterface} 
+                  alt="Three-Panel Interview Interface" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Interview Interface</h4>
+                <p className="text-sm text-muted-foreground">
+                  Three-panel layout with Problem description (left), Monaco Code Editor (center), and live Transcript (right). Real-time voice interaction with 44:51 timer showing active session.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <img 
+                  src={offscriptRatings} 
+                  alt="Performance Ratings Dashboard" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">AI-Powered Ratings</h4>
+                <p className="text-sm text-muted-foreground">
+                  Gemini AI analyzes interview performance across Communication (59), Problem Solving (49), and Implementation (56). Overall score of 55/100 with detailed breakdowns.
+                </p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300 cursor-pointer">
+                <img 
+                  src={offscriptTranscript} 
+                  alt="Session Timeline and Feedback" 
+                  className="w-full h-auto"
+                />
+              </div>
+              <div>
+                <h4 className="font-semibold text-foreground mb-1">Detailed Feedback</h4>
+                <p className="text-sm text-muted-foreground">
+                  Session timeline with timestamped conversation. Comprehensive feedback on Communication, Problem Solving, and Implementation with specific improvement areas highlighted.
+                </p>
+              </div>
+            </div>
+          </div>
         </CaseStudySection>
 
         <CaseStudySection title="Live Product">
