@@ -39,6 +39,11 @@ All colors MUST be HSL.
 
     --radius: 1.5rem;
     
+    /* Surface colors for section backgrounds */
+    --surface-1: 36 38% 96%; /* Off-white base */
+    --surface-2: 40 15% 94%; /* Slightly darker neutral */
+    --surface-3: 40 15% 92%; /* Darker neutral */
+    
     /* Transitions */
     --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -105,12 +110,31 @@ All colors MUST be HSL.
     transform: translateY(-2px);
   }
   
-  .ai-space-bg {
+  .hero-section-bg {
     background-color: #F9F5EF;
     background-image: url('/src/assets/abstract-tech-background.jpg');
     background-repeat: no-repeat;
     background-position: center;
     background-size: 90%;
-    opacity: 0.1;
+  }
+  
+  .hero-section-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-color: #F9F5EF;
+    opacity: 0.9;
+  }
+  
+  .scroll-container {
+    height: 100vh;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+  }
+  
+  .snap-section {
+    scroll-snap-align: start;
+    min-height: 100vh;
   }
 }
