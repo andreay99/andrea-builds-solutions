@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Award } from "lucide-react";
 import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 
 interface ProjectCardProps {
   title: string;
@@ -14,7 +15,11 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({ title, description, techStack, awards, link }: ProjectCardProps) => {
   return (
-    <Card className="hover-lift hover:shadow-2xl transition-all duration-500 border-2 border-foreground/10 rounded-none bg-card">
+    <motion.div
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+    >
+      <Card className="hover:shadow-2xl transition-all duration-500 border-2 border-foreground/10 rounded-none bg-card">
       <CardHeader className="space-y-6 pb-8">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-4">
@@ -49,5 +54,6 @@ export const ProjectCard = ({ title, description, techStack, awards, link }: Pro
         </Button>
       </CardContent>
     </Card>
+    </motion.div>
   );
 };
