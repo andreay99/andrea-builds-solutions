@@ -5,6 +5,7 @@ import { ArrowLeft, Github, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { OffScriptArchitecture } from "@/components/OffScriptArchitecture";
+import offscriptInterface from "@/assets/offscript-interface.png";
 
 const OffScript = () => {
   return (
@@ -54,6 +55,7 @@ const OffScript = () => {
           <VideoPlayer
             videoId="vRH8DOrgPo8"
             title="OffScript Demo - HackHarvard 2025"
+            posterImage={offscriptInterface}
           />
           <p className="text-sm text-muted-foreground mt-4">
             Watch OffScript in action: voice-based interview simulation with real-time code editing, AI feedback, and comprehensive performance analytics.
