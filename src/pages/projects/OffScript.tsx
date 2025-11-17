@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { OffScriptArchitecture } from "@/components/OffScriptArchitecture";
 import { PageTransition } from "@/components/PageTransition";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import offscriptLanding from "@/assets/offscript-landing.png";
 import offscriptInterface from "@/assets/offscript-interface.png";
 import offscriptRatings from "@/assets/offscript-ratings.png";
@@ -121,13 +122,11 @@ const OffScript = () => {
 
         <CaseStudySection title="Live Product">
           <div className="space-y-4">
-            <div className="rounded-lg border border-border overflow-hidden">
-              <img 
-                src={offscriptLanding} 
-                alt="OffScript Landing Page - offscript.codestacx.com" 
-                className="w-full h-auto"
-              />
-            </div>
+            <ParallaxImage 
+              src={offscriptLanding} 
+              alt="OffScript Landing Page - offscript.codestacx.com" 
+              className="w-full h-auto"
+            />
             <div className="flex items-center gap-4">
               <p className="text-sm text-muted-foreground flex-1">
                 OffScript is live at <a href="https://offscript.codestacx.com" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">offscript.codestacx.com</a>. The platform features 150+ company patterns, 45-minute real interview simulations, and voice-first approach to technical interview practice.

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
+import { ParallaxImage } from "@/components/ParallaxImage";
 import sonaArchitecture from "@/assets/sona-architecture.png";
 
 const SonaAI = () => {
@@ -78,10 +79,10 @@ const SonaAI = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Technical Architecture">
-          <img 
+          <ParallaxImage 
             src={sonaArchitecture} 
             alt="SONA AI System Architecture" 
-            className="w-full rounded-lg border border-border"
+            className="w-full"
           />
           <p className="text-sm text-muted-foreground mt-4">
             Architecture showing audio input processing through Librosa, TensorFlow model classification with agentic feedback, and FastAPI real-time output.
