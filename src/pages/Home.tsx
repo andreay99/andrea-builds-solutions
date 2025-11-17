@@ -163,27 +163,6 @@ const Home = () => {
                   </ul>
                 </CardContent>
               </Card>
-
-              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <div className="flex justify-between items-start flex-wrap gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">Software Engineering Intern</CardTitle>
-                      <CardDescription className="text-base mt-1">
-                        Apple • Cupertino, CA
-                      </CardDescription>
-                    </div>
-                    <Badge variant="secondary">Summer 2024</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Developed internal tools and features for Apple's ecosystem</li>
-                    <li>• Collaborated with cross-functional teams on high-impact projects</li>
-                    <li>• Gained experience with large-scale production systems</li>
-                  </ul>
-                </CardContent>
-              </Card>
             </div>
 
             {/* Technical Skills */}
