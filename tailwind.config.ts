@@ -68,6 +68,11 @@ export default {
           800: "hsl(var(--neutral-800))",
           900: "hsl(var(--neutral-900))",
         },
+        surface: {
+          1: "hsl(var(--surface-1))",
+          2: "hsl(var(--surface-2))",
+          3: "hsl(var(--surface-3))",
+        },
       },
       borderRadius: {
         lg: "var(--radius)",

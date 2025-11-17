@@ -1,11 +1,12 @@
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProjectCard } from "@/components/ProjectCard";
-import { ArrowRight, Download } from "lucide-react";
+import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, Briefcase, Code } from "lucide-react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { PageTransition } from "@/components/PageTransition";
+import { motion, useInView } from "framer-motion";
 import { MagneticButton } from "@/components/MagneticButton";
-import { BackgroundEffects } from "@/components/BackgroundEffects";
+import { useRef } from "react";
 
 const Home = () => {
   const featuredProjects = [
@@ -37,145 +38,325 @@ const Home = () => {
     }
   ];
 
-  const { scrollYProgress } = useScroll();
-  const heroY = useTransform(scrollYProgress, [0, 0.5], [0, 100]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
-
   return (
-    <PageTransition>
-      <BackgroundEffects />
-      <div className="min-h-screen relative z-10">
-      {/* Hero Section - transparent background shows illustration */}
-      <section className="pt-48 md:pt-64 pb-32 md:pb-48 section-container overflow-hidden">
-        <motion.div 
-          className="max-w-7xl space-y-16 md:space-y-24"
-        >
-          <motion.div 
-            className="space-y-6 md:space-y-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            <h1 className="font-serif leading-none">
-              Andrea<br />
-              Yanez<br />
-              Soto
-            </h1>
-          </motion.div>
-          
-          <motion.div 
-            className="max-w-2xl space-y-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
-          >
-            <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
-              CS student specializing in AI/ML and full-stack development.
-            </p>
-            <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
-              Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
-            </p>
-          </motion.div>
+    <main className="scroll-container">
+      {/* Hero Section */}
+      <section className="snap-section relative bg-surface-1 flex items-center justify-center">
+        <div className="absolute inset-0 bg-[url('/src/assets/abstract-tech-background.jpg')] bg-no-repeat bg-center opacity-10" style={{ backgroundSize: '90%' }} />
+        <ScrollSection>
+          <div className="section-container relative z-10">
+            <div className="max-w-7xl space-y-16 md:space-y-24">
+              <div className="space-y-6 md:space-y-8">
+                <h1 className="font-serif leading-none">
+                  Andrea<br />
+                  Yanez<br />
+                  Soto
+                </h1>
+              </div>
+              
+              <div className="max-w-2xl space-y-8">
+                <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
+                  CS student specializing in AI/ML and full-stack development.
+                </p>
+                <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
+                  Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
+                </p>
+              </div>
 
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-6 pt-8"
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-          >
-            <MagneticButton strength={0.4} distance={120}>
-              <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+              <div className="flex flex-col sm:flex-row gap-6 pt-8">
+                <MagneticButton strength={0.4} distance={120}>
+                  <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+                    <a href="#projects">
+                      View Projects
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                </MagneticButton>
+                <MagneticButton strength={0.4} distance={120}>
+                  <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
+                    <a href="/resume.pdf" download>
+                      <Download className="mr-2 h-5 w-5" />
+                      Download Resume
+                    </a>
+                  </Button>
+                </MagneticButton>
+              </div>
+            </div>
+          </div>
+        </ScrollSection>
+      </section>
+
+      {/* Projects Section */}
+      <section id="projects" className="snap-section bg-surface-2 flex items-center justify-center py-24">
+        <ScrollSection>
+          <div className="section-container w-full">
+            <div className="mb-20 md:mb-32">
+              <h2 className="mb-8 font-serif">Featured Projects</h2>
+              <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
+                A selection of my recent work in AI/ML, full-stack development, and data analysis.
+              </p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+              {featuredProjects.map((project, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0.85, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{ 
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    ease: [0.25, 0.1, 0.25, 1.0]
+                  }}
+                >
+                  <ProjectCard {...project} />
+                </motion.div>
+              ))}
+            </div>
+            <div className="mt-16 text-center">
+              <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2">
                 <Link to="/projects">
-                  View Projects
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  View All Projects
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
-            </MagneticButton>
-            <MagneticButton strength={0.4} distance={120}>
-              <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
-                <a href="/resume.pdf" download>
-                  <Download className="mr-2 h-5 w-5" />
-                  Download Resume
-                </a>
+            </div>
+          </div>
+        </ScrollSection>
+      </section>
+
+      {/* Experience Section */}
+      <section id="experience" className="snap-section bg-surface-3 flex items-center justify-center py-24">
+        <ScrollSection>
+          <div className="section-container w-full max-w-5xl">
+            <div className="mb-20">
+              <h2 className="mb-8 font-serif">Experience</h2>
+              <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
+                My journey in technology, from research to industry experience.
+              </p>
+            </div>
+
+            {/* Work Experience */}
+            <div className="space-y-8 mb-16">
+              <div className="flex items-center gap-3 mb-8">
+                <Briefcase className="h-6 w-6 text-accent" />
+                <h3 className="text-3xl font-bold">Work Experience</h3>
+              </div>
+
+              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <div className="flex justify-between items-start flex-wrap gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">NASA-Funded AI Solar Eruption Research</CardTitle>
+                      <CardDescription className="text-base mt-1">
+                        NASA MIRO Program • NJIT
+                      </CardDescription>
+                    </div>
+                    <Badge variant="secondary">Nov 2025 - Present</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li>• Applying machine learning to analyze solar flare activity from NASA satellite data</li>
+                    <li>• Developing prediction models for solar eruptions using advanced ML techniques</li>
+                    <li>• Contributing to NASA's mission to understand and predict space weather events</li>
+                  </ul>
+                </CardContent>
+              </Card>
+
+              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <div className="flex justify-between items-start flex-wrap gap-4">
+                    <div>
+                      <CardTitle className="text-2xl">Software Engineering Intern</CardTitle>
+                      <CardDescription className="text-base mt-1">
+                        Apple • Cupertino, CA
+                      </CardDescription>
+                    </div>
+                    <Badge variant="secondary">Summer 2024</Badge>
+                  </div>
+                </CardHeader>
+                <CardContent>
+                  <ul className="space-y-2 text-muted-foreground">
+                    <li>• Developed internal tools and features for Apple's ecosystem</li>
+                    <li>• Collaborated with cross-functional teams on high-impact projects</li>
+                    <li>• Gained experience with large-scale production systems</li>
+                  </ul>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Technical Skills */}
+            <div className="space-y-8">
+              <div className="flex items-center gap-3 mb-8">
+                <Code className="h-6 w-6 text-accent" />
+                <h3 className="text-3xl font-bold">Technical Skills</h3>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <Card className="bg-card/80 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle>Languages</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {["Python", "JavaScript", "TypeScript", "SQL", "C++", "Java"].map((skill) => (
+                        <Badge key={skill} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+
+                <Card className="bg-card/80 backdrop-blur">
+                  <CardHeader>
+                    <CardTitle>AI/ML Specializations</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex flex-wrap gap-2">
+                      {["TensorFlow", "PyTorch", "OpenCV", "NLP", "Computer Vision", "Deep Learning"].map((skill) => (
+                        <Badge key={skill} variant="secondary">{skill}</Badge>
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              </div>
+            </div>
+
+            <div className="mt-16 text-center">
+              <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2">
+                <Link to="/experience">
+                  View Full Experience
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Link>
               </Button>
-            </MagneticButton>
-          </motion.div>
-        </motion.div>
+            </div>
+          </div>
+        </ScrollSection>
       </section>
 
-      {/* Featured Projects Section - rounded panel */}
-      <section className="relative -mt-16">
-        <motion.div 
-          className="mx-4 md:mx-8 bg-white/95 backdrop-blur-sm rounded-[2.5rem] shadow-2xl py-32 md:py-48 relative z-10"
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-        <div className="section-container">
-          <motion.div 
-            className="mb-20 md:mb-32"
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-          >
-            <h2 className="mb-8 font-serif">Featured Projects</h2>
-            <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
-              A selection of my recent work in AI/ML, full-stack development, and data analysis.
-            </p>
-          </motion.div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-            {featuredProjects.map((project, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-100px" }}
-                transition={{ duration: 0.7, delay: index * 0.1, ease: "easeOut" }}
-              >
-                <ProjectCard {...project} />
-              </motion.div>
-            ))}
-          </div>
-        </div>
-        </motion.div>
-      </section>
+      {/* Contact Section */}
+      <section id="contact" className="snap-section bg-surface-1 flex items-center justify-center py-24">
+        <ScrollSection>
+          <div className="section-container w-full max-w-4xl">
+            <div className="mb-20">
+              <h2 className="mb-8 font-serif">Get in Touch</h2>
+              <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
+                I'm always interested in discussing new opportunities, collaborations, or interesting projects.
+              </p>
+            </div>
 
-      {/* Quick Stats - another rounded panel with different tone */}
-      <section className="relative -mt-16">
-        <motion.div 
-          className="mx-4 md:mx-8 bg-secondary/95 backdrop-blur-sm rounded-[2.5rem] shadow-2xl py-32 md:py-48 relative z-20"
-          initial={{ opacity: 0, y: 100 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true, margin: "-100px" }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        >
-        <div className="section-container">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-16 md:gap-24">
-            {[
-              { value: "4+", label: "Projects Completed" },
-              { value: "2", label: "Hackathon Awards" },
-              { value: "5+", label: "Tech Stacks" },
-              { value: "4", label: "Languages" }
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-50px" }}
-                transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-              >
-                <div className="text-6xl md:text-7xl font-serif font-bold mb-4">{stat.value}</div>
-                <div className="text-sm uppercase tracking-wider text-foreground/60">{stat.label}</div>
-              </motion.div>
-            ))}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <Mail className="h-8 w-8 text-accent mb-2" />
+                  <CardTitle>Email</CardTitle>
+                  <CardDescription>Send me a message</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild className="w-full" variant="default">
+                    <a href="mailto:andreayanez11@outlook.com">
+                      andreayanez11@outlook.com
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <Linkedin className="h-8 w-8 text-accent mb-2" />
+                  <CardTitle>LinkedIn</CardTitle>
+                  <CardDescription>Connect professionally</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild className="w-full" variant="default">
+                    <a href="https://linkedin.com/in/andreayanezsoto" target="_blank" rel="noopener noreferrer">
+                      View Profile
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <Github className="h-8 w-8 text-accent mb-2" />
+                  <CardTitle>GitHub</CardTitle>
+                  <CardDescription>Check out my code</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild className="w-full" variant="default">
+                    <a href="https://github.com/andreayanez" target="_blank" rel="noopener noreferrer">
+                      View Repositories
+                      <ExternalLink className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
+                <CardHeader>
+                  <FileText className="h-8 w-8 text-accent mb-2" />
+                  <CardTitle>Resume</CardTitle>
+                  <CardDescription>Download my CV</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Button asChild className="w-full" variant="default">
+                    <a href="/resume.pdf" download>
+                      Download PDF
+                      <Download className="ml-2 h-4 w-4" />
+                    </a>
+                  </Button>
+                </CardContent>
+              </Card>
+            </div>
+
+            <Card className="bg-accent/5 border-accent/20 backdrop-blur">
+              <CardHeader>
+                <CardTitle>Additional Links</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Devpost</span>
+                  <Button asChild variant="link">
+                    <a href="https://devpost.com/andreayanez" target="_blank" rel="noopener noreferrer">
+                      View Projects <ExternalLink className="ml-1 h-4 w-4" />
+                    </a>
+                  </Button>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-muted-foreground">Phone</span>
+                  <Button asChild variant="link">
+                    <a href="tel:+17329979798">+1 (732) 997-9798</a>
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
           </div>
-        </div>
-        </motion.div>
+        </ScrollSection>
       </section>
-      </div>
-    </PageTransition>
+    </main>
+  );
+};
+
+// Scroll animation wrapper component
+const ScrollSection = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false, amount: 0.3 });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0.85, y: 20 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.85, y: 20 }}
+      transition={{
+        duration: 0.6,
+        ease: [0.25, 0.1, 0.25, 1.0]
+      }}
+      className="w-full"
+    >
+      {children}
+    </motion.div>
   );
 };
 
