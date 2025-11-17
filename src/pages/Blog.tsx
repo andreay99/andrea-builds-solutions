@@ -1,9 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { PageTransition } from "@/components/PageTransition";
 
 const Blog = () => {
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container max-w-4xl">
         <div className="mb-12">
           <h1 className="mb-4">Blog</h1>
@@ -49,7 +51,8 @@ const Blog = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

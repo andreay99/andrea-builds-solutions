@@ -1,10 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Linkedin, Github, FileText, ExternalLink } from "lucide-react";
+import { PageTransition } from "@/components/PageTransition";
 
 const Contact = () => {
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container max-w-4xl">
         <div className="mb-12">
           <h1 className="mb-4">Get in Touch</h1>
@@ -101,7 +103,8 @@ const Contact = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

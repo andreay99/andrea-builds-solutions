@@ -3,11 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PageTransition } from "@/components/PageTransition";
 import sonaArchitecture from "@/assets/sona-architecture.png";
 
 const SonaAI = () => {
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container max-w-5xl">
         <Button variant="ghost" asChild className="mb-8">
           <Link to="/projects">
@@ -156,7 +158,8 @@ const SonaAI = () => {
           </Button>
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

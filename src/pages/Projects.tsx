@@ -1,4 +1,5 @@
 import { ProjectCard } from "@/components/ProjectCard";
+import { PageTransition } from "@/components/PageTransition";
 
 const Projects = () => {
   const projects = [
@@ -31,7 +32,8 @@ const Projects = () => {
   ];
 
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container">
         <div className="mb-12">
           <h1 className="mb-4">Projects</h1>
@@ -47,7 +49,8 @@ const Projects = () => {
           ))}
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

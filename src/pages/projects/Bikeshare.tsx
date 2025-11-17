@@ -3,11 +3,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github } from "lucide-react";
 import { Link } from "react-router-dom";
+import { PageTransition } from "@/components/PageTransition";
 import bikeshareArchitecture from "@/assets/bikeshare-architecture.png";
 
 const Bikeshare = () => {
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container max-w-5xl">
         <Button variant="ghost" asChild className="mb-8">
           <Link to="/projects">
@@ -155,7 +157,8 @@ const Bikeshare = () => {
           </Button>
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

@@ -1,10 +1,12 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Briefcase, GraduationCap, Code, Award } from "lucide-react";
+import { PageTransition } from "@/components/PageTransition";
 
 const Experience = () => {
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container max-w-5xl">
         <div className="mb-12">
           <h1 className="mb-4">Experience</h1>
@@ -276,7 +278,8 @@ const Experience = () => {
           </p>
         </section>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 

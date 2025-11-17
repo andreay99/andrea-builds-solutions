@@ -5,10 +5,12 @@ import { ArrowLeft, Github, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { InteractiveArchitecture } from "@/components/InteractiveArchitecture";
 import { VideoPlayer } from "@/components/VideoPlayer";
+import { PageTransition } from "@/components/PageTransition";
 
 const Recall = () => {
   return (
-    <div className="min-h-screen pt-24 pb-20">
+    <PageTransition>
+      <div className="min-h-screen pt-24 pb-20">
       <div className="section-container max-w-5xl">
         <Button variant="ghost" asChild className="mb-8">
           <Link to="/projects">
@@ -192,7 +194,8 @@ const Recall = () => {
           </Button>
         </div>
       </div>
-    </div>
+      </div>
+    </PageTransition>
   );
 };
 
