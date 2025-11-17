@@ -50,7 +50,9 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground antialiased;
+    @apply text-foreground antialiased;
+    background-color: #F9F5EF;
+    background-image: none;
     font-family: 'Inter', -apple-system, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: -0.01em;
@@ -101,5 +103,14 @@ All colors MUST be HSL.
   
   .hover-lift:hover {
     transform: translateY(-2px);
+  }
+  
+  .ai-space-bg {
+    background-color: #F9F5EF;
+    background-image: url('/src/assets/abstract-tech-background.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 90%;
+    opacity: 0.1;
   }
 }
