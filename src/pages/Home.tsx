@@ -79,13 +79,13 @@ const Home = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
           >
-            <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+            <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
               <Link to="/projects">
                 View Projects
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground hover:bg-foreground hover:text-background transition-all">
+            <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
               <a href="/resume.pdf" download>
                 <Download className="mr-2 h-5 w-5" />
                 Download Resume
