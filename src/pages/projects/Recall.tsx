@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft, Github, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { InteractiveArchitecture } from "@/components/InteractiveArchitecture";
+import { VideoPlayer } from "@/components/VideoPlayer";
 
 const Recall = () => {
   return (
@@ -55,15 +56,10 @@ const Recall = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Demo Video">
-          <div className="relative w-full" style={{ paddingBottom: "56.25%" }}>
-            <iframe
-              className="absolute top-0 left-0 w-full h-full rounded-lg border border-border"
-              src="https://www.youtube.com/embed/fHIO8pLaHdE"
-              title="Recall Demo - HackPrinceton F25"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
+          <VideoPlayer
+            videoId="fHIO8pLaHdE"
+            title="Recall Demo - HackPrinceton F25"
+          />
           <p className="text-sm text-muted-foreground mt-4">
             Watch Recall in action: autonomous facial recognition, conversation capture, and AI-powered memory summaries delivered via text-to-speech.
           </p>
