@@ -4,6 +4,7 @@ import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Award } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { MagneticButton } from "@/components/MagneticButton";
 
 interface ProjectCardProps {
   title: string;
@@ -46,12 +47,14 @@ export const ProjectCard = ({ title, description, techStack, awards, link }: Pro
             </Badge>
           ))}
         </div>
-        <Button asChild variant="default" className="w-full group rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
-          <Link to={link}>
-            View Full Case Study
-            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-          </Link>
-        </Button>
+        <MagneticButton strength={0.3} distance={100}>
+          <Button asChild variant="default" className="w-full group rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+            <Link to={link}>
+              View Full Case Study
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </Button>
+        </MagneticButton>
       </CardContent>
     </Card>
     </motion.div>
