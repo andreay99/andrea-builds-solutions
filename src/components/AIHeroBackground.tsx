@@ -227,23 +227,27 @@ export const AIHeroBackground = () => {
     const handleMouseMove = (e: MouseEvent) => {
       const rect = heroSection.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
+      const ny = (e.clientY - rect.top) / rect.height - 0.5;
       
-      // Set individual targets for rotation and translation
-      const maxRotation = 0.07; // ~4 degrees in radians
-      const maxTranslation = 10; // 10px max horizontal shift
-      const baseRotation = nx * maxRotation;
-      const baseTranslation = nx * maxTranslation;
+      const maxRotation = 0.07;
+      const maxTranslation = 10;
       
-      // Each ray gets its own target based on its sensitivity
-      targetRotations.current[0] = baseRotation * 1.0; // AI
-      targetRotations.current[1] = baseRotation * 0.8; // ML
-      targetRotations.current[2] = baseRotation * 0.6; // SYSTEMS
-      targetRotations.current[3] = baseRotation * 0.5; // BUILDER
+      // Each ray responds uniquely to mouse movement
+      // AI: Strong horizontal response
+      targetRotations.current[0] = nx * maxRotation * 1.2;
+      targetTranslations.current[0] = nx * maxTranslation * 1.0;
       
-      targetTranslations.current[0] = baseTranslation * 1.0; // AI
-      targetTranslations.current[1] = baseTranslation * 0.8; // ML
-      targetTranslations.current[2] = baseTranslation * 0.6; // SYSTEMS
-      targetTranslations.current[3] = baseTranslation * 0.5; // BUILDER
+      // ML: Responds to both x and y, inverted rotation
+      targetRotations.current[1] = -(nx * 0.5 + ny * 0.3) * maxRotation;
+      targetTranslations.current[1] = (nx * 0.6 - ny * 0.2) * maxTranslation;
+      
+      // SYSTEMS: Primarily vertical influence with slight horizontal
+      targetRotations.current[2] = (ny * 0.8 + nx * 0.2) * maxRotation;
+      targetTranslations.current[2] = (ny * 0.4 + nx * 0.5) * maxTranslation;
+      
+      // BUILDER: Opposite direction from AI
+      targetRotations.current[3] = -nx * maxRotation * 0.7;
+      targetTranslations.current[3] = -nx * maxTranslation * 0.6;
     };
 
     const handleMouseLeave = () => {
