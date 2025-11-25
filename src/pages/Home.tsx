@@ -5,7 +5,6 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, Briefcase, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { AIHeroBackground } from "@/components/AIHeroBackground";
 import { ParallaxSection } from "@/components/ParallaxSection";
 import { useRef } from "react";
 import abstractBg from "@/assets/abstract-background.jpg";
@@ -16,6 +15,7 @@ import { FloatingTechBadges } from "@/components/FloatingTechBadges";
 import { BentoProjectGrid } from "@/components/BentoProjectGrid";
 import { MarqueeSkills } from "@/components/MarqueeSkills";
 import { GlitchText } from "@/components/GlitchText";
+import { ParticleBackground } from "@/components/ParticleBackground";
 
 const Home = () => {
   const featuredProjects = [
@@ -57,7 +57,7 @@ const Home = () => {
         className="snap-section relative bg-surface-1"
       >
         <section className="flex items-center justify-center pt-24 md:pt-32">
-          <AIHeroBackground />
+          <ParticleBackground />
           <FloatingTechBadges />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
