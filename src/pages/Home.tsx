@@ -5,7 +5,6 @@ import { ProjectCard } from "@/components/ProjectCard";
 import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, Briefcase, Code } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
-import { MagneticButton } from "@/components/MagneticButton";
 import { AIHeroBackground } from "@/components/AIHeroBackground";
 import { useRef } from "react";
 
@@ -65,22 +64,18 @@ const Home = () => {
               </div>
 
               <div className="flex flex-col sm:flex-row gap-6 pt-8">
-                <MagneticButton strength={0.4} distance={120}>
-                  <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
-                    <a href="#projects">
-                      View Projects
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </Button>
-                </MagneticButton>
-                <MagneticButton strength={0.4} distance={120}>
-                  <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
-                    <a href="/resume.pdf" download>
-                      <Download className="mr-2 h-5 w-5" />
-                      Download Resume
-                    </a>
-                  </Button>
-                </MagneticButton>
+                <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+                  <a href="#projects">
+                    View Projects
+                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  </a>
+                </Button>
+                <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
+                  <a href="/resume.pdf" download>
+                    <Download className="mr-2 h-5 w-5" />
+                    Download Resume
+                  </a>
+                </Button>
               </div>
             </div>
           </div>
