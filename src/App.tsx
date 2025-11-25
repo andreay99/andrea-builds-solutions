@@ -7,6 +7,7 @@ import { AnimatePresence } from "framer-motion";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
+import { PageTransition } from "./components/PageTransition";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
@@ -26,16 +27,16 @@ const AnimatedRoutes = () => {
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<Home />} />
-        <Route path="/projects" element={<Projects />} />
-        <Route path="/projects/recall" element={<Recall />} />
-        <Route path="/projects/offscript" element={<OffScript />} />
-        <Route path="/projects/sona-ai" element={<SonaAI />} />
-        <Route path="/projects/bikeshare" element={<Bikeshare />} />
-        <Route path="/experience" element={<Experience />} />
-        <Route path="/contact" element={<Contact />} />
-        <Route path="/blog" element={<Blog />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
+        <Route path="/projects/recall" element={<PageTransition><Recall /></PageTransition>} />
+        <Route path="/projects/offscript" element={<PageTransition><OffScript /></PageTransition>} />
+        <Route path="/projects/sona-ai" element={<PageTransition><SonaAI /></PageTransition>} />
+        <Route path="/projects/bikeshare" element={<PageTransition><Bikeshare /></PageTransition>} />
+        <Route path="/experience" element={<PageTransition><Experience /></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
     </AnimatePresence>
   );
