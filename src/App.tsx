@@ -8,6 +8,7 @@ import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
 import { PageTransition } from "./components/PageTransition";
+import { ScrollProgressBar } from "./components/ScrollProgressBar";
 import Home from "./pages/Home";
 import Projects from "./pages/Projects";
 import Experience from "./pages/Experience";
@@ -48,6 +49,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <CustomCursor />
+      <ScrollProgressBar />
       <BrowserRouter>
         <Navigation />
         <AnimatedRoutes />
