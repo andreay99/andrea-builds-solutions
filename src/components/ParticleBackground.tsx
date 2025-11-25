@@ -60,7 +60,7 @@ export const ParticleBackground = () => {
 
     // Initialize particles
     const initParticles = (width: number, height: number) => {
-      const numParticles = isMobile ? 30 : 80;
+      const numParticles = isMobile ? 25 : 60;
       particlesRef.current = [];
       
       for (let i = 0; i < numParticles; i++) {
@@ -72,10 +72,10 @@ export const ParticleBackground = () => {
           y,
           baseX: x,
           baseY: y,
-          vx: (Math.random() - 0.5) * 0.3,
-          vy: (Math.random() - 0.5) * 0.3,
-          size: Math.random() * 2 + 1,
-          opacity: Math.random() * 0.5 + 0.3
+          vx: (Math.random() - 0.5) * 0.1,
+          vy: (Math.random() - 0.5) * 0.1,
+          size: Math.random() * 1.5 + 1,
+          opacity: Math.random() * 0.4 + 0.2
         });
       }
     };
@@ -83,44 +83,57 @@ export const ParticleBackground = () => {
     updateCanvasSize();
     window.addEventListener('resize', updateCanvasSize);
 
-    // Animation loop
-    const draw = () => {
+    // Animation loop with time-based updates
+    let lastTime = performance.now();
+    const draw = (currentTime: number) => {
       const rect = canvas.getBoundingClientRect();
+      const deltaTime = Math.min((currentTime - lastTime) / 16.67, 2); // Cap at 2x speed
+      lastTime = currentTime;
+      
       ctx.clearRect(0, 0, rect.width, rect.height);
 
       particlesRef.current.forEach((particle) => {
-        // Mouse influence
+        // Mouse influence with reduced sensitivity
         if (!isMobile) {
           const dx = mouseRef.current.x - particle.x;
           const dy = mouseRef.current.y - particle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
-          const maxDistance = 150;
+          const maxDistance = 200;
 
-          if (distance < maxDistance) {
+          if (distance < maxDistance && distance > 0) {
             const force = (maxDistance - distance) / maxDistance;
-            particle.vx -= (dx / distance) * force * 0.5;
-            particle.vy -= (dy / distance) * force * 0.5;
+            particle.vx -= (dx / distance) * force * 0.15 * deltaTime;
+            particle.vy -= (dy / distance) * force * 0.15 * deltaTime;
           }
         }
 
-        // Apply velocity
-        particle.x += particle.vx;
-        particle.y += particle.vy;
-
-        // Return to base position
-        const returnForce = 0.02;
-        particle.vx += (particle.baseX - particle.x) * returnForce;
-        particle.vy += (particle.baseY - particle.y) * returnForce;
+        // Return to base position with gentle spring
+        const returnForce = 0.008;
+        particle.vx += (particle.baseX - particle.x) * returnForce * deltaTime;
+        particle.vy += (particle.baseY - particle.y) * returnForce * deltaTime;
 
         // Apply damping
-        particle.vx *= 0.95;
-        particle.vy *= 0.95;
+        particle.vx *= 0.98;
+        particle.vy *= 0.98;
 
-        // Wrap around edges
-        if (particle.x < 0) particle.x = rect.width;
-        if (particle.x > rect.width) particle.x = 0;
-        if (particle.y < 0) particle.y = rect.height;
-        if (particle.y > rect.height) particle.y = 0;
+        // Limit maximum velocity
+        const maxVelocity = 2;
+        const currentVelocity = Math.sqrt(particle.vx * particle.vx + particle.vy * particle.vy);
+        if (currentVelocity > maxVelocity) {
+          particle.vx = (particle.vx / currentVelocity) * maxVelocity;
+          particle.vy = (particle.vy / currentVelocity) * maxVelocity;
+        }
+
+        // Apply velocity
+        particle.x += particle.vx * deltaTime;
+        particle.y += particle.vy * deltaTime;
+
+        // Keep particles within bounds with soft boundaries
+        const padding = 50;
+        if (particle.x < -padding) particle.x = rect.width + padding;
+        if (particle.x > rect.width + padding) particle.x = -padding;
+        if (particle.y < -padding) particle.y = rect.height + padding;
+        if (particle.y > rect.height + padding) particle.y = -padding;
 
         // Draw particle
         ctx.beginPath();
@@ -128,17 +141,19 @@ export const ParticleBackground = () => {
         ctx.fillStyle = `rgba(0, 0, 0, ${particle.opacity})`;
         ctx.fill();
 
-        // Draw connections to nearby particles
+        // Draw connections to nearby particles (only check a subset to improve performance)
         particlesRef.current.forEach((otherParticle) => {
+          if (particle === otherParticle) return;
+          
           const dx = particle.x - otherParticle.x;
           const dy = particle.y - otherParticle.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 100) {
+          if (distance < 120 && distance > 0) {
             ctx.beginPath();
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
-            const opacity = (1 - distance / 100) * 0.15;
+            const opacity = (1 - distance / 120) * 0.1;
             ctx.strokeStyle = `rgba(0, 0, 0, ${opacity})`;
             ctx.lineWidth = 0.5;
             ctx.stroke();
@@ -149,7 +164,7 @@ export const ParticleBackground = () => {
       animationFrameRef.current = requestAnimationFrame(draw);
     };
 
-    draw();
+    draw(performance.now());
 
     return () => {
       window.removeEventListener('resize', updateCanvasSize);
