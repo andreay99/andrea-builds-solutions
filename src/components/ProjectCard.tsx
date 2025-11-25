@@ -16,11 +16,7 @@ interface ProjectCardProps {
 
 export const ProjectCard = ({ title, description, techStack, awards, link }: ProjectCardProps) => {
   return (
-    <motion.div
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.3, ease: "easeOut" }}
-    >
-      <Card className="hover:shadow-2xl transition-all duration-500 border-2 border-foreground/10 rounded-none bg-card">
+    <Card className="h-full hover:shadow-2xl transition-all duration-500 border-2 border-foreground/10 rounded-none bg-card">
       <CardHeader className="space-y-6 pb-8">
         <div className="flex items-start justify-between gap-4">
           <div className="flex-1 space-y-4">
@@ -57,6 +53,5 @@ export const ProjectCard = ({ title, description, techStack, awards, link }: Pro
         </MagneticButton>
       </CardContent>
     </Card>
-    </motion.div>
   );
 };

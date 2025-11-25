@@ -1,5 +1,6 @@
 import { ProjectCard } from "@/components/ProjectCard";
 import { PageTransition } from "@/components/PageTransition";
+import { motion } from "framer-motion";
 
 const Projects = () => {
   const projects = [
@@ -43,9 +44,25 @@ const Projects = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
           {projects.map((project, index) => (
-            <ProjectCard key={index} {...project} />
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 60, scale: 0.9 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ 
+                duration: 0.7,
+                delay: index * 0.15,
+                ease: [0.22, 0.61, 0.36, 1],
+              }}
+              whileHover={{ 
+                y: -8,
+                transition: { duration: 0.3, ease: [0.22, 0.61, 0.36, 1] }
+              }}
+            >
+              <ProjectCard {...project} />
+            </motion.div>
           ))}
         </div>
       </div>
