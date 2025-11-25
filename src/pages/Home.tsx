@@ -43,43 +43,80 @@ const Home = () => {
       {/* Hero Section */}
       <section className="snap-section relative bg-surface-1 flex items-center justify-center pt-24 md:pt-32">
         <AIHeroBackground />
-        <ScrollSection>
-          <div className="section-container relative z-10">
-            <div className="max-w-7xl space-y-16 md:space-y-24">
-              <div className="space-y-6 md:space-y-8">
-                <h1 className="font-serif leading-tight">
-                  Andrea<br />
-                  Yanez<br />
-                  Soto
-                </h1>
-              </div>
-              
-              <div className="max-w-2xl space-y-8">
-                <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
-                  CS student specializing in AI/ML and full-stack development.
-                </p>
-                <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
-                  Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
-                </p>
-              </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{
+            duration: 1,
+            ease: [0.22, 0.61, 0.36, 1],
+            delay: 0.2
+          }}
+        >
+          <ScrollSection>
+            <div className="section-container relative z-10">
+              <div className="max-w-7xl space-y-16 md:space-y-24">
+                <motion.div 
+                  className="space-y-6 md:space-y-8"
+                  initial={{ opacity: 0, x: -30 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.4,
+                    ease: [0.22, 0.61, 0.36, 1]
+                  }}
+                >
+                  <h1 className="font-serif leading-tight">
+                    Andrea<br />
+                    Yanez<br />
+                    Soto
+                  </h1>
+                </motion.div>
+                
+                <motion.div 
+                  className="max-w-2xl space-y-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.6,
+                    ease: [0.22, 0.61, 0.36, 1]
+                  }}
+                >
+                  <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
+                    CS student specializing in AI/ML and full-stack development.
+                  </p>
+                  <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
+                    Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
+                  </p>
+                </motion.div>
 
-              <div className="flex flex-col sm:flex-row gap-6 pt-8">
-                <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
-                  <a href="#projects">
-                    View Projects
-                    <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                  </a>
-                </Button>
-                <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
-                  <a href="/resume.pdf" download>
-                    <Download className="mr-2 h-5 w-5" />
-                    Download Resume
-                  </a>
-                </Button>
+                <motion.div 
+                  className="flex flex-col sm:flex-row gap-6 pt-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{
+                    duration: 0.8,
+                    delay: 0.8,
+                    ease: [0.22, 0.61, 0.36, 1]
+                  }}
+                >
+                  <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+                    <a href="#projects">
+                      View Projects
+                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                    </a>
+                  </Button>
+                  <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
+                    <a href="/resume.pdf" download>
+                      <Download className="mr-2 h-5 w-5" />
+                      Download Resume
+                    </a>
+                  </Button>
+                </motion.div>
               </div>
             </div>
-          </div>
-        </ScrollSection>
+          </ScrollSection>
+        </motion.div>
       </section>
 
       {/* Projects Section */}
@@ -96,13 +133,17 @@ const Home = () => {
               {featuredProjects.map((project, index) => (
                 <motion.div
                   key={index}
-                  initial={{ opacity: 0.85, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 60, scale: 0.9 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: false, amount: 0.3 }}
                   transition={{ 
-                    duration: 0.6,
-                    delay: index * 0.1,
-                    ease: [0.25, 0.1, 0.25, 1.0]
+                    duration: 0.7,
+                    delay: index * 0.15,
+                    ease: [0.22, 0.61, 0.36, 1],
+                  }}
+                  whileHover={{ 
+                    y: -8,
+                    transition: { duration: 0.3, ease: [0.22, 0.61, 0.36, 1] }
                   }}
                 >
                   <ProjectCard {...project} />
@@ -304,69 +345,87 @@ const Home = () => {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
-              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <Mail className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>Email</CardTitle>
-                  <CardDescription>Send me a message</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="mailto:andreayanez11@outlook.com">
-                      andreayanez11@outlook.com
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <Linkedin className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>LinkedIn</CardTitle>
-                  <CardDescription>Connect professionally</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="https://www.linkedin.com/in/andrea-yanez-soto-8b4653218" target="_blank" rel="noopener noreferrer">
-                      View Profile
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <Github className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>GitHub</CardTitle>
-                  <CardDescription>Check out my code</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="https://github.com/andreayanez" target="_blank" rel="noopener noreferrer">
-                      View Repositories
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <FileText className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>Resume</CardTitle>
-                  <CardDescription>Download my CV</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="/resume.pdf" download>
-                      Download PDF
-                      <Download className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
+              {[
+                {
+                  icon: <Mail className="h-8 w-8 text-accent mb-2" />,
+                  title: "Email",
+                  description: "Send me a message",
+                  button: (
+                    <Button asChild className="w-full" variant="default">
+                      <a href="mailto:andreayanez11@outlook.com">
+                        andreayanez11@outlook.com
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )
+                },
+                {
+                  icon: <Linkedin className="h-8 w-8 text-accent mb-2" />,
+                  title: "LinkedIn",
+                  description: "Connect professionally",
+                  button: (
+                    <Button asChild className="w-full" variant="default">
+                      <a href="https://www.linkedin.com/in/andrea-yanez-soto-8b4653218" target="_blank" rel="noopener noreferrer">
+                        View Profile
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )
+                },
+                {
+                  icon: <Github className="h-8 w-8 text-accent mb-2" />,
+                  title: "GitHub",
+                  description: "Check out my code",
+                  button: (
+                    <Button asChild className="w-full" variant="default">
+                      <a href="https://github.com/andreayanez" target="_blank" rel="noopener noreferrer">
+                        View Repositories
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )
+                },
+                {
+                  icon: <FileText className="h-8 w-8 text-accent mb-2" />,
+                  title: "Resume",
+                  description: "Download my CV",
+                  button: (
+                    <Button asChild className="w-full" variant="default">
+                      <a href="/resume.pdf" download>
+                        Download PDF
+                        <Download className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 40, scale: 0.95 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ once: false, amount: 0.3 }}
+                  transition={{
+                    duration: 0.6,
+                    delay: index * 0.1,
+                    ease: [0.22, 0.61, 0.36, 1]
+                  }}
+                  whileHover={{
+                    y: -4,
+                    transition: { duration: 0.2 }
+                  }}
+                >
+                  <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur h-full">
+                    <CardHeader>
+                      {item.icon}
+                      <CardTitle>{item.title}</CardTitle>
+                      <CardDescription>{item.description}</CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      {item.button}
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
 
             <Card className="bg-accent/5 border-accent/20 backdrop-blur">
@@ -397,19 +456,29 @@ const Home = () => {
   );
 };
 
-// Scroll animation wrapper component
+// Scroll animation wrapper component with enhanced smooth animations
 const ScrollSection = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.3 });
+  const isInView = useInView(ref, { once: false, amount: 0.2 });
 
   return (
     <motion.div
       ref={ref}
-      initial={{ opacity: 0.85, y: 20 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0.85, y: 20 }}
+      initial={{ opacity: 0, y: 50, scale: 0.95 }}
+      animate={isInView ? { 
+        opacity: 1, 
+        y: 0, 
+        scale: 1,
+      } : { 
+        opacity: 0, 
+        y: 50, 
+        scale: 0.95,
+      }}
       transition={{
-        duration: 0.6,
-        ease: [0.25, 0.1, 0.25, 1.0]
+        duration: 0.8,
+        ease: [0.22, 0.61, 0.36, 1], // Custom easing for smooth effect
+        opacity: { duration: 0.6 },
+        scale: { duration: 0.8 }
       }}
       className="w-full"
     >
