@@ -6,7 +6,11 @@ import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, B
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { AIHeroBackground } from "@/components/AIHeroBackground";
+import { ParallaxSection } from "@/components/ParallaxSection";
 import { useRef } from "react";
+import abstractBg from "@/assets/abstract-background.jpg";
+import spaceBg from "@/assets/space-background.jpg";
+import techBg from "@/assets/abstract-tech-background.jpg";
 
 const Home = () => {
   const featuredProjects = [
@@ -41,8 +45,14 @@ const Home = () => {
   return (
     <main className="scroll-container">
       {/* Hero Section */}
-      <section className="snap-section relative bg-surface-1 flex items-center justify-center pt-24 md:pt-32">
-        <AIHeroBackground />
+      <ParallaxSection 
+        bgImage={techBg} 
+        speed={0.2}
+        bgOpacity={0.06}
+        className="snap-section relative bg-surface-1"
+      >
+        <section className="flex items-center justify-center pt-24 md:pt-32">
+          <AIHeroBackground />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -117,11 +127,18 @@ const Home = () => {
             </div>
           </ScrollSection>
         </motion.div>
-      </section>
+        </section>
+      </ParallaxSection>
 
       {/* Projects Section */}
-      <section id="projects" className="snap-section bg-surface-2 flex items-center justify-center py-24">
-        <ScrollSection>
+      <ParallaxSection 
+        bgImage={abstractBg} 
+        speed={0.4}
+        bgOpacity={0.12}
+        className="snap-section bg-surface-2"
+      >
+        <section id="projects" className="flex items-center justify-center py-24">
+          <ScrollSection>
           <div className="section-container w-full">
             <div className="mb-20 md:mb-32">
               <h2 className="mb-8 font-serif">Featured Projects</h2>
@@ -159,11 +176,18 @@ const Home = () => {
               </Button>
             </div>
           </div>
-        </ScrollSection>
-      </section>
+          </ScrollSection>
+        </section>
+      </ParallaxSection>
 
       {/* Experience Section */}
-      <section id="experience" className="snap-section bg-surface-3 flex items-center justify-center py-24">
+      <ParallaxSection 
+        bgImage={spaceBg} 
+        speed={0.3}
+        bgOpacity={0.1}
+        className="snap-section bg-surface-3"
+      >
+        <section id="experience" className="flex items-center justify-center py-24">
         <ScrollSection>
           <div className="section-container w-full max-w-5xl">
             <div className="mb-20">
@@ -330,11 +354,18 @@ const Home = () => {
               </Button>
             </div>
           </div>
-        </ScrollSection>
-      </section>
+          </ScrollSection>
+        </section>
+      </ParallaxSection>
 
       {/* Contact Section */}
-      <section id="contact" className="snap-section bg-surface-1 flex items-center justify-center py-24">
+      <ParallaxSection 
+        bgImage={techBg} 
+        speed={0.35}
+        bgOpacity={0.08}
+        className="snap-section bg-surface-1"
+      >
+        <section id="contact" className="flex items-center justify-center py-24">
         <ScrollSection>
           <div className="section-container w-full max-w-4xl">
             <div className="mb-20">
@@ -451,7 +482,8 @@ const Home = () => {
             </Card>
           </div>
         </ScrollSection>
-      </section>
+        </section>
+      </ParallaxSection>
     </main>
   );
 };

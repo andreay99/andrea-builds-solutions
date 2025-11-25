@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 
 interface Line {
   angle: number;
@@ -12,11 +13,18 @@ export const AIHeroBackground = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
   
+  // Parallax effect for the canvas
+  const { scrollY } = useScroll();
+  const y = useTransform(scrollY, [0, 1000], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 300, 500], [1, 0.5, 0.2]);
+  
   // Individual rotation and translation tracking for each labeled ray
   const targetRotations = useRef([0, 0, 0, 0]); // AI, ML, SYSTEMS, BUILDER
   const currentRotations = useRef([0, 0, 0, 0]);
   const targetTranslations = useRef([0, 0, 0, 0]);
   const currentTranslations = useRef([0, 0, 0, 0]);
+  const targetTranslationsY = useRef([0, 0, 0, 0]);
+  const currentTranslationsY = useRef([0, 0, 0, 0]);
   const animationFrameRef = useRef<number>();
 
   useEffect(() => {
@@ -160,6 +168,7 @@ export const AIHeroBackground = () => {
       for (let i = 0; i < 4; i++) {
         currentRotations.current[i] += (targetRotations.current[i] - currentRotations.current[i]) * 0.12;
         currentTranslations.current[i] += (targetTranslations.current[i] - currentTranslations.current[i]) * 0.12;
+        currentTranslationsY.current[i] += (targetTranslationsY.current[i] - currentTranslationsY.current[i]) * 0.12;
       }
 
       // Clear canvas
@@ -170,16 +179,18 @@ export const AIHeroBackground = () => {
         let angle = line.angle;
         const length = line.length;
         let offsetX = 0;
+        let offsetY = 0;
 
-        // Apply mouse influence only to labeled lines (horizontal only)
+        // Apply mouse influence to labeled lines (both horizontal and vertical)
         if (!isMobile && line.hasLabel && index < 4) {
           // Use the current rotation and translation directly (sensitivity already applied in targets)
           angle += currentRotations.current[index];
           offsetX = currentTranslations.current[index];
+          offsetY = currentTranslationsY.current[index];
         }
 
         const endX = centerX + Math.cos(angle) * length + offsetX;
-        const endY = centerY + Math.sin(angle) * length;
+        const endY = centerY + Math.sin(angle) * length + offsetY;
 
         ctx.beginPath();
         ctx.moveTo(centerX, centerY);
@@ -231,28 +242,34 @@ export const AIHeroBackground = () => {
       
       const maxRotation = 0.07;
       const maxTranslation = 10;
+      const maxTranslationY = 10;
       
       // Each ray responds uniquely to mouse movement
-      // AI: Strong horizontal response
+      // AI: Strong horizontal response with slight upward on right movement
       targetRotations.current[0] = nx * maxRotation * 1.2;
       targetTranslations.current[0] = nx * maxTranslation * 1.0;
+      targetTranslationsY.current[0] = -nx * maxTranslationY * 0.3;
       
-      // ML: Responds to both x and y, inverted rotation
+      // ML: Responds to both x and y, inverted rotation and vertical
       targetRotations.current[1] = -(nx * 0.5 + ny * 0.3) * maxRotation;
       targetTranslations.current[1] = (nx * 0.6 - ny * 0.2) * maxTranslation;
+      targetTranslationsY.current[1] = -ny * maxTranslationY * 0.8;
       
       // SYSTEMS: Primarily vertical influence with slight horizontal
       targetRotations.current[2] = (ny * 0.8 + nx * 0.2) * maxRotation;
       targetTranslations.current[2] = (ny * 0.4 + nx * 0.5) * maxTranslation;
+      targetTranslationsY.current[2] = ny * maxTranslationY * 1.0;
       
-      // BUILDER: Opposite direction from AI
+      // BUILDER: Opposite direction from AI and SYSTEMS
       targetRotations.current[3] = -nx * maxRotation * 0.7;
       targetTranslations.current[3] = -nx * maxTranslation * 0.6;
+      targetTranslationsY.current[3] = -ny * maxTranslationY * 0.6;
     };
 
     const handleMouseLeave = () => {
       targetRotations.current = [0, 0, 0, 0];
       targetTranslations.current = [0, 0, 0, 0];
+      targetTranslationsY.current = [0, 0, 0, 0];
     };
 
     heroSection.addEventListener('mousemove', handleMouseMove);
@@ -265,16 +282,17 @@ export const AIHeroBackground = () => {
   }, [isMobile]);
 
   return (
-    <div 
+    <motion.div 
       ref={containerRef}
       id="hero-orbit"
       className="absolute inset-0 w-full h-full pointer-events-none"
+      style={{ y, opacity }}
     >
       <canvas
         ref={canvasRef}
         className="w-full h-full"
         style={{ width: '100%', height: '100%' }}
       />
-    </div>
+    </motion.div>
   );
 };
