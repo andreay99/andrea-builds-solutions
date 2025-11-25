@@ -14,7 +14,10 @@ export const AIHeroBackground = () => {
   const [isMobile, setIsMobile] = useState(false);
   
   // Parallax effect for the canvas
-  const { scrollY } = useScroll();
+  const { scrollY } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end start"]
+  });
   const y = useTransform(scrollY, [0, 1000], [0, 150]);
   const opacity = useTransform(scrollY, [0, 300, 500], [1, 0.5, 0.2]);
   
