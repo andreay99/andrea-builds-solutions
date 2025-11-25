@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Briefcase, GraduationCap, Code, Award } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
 import { motion } from "framer-motion";
+import { AnimatedSkillBar } from "@/components/AnimatedSkillBar";
 
 const Experience = () => {
   return (
@@ -200,7 +201,7 @@ const Experience = () => {
             <h2 className="text-3xl font-bold">Technical Skills</h2>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -211,20 +212,13 @@ const Experience = () => {
                 <CardHeader>
                   <CardTitle>Languages</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {["Python", "JavaScript/TypeScript", "Java", "SQL", "Node.js", "C++"].map((skill, index) => (
-                      <motion.div
-                        key={skill}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                      >
-                        <Badge variant="outline">{skill}</Badge>
-                      </motion.div>
-                    ))}
-                  </div>
+                <CardContent className="space-y-4">
+                  <AnimatedSkillBar skill="Python" level={95} delay={0} />
+                  <AnimatedSkillBar skill="JavaScript/TypeScript" level={90} delay={0.1} />
+                  <AnimatedSkillBar skill="Java" level={85} delay={0.2} />
+                  <AnimatedSkillBar skill="SQL" level={85} delay={0.3} />
+                  <AnimatedSkillBar skill="Node.js" level={88} delay={0.4} />
+                  <AnimatedSkillBar skill="C++" level={75} delay={0.5} />
                 </CardContent>
               </Card>
             </motion.div>
@@ -239,20 +233,13 @@ const Experience = () => {
                 <CardHeader>
                   <CardTitle>Frameworks & Tools</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {["Flask", "FastAPI", "Next.js", "PyTorch", "TensorFlow", "HuggingFace", "OpenCV", "MongoDB", "Git"].map((skill, index) => (
-                      <motion.div
-                        key={skill}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                      >
-                        <Badge variant="outline">{skill}</Badge>
-                      </motion.div>
-                    ))}
-                  </div>
+                <CardContent className="space-y-4">
+                  <AnimatedSkillBar skill="PyTorch" level={92} delay={0} />
+                  <AnimatedSkillBar skill="TensorFlow" level={88} delay={0.1} />
+                  <AnimatedSkillBar skill="Flask/FastAPI" level={90} delay={0.2} />
+                  <AnimatedSkillBar skill="Next.js/React" level={85} delay={0.3} />
+                  <AnimatedSkillBar skill="HuggingFace" level={87} delay={0.4} />
+                  <AnimatedSkillBar skill="MongoDB" level={82} delay={0.5} />
                 </CardContent>
               </Card>
             </motion.div>
@@ -267,20 +254,12 @@ const Experience = () => {
                 <CardHeader>
                   <CardTitle>Cloud & DevOps</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {["Azure", "AWS", "CI/CD", "Docker", "GitHub Actions"].map((skill, index) => (
-                      <motion.div
-                        key={skill}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                      >
-                        <Badge variant="outline">{skill}</Badge>
-                      </motion.div>
-                    ))}
-                  </div>
+                <CardContent className="space-y-4">
+                  <AnimatedSkillBar skill="Azure" level={85} delay={0} />
+                  <AnimatedSkillBar skill="AWS" level={83} delay={0.1} />
+                  <AnimatedSkillBar skill="Docker" level={88} delay={0.2} />
+                  <AnimatedSkillBar skill="CI/CD" level={86} delay={0.3} />
+                  <AnimatedSkillBar skill="GitHub Actions" level={87} delay={0.4} />
                 </CardContent>
               </Card>
             </motion.div>
@@ -295,20 +274,12 @@ const Experience = () => {
                 <CardHeader>
                   <CardTitle>AI/ML Specializations</CardTitle>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex flex-wrap gap-2">
-                    {["Facial Recognition", "NLP", "Real-Time Processing", "ML Pipelines", "Agentic Systems"].map((skill, index) => (
-                      <motion.div
-                        key={skill}
-                        initial={{ opacity: 0, scale: 0.8 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                      >
-                        <Badge variant="outline">{skill}</Badge>
-                      </motion.div>
-                    ))}
-                  </div>
+                <CardContent className="space-y-4">
+                  <AnimatedSkillBar skill="Facial Recognition" level={90} delay={0} />
+                  <AnimatedSkillBar skill="NLP" level={88} delay={0.1} />
+                  <AnimatedSkillBar skill="Real-Time Processing" level={85} delay={0.2} />
+                  <AnimatedSkillBar skill="ML Pipelines" level={92} delay={0.3} />
+                  <AnimatedSkillBar skill="Agentic Systems" level={87} delay={0.4} />
                 </CardContent>
               </Card>
             </motion.div>
