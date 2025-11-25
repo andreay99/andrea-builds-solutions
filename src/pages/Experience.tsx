@@ -1,10 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Briefcase, GraduationCap, Code, Award } from "lucide-react";
+import { Briefcase, GraduationCap, Code, Award, Trophy, Rocket, Zap, Target } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
 import { motion } from "framer-motion";
 import { AnimatedSkillBar } from "@/components/AnimatedSkillBar";
 import { CircularSkillChart } from "@/components/CircularSkillChart";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 
 const Experience = () => {
   return (
@@ -17,6 +18,43 @@ const Experience = () => {
             My journey in technology, from research to industry experience.
           </p>
         </div>
+
+        {/* Stats Section */}
+        <section className="mb-16">
+          <Card className="bg-gradient-to-br from-accent/5 to-accent/10 border-accent/20">
+            <CardContent className="pt-8 pb-4">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+                <AnimatedCounter 
+                  end={12} 
+                  suffix="+" 
+                  label="Projects Completed"
+                  icon={<Rocket className="h-8 w-8" />}
+                  delay={0}
+                />
+                <AnimatedCounter 
+                  end={25} 
+                  suffix="+" 
+                  label="Technologies Mastered"
+                  icon={<Code className="h-8 w-8" />}
+                  delay={0.1}
+                />
+                <AnimatedCounter 
+                  end={3} 
+                  suffix="+" 
+                  label="Years Experience"
+                  icon={<Target className="h-8 w-8" />}
+                  delay={0.2}
+                />
+                <AnimatedCounter 
+                  end={4} 
+                  label="Hackathon Awards"
+                  icon={<Trophy className="h-8 w-8" />}
+                  delay={0.3}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </section>
 
         {/* Work Experience */}
         <section className="mb-16">
