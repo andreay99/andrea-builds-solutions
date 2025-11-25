@@ -2,6 +2,11 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export const BackToTop = () => {
   const [isVisible, setIsVisible] = useState(false);
@@ -38,16 +43,23 @@ export const BackToTop = () => {
             duration: 0.3,
             ease: [0.22, 0.61, 0.36, 1]
           }}
-          className="fixed bottom-8 right-8 z-40"
+          className="fixed bottom-24 right-6 md:bottom-8 md:right-8 z-40"
         >
-          <Button
-            onClick={scrollToTop}
-            size="icon"
-            className="h-12 w-12 rounded-full shadow-lg hover:shadow-xl transition-shadow bg-accent hover:bg-accent/90 text-accent-foreground"
-            aria-label="Back to top"
-          >
-            <ArrowUp className="h-5 w-5" />
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={scrollToTop}
+                size="icon"
+                className="h-14 w-14 rounded-full shadow-lg hover:shadow-xl transition-all bg-accent hover:bg-accent/90 text-accent-foreground hover:scale-110"
+                aria-label="Back to top"
+              >
+                <ArrowUp className="h-6 w-6" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent side="left" className="glass">
+              <p>Back to top</p>
+            </TooltipContent>
+          </Tooltip>
         </motion.div>
       )}
     </AnimatePresence>
