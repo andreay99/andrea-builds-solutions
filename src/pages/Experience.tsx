@@ -6,8 +6,69 @@ import { motion } from "framer-motion";
 import { AnimatedSkillBar } from "@/components/AnimatedSkillBar";
 import { CircularSkillChart } from "@/components/CircularSkillChart";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
+import { CareerTimeline } from "@/components/CareerTimeline";
 
 const Experience = () => {
+  const timelineData = [
+    {
+      id: "nasa-research",
+      title: "NASA-Funded AI Solar Eruption Research",
+      organization: "NASA MIRO Program • NJIT",
+      period: "Nov 2025 - Present",
+      type: "work" as const,
+      description: "Selected for prestigious NASA-funded research program conducting AI-powered solar eruption analysis using satellite data.",
+      highlights: [
+        "Applying machine learning to analyze solar flare activity from NASA satellite data",
+        "Developing prediction models for solar eruptions using advanced ML techniques",
+        "Working under Dr. Qin Li's guidance on cutting-edge space weather research"
+      ]
+    },
+    {
+      id: "training-lead",
+      title: "Training Lead",
+      organization: "Apple",
+      location: "Edison, NJ",
+      period: "Jul 2025 - Present",
+      type: "work" as const,
+      description: "Lead technical training programs and mentor team members on Apple products and services.",
+      highlights: [
+        "Led technical training program that improved launch sales performance",
+        "Delivered performance metrics to leadership, accelerating tool adoption",
+        "Provided structured mentorship to new technicians"
+      ]
+    },
+    {
+      id: "tech-specialist",
+      title: "Technical Specialist",
+      organization: "Apple",
+      location: "Edison, NJ",
+      period: "Aug 2024 - Present",
+      type: "work" as const,
+      description: "Provide expert technical support across Apple's ecosystem, troubleshooting complex issues and mentoring team members.",
+      highlights: [
+        "Troubleshot software and hardware issues across macOS, iPadOS, and iOS",
+        "Raised customer satisfaction by 15% through effective problem resolution",
+        "Mentored peers in structured problem-solving, increasing team efficiency by 40%"
+      ]
+    },
+    {
+      id: "njit",
+      title: "B.S. in Computer Science",
+      organization: "New Jersey Institute of Technology",
+      period: "Expected Aug 2027",
+      type: "education" as const,
+      description: "Transfer student specializing in AI/ML and full-stack development."
+    },
+    {
+      id: "mcc",
+      title: "Associate of Computer Science",
+      organization: "Middlesex County College",
+      period: "Graduated Aug 2025",
+      type: "education" as const,
+      description: "Completed foundational computer science coursework in Data Structures and Database Systems."
+    }
+  ];
+
   return (
     <PageTransition>
       <div className="min-h-screen pt-24 pb-20">
@@ -54,6 +115,16 @@ const Experience = () => {
               </div>
             </CardContent>
           </Card>
+        </section>
+
+        {/* Career Timeline */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-12">
+            <Briefcase className="h-6 w-6 text-accent" />
+            <h2 className="text-3xl font-bold">Career Journey</h2>
+          </div>
+          
+          <CareerTimeline items={timelineData} />
         </section>
 
         {/* Work Experience */}
