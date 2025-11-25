@@ -11,6 +11,11 @@ import { useRef } from "react";
 import abstractBg from "@/assets/abstract-background.jpg";
 import spaceBg from "@/assets/space-background.jpg";
 import techBg from "@/assets/abstract-tech-background.jpg";
+import { TypingEffect } from "@/components/TypingEffect";
+import { FloatingTechBadges } from "@/components/FloatingTechBadges";
+import { BentoProjectGrid } from "@/components/BentoProjectGrid";
+import { MarqueeSkills } from "@/components/MarqueeSkills";
+import { GlitchText } from "@/components/GlitchText";
 
 const Home = () => {
   const featuredProjects = [
@@ -53,6 +58,7 @@ const Home = () => {
       >
         <section className="flex items-center justify-center pt-24 md:pt-32">
           <AIHeroBackground />
+          <FloatingTechBadges />
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -76,9 +82,17 @@ const Home = () => {
                   }}
                 >
                   <h1 className="font-serif leading-tight">
-                    Andrea<br />
-                    Yanez<br />
-                    Soto
+                    <GlitchText>
+                      <TypingEffect text="Andrea" delay={500} speed={80} />
+                    </GlitchText>
+                    <br />
+                    <GlitchText>
+                      <TypingEffect text="Yanez" delay={1200} speed={80} />
+                    </GlitchText>
+                    <br />
+                    <GlitchText>
+                      <TypingEffect text="Soto" delay={1800} speed={80} />
+                    </GlitchText>
                   </h1>
                 </motion.div>
                 
@@ -106,22 +120,33 @@ const Home = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
                     duration: 0.8,
-                    delay: 0.8,
+                    delay: 2.5,
                     ease: [0.22, 0.61, 0.36, 1]
                   }}
                 >
-                  <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
-                    <a href="#projects">
-                      View Projects
-                      <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                    </a>
-                  </Button>
-                  <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
-                    <a href="/resume.pdf" download>
-                      <Download className="mr-2 h-5 w-5" />
-                      Download Resume
-                    </a>
-                  </Button>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all relative overflow-hidden">
+                      <a href="#projects">
+                        <span className="relative z-10">View Projects</span>
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform relative z-10" />
+                        <motion.div
+                          className="absolute inset-0 bg-foreground"
+                          initial={{ x: "-100%" }}
+                          whileHover={{ x: 0 }}
+                          transition={{ duration: 0.3 }}
+                          style={{ zIndex: 0 }}
+                        />
+                      </a>
+                    </Button>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
+                      <a href="/resume.pdf" download>
+                        <Download className="mr-2 h-5 w-5" />
+                        Download Resume
+                      </a>
+                    </Button>
+                  </motion.div>
                 </motion.div>
               </div>
             </div>
@@ -146,27 +171,7 @@ const Home = () => {
                 A selection of my recent work in AI/ML, full-stack development, and data analysis.
               </p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-              {featuredProjects.map((project, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 60, scale: 0.9 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: false, amount: 0.3 }}
-                  transition={{ 
-                    duration: 0.7,
-                    delay: index * 0.15,
-                    ease: [0.22, 0.61, 0.36, 1],
-                  }}
-                  whileHover={{ 
-                    y: -8,
-                    transition: { duration: 0.3, ease: [0.22, 0.61, 0.36, 1] }
-                  }}
-                >
-                  <ProjectCard {...project} />
-                </motion.div>
-              ))}
-            </div>
+            <BentoProjectGrid projects={featuredProjects} />
             <div className="mt-16 text-center">
               <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2">
                 <Link to="/projects">
@@ -204,68 +209,89 @@ const Home = () => {
                 <h3 className="text-3xl font-bold">Work Experience</h3>
               </div>
 
-              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <div className="flex justify-between items-start flex-wrap gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">NASA-Funded AI Solar Eruption Research</CardTitle>
-                      <CardDescription className="text-base mt-1">
-                        NASA MIRO Program • NJIT
-                      </CardDescription>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.1 }}
+              >
+                <Card className="border-l-4 border-l-accent glass-strong gradient-border">
+                  <CardHeader>
+                    <div className="flex justify-between items-start flex-wrap gap-4">
+                      <div>
+                        <CardTitle className="text-2xl">NASA-Funded AI Solar Eruption Research</CardTitle>
+                        <CardDescription className="text-base mt-1">
+                          NASA MIRO Program • NJIT
+                        </CardDescription>
+                      </div>
+                      <Badge variant="secondary" className="glass">Nov 2025 - Present</Badge>
                     </div>
-                    <Badge variant="secondary">Nov 2025 - Present</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Selected to conduct AI-powered solar eruption research using NASA satellite data</li>
-                    <li>• Applying machine learning to analyze solar flare activity and develop prediction models</li>
-                    <li>• Program led by Dr. Qin Li and supported by NASA MIRO at NJIT</li>
-                  </ul>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li>• Selected to conduct AI-powered solar eruption research using NASA satellite data</li>
+                      <li>• Applying machine learning to analyze solar flare activity and develop prediction models</li>
+                      <li>• Program led by Dr. Qin Li and supported by NASA MIRO at NJIT</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <div className="flex justify-between items-start flex-wrap gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">Training Lead</CardTitle>
-                      <CardDescription className="text-base mt-1">
-                        Apple • Edison, NJ
-                      </CardDescription>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.2 }}
+              >
+                <Card className="border-l-4 border-l-accent glass-strong gradient-border">
+                  <CardHeader>
+                    <div className="flex justify-between items-start flex-wrap gap-4">
+                      <div>
+                        <CardTitle className="text-2xl">Training Lead</CardTitle>
+                        <CardDescription className="text-base mt-1">
+                          Apple • Edison, NJ
+                        </CardDescription>
+                      </div>
+                      <Badge variant="secondary" className="glass">Jul 2025 - Present</Badge>
                     </div>
-                    <Badge variant="secondary">Jul 2025 - Present</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Led technical training program that improved launch sales</li>
-                    <li>• Delivered performance metrics to leadership, accelerating tool adoption</li>
-                    <li>• Provided mentorship and structured guidance to new technicians</li>
-                  </ul>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li>• Led technical training program that improved launch sales</li>
+                      <li>• Delivered performance metrics to leadership, accelerating tool adoption</li>
+                      <li>• Provided mentorship and structured guidance to new technicians</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
 
-              <Card className="border-l-4 border-l-accent bg-card/80 backdrop-blur">
-                <CardHeader>
-                  <div className="flex justify-between items-start flex-wrap gap-4">
-                    <div>
-                      <CardTitle className="text-2xl">Technical Specialist</CardTitle>
-                      <CardDescription className="text-base mt-1">
-                        Apple • Edison, NJ
-                      </CardDescription>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.3 }}
+              >
+                <Card className="border-l-4 border-l-accent glass-strong gradient-border">
+                  <CardHeader>
+                    <div className="flex justify-between items-start flex-wrap gap-4">
+                      <div>
+                        <CardTitle className="text-2xl">Technical Specialist</CardTitle>
+                        <CardDescription className="text-base mt-1">
+                          Apple • Edison, NJ
+                        </CardDescription>
+                      </div>
+                      <Badge variant="secondary" className="glass">Aug 2024 - Present</Badge>
                     </div>
-                    <Badge variant="secondary">Aug 2024 - Present</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <ul className="space-y-2 text-muted-foreground">
-                    <li>• Troubleshot software and hardware issues across macOS, iPadOS, and iOS, raising satisfaction by 15%</li>
-                    <li>• Collaborated with engineers to resolve escalated technical issues</li>
-                    <li>• Mentored peers in structured problem-solving, increasing team efficiency by 40%</li>
-                  </ul>
-                </CardContent>
-              </Card>
+                  </CardHeader>
+                  <CardContent>
+                    <ul className="space-y-2 text-muted-foreground">
+                      <li>• Troubleshot software and hardware issues across macOS, iPadOS, and iOS, raising satisfaction by 15%</li>
+                      <li>• Collaborated with engineers to resolve escalated technical issues</li>
+                      <li>• Mentored peers in structured problem-solving, increasing team efficiency by 40%</li>
+                    </ul>
+                  </CardContent>
+                </Card>
+              </motion.div>
             </div>
 
             {/* Technical Skills */}
@@ -275,74 +301,124 @@ const Home = () => {
                 <h3 className="text-3xl font-bold">Technical Skills</h3>
               </div>
 
+              {/* Marquee Skills Showcase */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                className="mb-12"
+              >
+                <MarqueeSkills 
+                  skills={[
+                    "Python", "JavaScript", "TypeScript", "Java", "SQL", "Node.js", "C++",
+                    "Flask", "FastAPI", "Next.js", "PyTorch", "TensorFlow", "HuggingFace",
+                    "Azure", "AWS", "Docker", "CI/CD", "OpenCV", "MongoDB", "Git"
+                  ]} 
+                />
+              </motion.div>
+
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Card className="bg-card/80 backdrop-blur">
-                  <CardHeader>
-                    <CardTitle>Languages</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {["Python", "JavaScript", "TypeScript", "Java", "SQL", "Node.js", "C++"].map((skill) => (
-                        <Badge key={skill} variant="secondary">{skill}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: 0.1 }}
+                >
+                  <Card className="glass-strong gradient-border">
+                    <CardHeader>
+                      <CardTitle>Languages</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {["Python", "JavaScript", "TypeScript", "Java", "SQL", "Node.js", "C++"].map((skill) => (
+                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-                <Card className="bg-card/80 backdrop-blur">
-                  <CardHeader>
-                    <CardTitle>Frameworks & Tools</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {["Flask", "FastAPI", "Next.js", "PyTorch", "TensorFlow", "HuggingFace", "OpenCV", "MongoDB", "Git", "GitHub Actions", "Postman"].map((skill) => (
-                        <Badge key={skill} variant="secondary">{skill}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: 0.2 }}
+                >
+                  <Card className="glass-strong gradient-border">
+                    <CardHeader>
+                      <CardTitle>Frameworks & Tools</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {["Flask", "FastAPI", "Next.js", "PyTorch", "TensorFlow", "HuggingFace", "OpenCV", "MongoDB", "Git", "GitHub Actions", "Postman"].map((skill) => (
+                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-                <Card className="bg-card/80 backdrop-blur">
-                  <CardHeader>
-                    <CardTitle>Cloud & DevOps</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {["Azure", "AWS", "CI/CD", "Docker"].map((skill) => (
-                        <Badge key={skill} variant="secondary">{skill}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: 0.3 }}
+                >
+                  <Card className="glass-strong gradient-border">
+                    <CardHeader>
+                      <CardTitle>Cloud & DevOps</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {["Azure", "AWS", "CI/CD", "Docker"].map((skill) => (
+                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
 
-                <Card className="bg-card/80 backdrop-blur">
-                  <CardHeader>
-                    <CardTitle>AI/ML Specializations</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {["Facial Recognition", "NLP", "Computer Vision", "Real-Time Processing", "Deep Learning", "Agentic Systems"].map((skill) => (
-                        <Badge key={skill} variant="secondary">{skill}</Badge>
-                      ))}
-                    </div>
-                  </CardContent>
-                </Card>
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: 0.4 }}
+                >
+                  <Card className="glass-strong gradient-border">
+                    <CardHeader>
+                      <CardTitle>AI/ML Specializations</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="flex flex-wrap gap-2">
+                        {["Facial Recognition", "NLP", "Computer Vision", "Real-Time Processing", "Deep Learning", "Agentic Systems"].map((skill) => (
+                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
+                </motion.div>
               </div>
 
-              <div className="mt-6">
-                <Card className="bg-card/80 backdrop-blur">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.5 }}
+                className="mt-6"
+              >
+                <Card className="glass-strong gradient-border">
                   <CardHeader>
                     <CardTitle>Spoken Languages</CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="flex flex-wrap gap-2">
                       {["English", "Spanish", "Portuguese", "Korean"].map((language) => (
-                        <Badge key={language} variant="secondary">{language}</Badge>
+                        <Badge key={language} variant="secondary" className="glass">{language}</Badge>
                       ))}
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </motion.div>
             </div>
 
             <div className="mt-16 text-center">
