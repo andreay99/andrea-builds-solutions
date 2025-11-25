@@ -16,6 +16,7 @@ import { BentoProjectGrid } from "@/components/BentoProjectGrid";
 import { MarqueeSkills } from "@/components/MarqueeSkills";
 import { GlitchText } from "@/components/GlitchText";
 import { ParticleBackground } from "@/components/ParticleBackground";
+import { ScrollColorTransition } from "@/components/ScrollColorTransition";
 
 const Home = () => {
   const featuredProjects = [
@@ -50,11 +51,16 @@ const Home = () => {
   return (
     <main className="scroll-container">
       {/* Hero Section */}
+      <ScrollColorTransition 
+        fromColor="hsl(36, 38%, 96%)" 
+        toColor="hsl(40, 15%, 94%)"
+        className="snap-section relative"
+      >
       <ParallaxSection 
         bgImage={techBg} 
         speed={0.2}
         bgOpacity={0.06}
-        className="snap-section relative bg-surface-1"
+        className="relative"
       >
         <section className="flex items-center justify-center pt-24 md:pt-32">
           <ParticleBackground />
@@ -154,13 +160,19 @@ const Home = () => {
         </motion.div>
         </section>
       </ParallaxSection>
+      </ScrollColorTransition>
 
       {/* Projects Section */}
+      <ScrollColorTransition 
+        fromColor="hsl(40, 15%, 94%)" 
+        toColor="hsl(40, 15%, 92%)"
+        className="snap-section relative"
+      >
       <ParallaxSection 
         bgImage={abstractBg} 
         speed={0.4}
         bgOpacity={0.12}
-        className="snap-section bg-surface-2"
+        className="relative"
       >
         <section id="projects" className="flex items-center justify-center py-24">
           <ScrollSection>
@@ -184,13 +196,19 @@ const Home = () => {
           </ScrollSection>
         </section>
       </ParallaxSection>
+      </ScrollColorTransition>
 
       {/* Experience Section */}
+      <ScrollColorTransition 
+        fromColor="hsl(40, 15%, 92%)" 
+        toColor="hsl(38, 20%, 90%)"
+        className="snap-section relative"
+      >
       <ParallaxSection 
         bgImage={spaceBg} 
         speed={0.3}
         bgOpacity={0.1}
-        className="snap-section bg-surface-3"
+        className="relative"
       >
         <section id="experience" className="flex items-center justify-center py-24">
         <ScrollSection>
@@ -433,13 +451,19 @@ const Home = () => {
           </ScrollSection>
         </section>
       </ParallaxSection>
+      </ScrollColorTransition>
 
       {/* Contact Section */}
+      <ScrollColorTransition 
+        fromColor="hsl(38, 20%, 90%)" 
+        toColor="hsl(36, 38%, 96%)"
+        className="snap-section relative"
+      >
       <ParallaxSection 
         bgImage={techBg} 
         speed={0.35}
         bgOpacity={0.08}
-        className="snap-section bg-surface-1"
+        className="relative"
       >
         <section id="contact" className="flex items-center justify-center py-24">
         <ScrollSection>
@@ -560,6 +584,7 @@ const Home = () => {
         </ScrollSection>
         </section>
       </ParallaxSection>
+      </ScrollColorTransition>
     </main>
   );
 };
