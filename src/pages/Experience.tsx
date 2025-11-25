@@ -4,6 +4,7 @@ import { Briefcase, GraduationCap, Code, Award } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
 import { motion } from "framer-motion";
 import { AnimatedSkillBar } from "@/components/AnimatedSkillBar";
+import { CircularSkillChart } from "@/components/CircularSkillChart";
 
 const Experience = () => {
   return (
@@ -194,7 +195,30 @@ const Experience = () => {
           </div>
         </section>
 
-        {/* Skills */}
+        {/* Skills Overview - Circular Charts */}
+        <section className="mb-16">
+          <div className="flex items-center gap-3 mb-8">
+            <Code className="h-6 w-6 text-accent" />
+            <h2 className="text-3xl font-bold">Core Competencies</h2>
+          </div>
+
+          <Card className="bg-muted/30">
+            <CardContent className="pt-8 pb-8">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
+                <CircularSkillChart skill="Python" level={95} delay={0} />
+                <CircularSkillChart skill="PyTorch" level={92} delay={0.1} />
+                <CircularSkillChart skill="ML Pipelines" level={92} delay={0.2} />
+                <CircularSkillChart skill="JavaScript" level={90} delay={0.3} />
+                <CircularSkillChart skill="Flask/FastAPI" level={90} delay={0.4} />
+                <CircularSkillChart skill="Docker" level={88} delay={0.5} />
+                <CircularSkillChart skill="NLP" level={88} delay={0.6} />
+                <CircularSkillChart skill="Facial Recognition" level={90} delay={0.7} />
+              </div>
+            </CardContent>
+          </Card>
+        </section>
+
+        {/* Skills Details - Progress Bars */}
         <section className="mb-16">
           <div className="flex items-center gap-3 mb-8">
             <Code className="h-6 w-6 text-accent" />
