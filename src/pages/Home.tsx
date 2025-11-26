@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ProjectCard } from "@/components/ProjectCard";
-import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, Briefcase, Code } from "lucide-react";
+import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, Briefcase, Code, Zap, Target, Layers, TrendingUp } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { ParallaxSection } from "@/components/ParallaxSection";
@@ -18,6 +18,8 @@ import { GlitchText } from "@/components/GlitchText";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { ScrollColorTransition } from "@/components/ScrollColorTransition";
 import { MagneticButton } from "@/components/MagneticButton";
+import { CareerTimeline } from "@/components/CareerTimeline";
+import { CircularSkillChart } from "@/components/CircularSkillChart";
 
 const Home = () => {
   const featuredProjects = [
@@ -253,6 +255,186 @@ const Home = () => {
       </ParallaxSection>
       </ScrollColorTransition>
 
+      {/* Featured Case Study Section */}
+      <ScrollColorTransition 
+        fromColor="hsl(40, 15%, 92%)" 
+        toColor="hsl(40, 15%, 90%)"
+        className="snap-section relative"
+      >
+      <ParallaxSection 
+        bgImage={abstractBg} 
+        speed={0.35}
+        bgOpacity={0.08}
+        className="relative"
+      >
+        <section id="case-study" className="flex items-center justify-center py-24">
+          <ScrollSection>
+          <div className="section-container w-full max-w-6xl">
+            <div className="mb-12">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: false }}
+                className="inline-block mb-4"
+              >
+                <Badge variant="outline" className="glass text-xs">Featured Project</Badge>
+              </motion.div>
+              <h2 className="mb-4 font-serif">Recall: Interview Simulator</h2>
+              <p className="text-lg text-foreground/70 max-w-3xl leading-relaxed">
+                An advanced AI-powered interview preparation platform that provides real-time feedback and personalized coaching.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mb-12">
+              {/* Project Stats */}
+              <motion.div
+                initial={{ opacity: 0, x: -30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.1 }}
+                className="space-y-6"
+              >
+                <div className="space-y-4">
+                  <h3 className="text-2xl font-bold">Winning Interview Preparation</h3>
+                  <p className="text-foreground/70 leading-relaxed">
+                    Recall combines advanced AI models with real-world interview scenarios to help professionals ace their technical interviews. The platform provides instant feedback, identifies improvement areas, and delivers personalized recommendations.
+                  </p>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.2 }}
+                    className="p-4 rounded-lg bg-secondary/50 border border-border/50"
+                  >
+                    <div className="text-3xl font-bold text-accent mb-1">2</div>
+                    <p className="text-sm text-foreground/70">Awards Won</p>
+                  </motion.div>
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    whileInView={{ opacity: 1, scale: 1 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.3 }}
+                    className="p-4 rounded-lg bg-secondary/50 border border-border/50"
+                  >
+                    <div className="text-3xl font-bold text-accent mb-1">10+</div>
+                    <p className="text-sm text-foreground/70">Tech Stack</p>
+                  </motion.div>
+                </div>
+
+                <div className="space-y-3 pt-4">
+                  <h4 className="font-semibold text-foreground">Key Technologies</h4>
+                  <div className="flex flex-wrap gap-2">
+                    {["FastAPI", "React", "OpenAI API", "WebRTC", "PostgreSQL", "AWS", "Stripe"].map((tech) => (
+                      <Badge key={tech} variant="secondary" className="glass text-xs">{tech}</Badge>
+                    ))}
+                  </div>
+                </div>
+
+                <Button asChild size="lg" className="w-full sm:w-auto rounded-lg mt-4">
+                  <Link to="/projects" className="flex items-center justify-center gap-2">
+                    View Full Case Study
+                    <ArrowRight className="h-4 w-4" />
+                  </Link>
+                </Button>
+              </motion.div>
+
+              {/* Project Metrics & Impact */}
+              <motion.div
+                initial={{ opacity: 0, x: 30 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.2 }}
+                className="relative"
+              >
+                <div className="grid grid-cols-2 gap-4">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.3 }}
+                    className="p-6 rounded-lg glass-strong gradient-border space-y-3"
+                  >
+                    <h4 className="font-semibold text-foreground">Real-Time Feedback</h4>
+                    <p className="text-sm text-foreground/70">AI analyzes responses and provides instant, actionable feedback during simulations</p>
+                    <div className="inline-flex items-center gap-2 text-accent font-semibold">
+                      <Zap className="h-4 w-4" />
+                      Live Analysis
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.4 }}
+                    className="p-6 rounded-lg glass-strong gradient-border space-y-3"
+                  >
+                    <h4 className="font-semibold text-foreground">Personalized Coaching</h4>
+                    <p className="text-sm text-foreground/70">Adaptive difficulty levels and customized practice plans based on user performance</p>
+                    <div className="inline-flex items-center gap-2 text-accent font-semibold">
+                      <Target className="h-4 w-4" />
+                      Adaptive Learning
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.5 }}
+                    className="p-6 rounded-lg glass-strong gradient-border space-y-3"
+                  >
+                    <h4 className="font-semibold text-foreground">Multi-Modal Input</h4>
+                    <p className="text-sm text-foreground/70">Support for code writing, verbal explanations, and whiteboarding exercises</p>
+                    <div className="inline-flex items-center gap-2 text-accent font-semibold">
+                      <Layers className="h-4 w-4" />
+                      Multi-Format
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.6 }}
+                    className="p-6 rounded-lg glass-strong gradient-border space-y-3"
+                  >
+                    <h4 className="font-semibold text-foreground">Progress Tracking</h4>
+                    <p className="text-sm text-foreground/70">Detailed analytics and historical performance data to track improvement over time</p>
+                    <div className="inline-flex items-center gap-2 text-accent font-semibold">
+                      <TrendingUp className="h-4 w-4" />
+                      Analytics
+                    </div>
+                  </motion.div>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Call to Action */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ delay: 0.3 }}
+              className="mt-16 pt-12 border-t border-border/50 text-center"
+            >
+              <p className="text-lg text-foreground/70 mb-6">Interested in similar projects or have an opportunity?</p>
+              <Button asChild size="lg" className="rounded-lg">
+                <Link to="/contact" className="flex items-center justify-center gap-2">
+                  Get in Touch
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
+              </Button>
+            </motion.div>
+          </div>
+          </ScrollSection>
+        </section>
+      </ParallaxSection>
+      </ScrollColorTransition>
+
       {/* Experience Section */}
       <ScrollColorTransition 
         fromColor="hsl(40, 15%, 92%)" 
@@ -282,89 +464,49 @@ const Home = () => {
                 <h3 className="text-3xl font-bold">Work Experience</h3>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.1 }}
-              >
-                <Card className="border-l-4 border-l-accent glass-strong gradient-border">
-                  <CardHeader>
-                    <div className="flex justify-between items-start flex-wrap gap-4">
-                      <div>
-                        <CardTitle className="text-2xl">NASA-Funded AI Solar Eruption Research</CardTitle>
-                        <CardDescription className="text-base mt-1">
-                          NASA MIRO Program • NJIT
-                        </CardDescription>
-                      </div>
-                      <Badge variant="secondary" className="glass">Nov 2025 - Present</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Selected to conduct AI-powered solar eruption research using NASA satellite data</li>
-                      <li>• Applying machine learning to analyze solar flare activity and develop prediction models</li>
-                      <li>• Program led by Dr. Qin Li and supported by NASA MIRO at NJIT</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.2 }}
-              >
-                <Card className="border-l-4 border-l-accent glass-strong gradient-border">
-                  <CardHeader>
-                    <div className="flex justify-between items-start flex-wrap gap-4">
-                      <div>
-                        <CardTitle className="text-2xl">Training Lead</CardTitle>
-                        <CardDescription className="text-base mt-1">
-                          Apple • Edison, NJ
-                        </CardDescription>
-                      </div>
-                      <Badge variant="secondary" className="glass">Jul 2025 - Present</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Led technical training program that improved launch sales</li>
-                      <li>• Delivered performance metrics to leadership, accelerating tool adoption</li>
-                      <li>• Provided mentorship and structured guidance to new technicians</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </motion.div>
-
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.3 }}
-              >
-                <Card className="border-l-4 border-l-accent glass-strong gradient-border">
-                  <CardHeader>
-                    <div className="flex justify-between items-start flex-wrap gap-4">
-                      <div>
-                        <CardTitle className="text-2xl">Technical Specialist</CardTitle>
-                        <CardDescription className="text-base mt-1">
-                          Apple • Edison, NJ
-                        </CardDescription>
-                      </div>
-                      <Badge variant="secondary" className="glass">Aug 2024 - Present</Badge>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li>• Troubleshot software and hardware issues across macOS, iPadOS, and iOS, raising satisfaction by 15%</li>
-                      <li>• Collaborated with engineers to resolve escalated technical issues</li>
-                      <li>• Mentored peers in structured problem-solving, increasing team efficiency by 40%</li>
-                    </ul>
-                  </CardContent>
-                </Card>
-              </motion.div>
+              <CareerTimeline 
+                items={[
+                  {
+                    id: "nasa",
+                    title: "NASA-Funded AI Solar Eruption Research",
+                    organization: "NASA MIRO Program • NJIT",
+                    period: "Nov 2025 - Present",
+                    type: "work",
+                    description: "Selected to conduct AI-powered solar eruption research using NASA satellite data",
+                    highlights: [
+                      "Applying machine learning to analyze solar flare activity and develop prediction models",
+                      "Program led by Dr. Qin Li and supported by NASA MIRO at NJIT",
+                      "Research focuses on predictive modeling of solar eruptions"
+                    ]
+                  },
+                  {
+                    id: "apple-lead",
+                    title: "Training Lead",
+                    organization: "Apple • Edison, NJ",
+                    period: "Jul 2025 - Present",
+                    type: "work",
+                    description: "Led technical training program that improved launch sales",
+                    highlights: [
+                      "Delivered performance metrics to leadership, accelerating tool adoption",
+                      "Provided mentorship and structured guidance to new technicians",
+                      "Managed training curriculum for product launches"
+                    ]
+                  },
+                  {
+                    id: "apple-specialist",
+                    title: "Technical Specialist",
+                    organization: "Apple • Edison, NJ",
+                    period: "Aug 2024 - Present",
+                    type: "work",
+                    description: "Troubleshot software and hardware issues across Apple ecosystem",
+                    highlights: [
+                      "Raised customer satisfaction by 15% through efficient troubleshooting",
+                      "Collaborated with engineers to resolve escalated technical issues",
+                      "Mentored peers in structured problem-solving, increasing team efficiency by 40%"
+                    ]
+                  }
+                ]}
+              />
             </div>
 
             {/* Technical Skills */}
@@ -390,108 +532,202 @@ const Home = () => {
                 />
               </motion.div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                {/* Skill categories with animated progress */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.1 }}
+                  className="space-y-4"
                 >
-                  <Card className="glass-strong gradient-border">
-                    <CardHeader>
-                      <CardTitle>Languages</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {["Python", "JavaScript", "TypeScript", "Java", "SQL", "Node.js", "C++"].map((skill) => (
-                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="text-center mb-6">
+                    <h4 className="font-semibold text-foreground mb-2">Languages</h4>
+                    <p className="text-xs text-muted-foreground">7 languages mastered</p>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { name: "Python", level: 95 },
+                      { name: "TypeScript", level: 90 },
+                      { name: "JavaScript", level: 88 },
+                      { name: "SQL", level: 85 }
+                    ].map((skill) => (
+                      <motion.div key={skill.name} className="space-y-1">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium">{skill.name}</span>
+                          <span className="text-xs text-accent">{skill.level}%</span>
+                        </div>
+                        <motion.div 
+                          className="h-2 bg-secondary rounded-full overflow-hidden"
+                          initial={{ scaleX: 0, originX: 0 }}
+                          whileInView={{ scaleX: 1 }}
+                          transition={{ duration: 0.8, delay: 0.2 }}
+                          viewport={{ once: false }}
+                        >
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-accent to-accent/60"
+                            initial={{ scaleX: 0, originX: 0 }}
+                            whileInView={{ scaleX: 1 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            viewport={{ once: false }}
+                            style={{ width: `${skill.level}%` }}
+                          />
+                        </motion.div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.2 }}
+                  className="space-y-4"
                 >
-                  <Card className="glass-strong gradient-border">
-                    <CardHeader>
-                      <CardTitle>Frameworks & Tools</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {["Flask", "FastAPI", "Next.js", "PyTorch", "TensorFlow", "HuggingFace", "OpenCV", "MongoDB", "Git", "GitHub Actions", "Postman"].map((skill) => (
-                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="text-center mb-6">
+                    <h4 className="font-semibold text-foreground mb-2">Frameworks & Tools</h4>
+                    <p className="text-xs text-muted-foreground">11 technologies</p>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { name: "FastAPI", level: 92 },
+                      { name: "Next.js", level: 88 },
+                      { name: "TensorFlow", level: 90 },
+                      { name: "Docker", level: 85 }
+                    ].map((skill) => (
+                      <motion.div key={skill.name} className="space-y-1">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium">{skill.name}</span>
+                          <span className="text-xs text-accent">{skill.level}%</span>
+                        </div>
+                        <motion.div 
+                          className="h-2 bg-secondary rounded-full overflow-hidden"
+                          initial={{ scaleX: 0, originX: 0 }}
+                          whileInView={{ scaleX: 1 }}
+                          transition={{ duration: 0.8, delay: 0.2 }}
+                          viewport={{ once: false }}
+                        >
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-accent to-accent/60"
+                            initial={{ scaleX: 0, originX: 0 }}
+                            whileInView={{ scaleX: 1 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            viewport={{ once: false }}
+                            style={{ width: `${skill.level}%` }}
+                          />
+                        </motion.div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
 
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: false }}
                   transition={{ delay: 0.3 }}
+                  className="space-y-4"
                 >
-                  <Card className="glass-strong gradient-border">
-                    <CardHeader>
-                      <CardTitle>Cloud & DevOps</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {["Azure", "AWS", "CI/CD", "Docker"].map((skill) => (
-                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: false }}
-                  transition={{ delay: 0.4 }}
-                >
-                  <Card className="glass-strong gradient-border">
-                    <CardHeader>
-                      <CardTitle>AI/ML Specializations</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-wrap gap-2">
-                        {["Facial Recognition", "NLP", "Computer Vision", "Real-Time Processing", "Deep Learning", "Agentic Systems"].map((skill) => (
-                          <Badge key={skill} variant="secondary" className="glass">{skill}</Badge>
-                        ))}
-                      </div>
-                    </CardContent>
-                  </Card>
+                  <div className="text-center mb-6">
+                    <h4 className="font-semibold text-foreground mb-2">AI/ML Specializations</h4>
+                    <p className="text-xs text-muted-foreground">Advanced expertise</p>
+                  </div>
+                  <div className="space-y-3">
+                    {[
+                      { name: "Computer Vision", level: 92 },
+                      { name: "NLP", level: 88 },
+                      { name: "Deep Learning", level: 90 },
+                      { name: "Agentic Systems", level: 85 }
+                    ].map((skill) => (
+                      <motion.div key={skill.name} className="space-y-1">
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium">{skill.name}</span>
+                          <span className="text-xs text-accent">{skill.level}%</span>
+                        </div>
+                        <motion.div 
+                          className="h-2 bg-secondary rounded-full overflow-hidden"
+                          initial={{ scaleX: 0, originX: 0 }}
+                          whileInView={{ scaleX: 1 }}
+                          transition={{ duration: 0.8, delay: 0.2 }}
+                          viewport={{ once: false }}
+                        >
+                          <motion.div 
+                            className="h-full bg-gradient-to-r from-accent to-accent/60"
+                            initial={{ scaleX: 0, originX: 0 }}
+                            whileInView={{ scaleX: 1 }}
+                            transition={{ duration: 0.8, delay: 0.3 }}
+                            viewport={{ once: false }}
+                            style={{ width: `${skill.level}%` }}
+                          />
+                        </motion.div>
+                      </motion.div>
+                    ))}
+                  </div>
                 </motion.div>
               </div>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
-                transition={{ delay: 0.5 }}
-                className="mt-6"
-              >
-                <Card className="glass-strong gradient-border">
-                  <CardHeader>
-                    <CardTitle>Spoken Languages</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex flex-wrap gap-2">
-                      {["English", "Spanish", "Portuguese", "Korean"].map((language) => (
-                        <Badge key={language} variant="secondary" className="glass">{language}</Badge>
+              {/* Quick reference badges section */}
+              <div className="mt-12 pt-8 border-t border-border/50">
+                <h4 className="text-center font-semibold text-foreground mb-6">Full Technology Stack & Languages</h4>
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-4 text-center">
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.1 }}
+                  >
+                    <p className="text-xs text-muted-foreground mb-2">Languages</p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {["Python", "JavaScript", "TypeScript", "Java", "SQL", "Node.js", "C++"].map((skill) => (
+                        <Badge key={skill} variant="secondary" className="glass text-xs">{skill}</Badge>
                       ))}
                     </div>
-                  </CardContent>
-                </Card>
-              </motion.div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <p className="text-xs text-muted-foreground mb-2">Frameworks</p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {["Flask", "FastAPI", "Next.js", "React", "PyTorch", "TensorFlow"].map((skill) => (
+                        <Badge key={skill} variant="secondary" className="glass text-xs">{skill}</Badge>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.3 }}
+                  >
+                    <p className="text-xs text-muted-foreground mb-2">Cloud & DevOps</p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {["Azure", "AWS", "CI/CD", "Docker", "Git", "GitHub Actions"].map((skill) => (
+                        <Badge key={skill} variant="secondary" className="glass text-xs">{skill}</Badge>
+                      ))}
+                    </div>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: 0.4 }}
+                  >
+                    <p className="text-xs text-muted-foreground mb-2">Languages (Spoken)</p>
+                    <div className="flex flex-wrap gap-2 justify-center">
+                      {["English", "Spanish", "Portuguese", "Korean"].map((language) => (
+                        <Badge key={language} variant="secondary" className="glass text-xs">{language}</Badge>
+                      ))}
+                    </div>
+                  </motion.div>
+                </div>
+              </div>
             </div>
 
             <div className="mt-16 text-center">
