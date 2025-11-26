@@ -7,6 +7,7 @@ import { VideoPlayer } from "@/components/VideoPlayer";
 import { OffScriptArchitecture } from "@/components/OffScriptArchitecture";
 import { PageTransition } from "@/components/PageTransition";
 import { ParallaxImage } from "@/components/ParallaxImage";
+import { LazyImage } from "@/components/LazyImage";
 import offscriptLanding from "@/assets/offscript-landing.png";
 import offscriptInterface from "@/assets/offscript-interface.png";
 import offscriptRatings from "@/assets/offscript-ratings.png";
@@ -72,10 +73,12 @@ const OffScript = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div className="space-y-3">
               <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300 cursor-pointer">
-                <img 
+                <LazyImage 
                   src={offscriptInterface} 
                   alt="Three-Panel Interview Interface" 
                   className="w-full h-auto"
+                  width={1200}
+                  height={800}
                 />
               </div>
               <div>
@@ -88,10 +91,12 @@ const OffScript = () => {
 
             <div className="space-y-3">
               <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300 cursor-pointer">
-                <img 
+                <LazyImage 
                   src={offscriptRatings} 
                   alt="Performance Ratings Dashboard" 
                   className="w-full h-auto"
+                  width={1200}
+                  height={800}
                 />
               </div>
               <div>
@@ -104,10 +109,12 @@ const OffScript = () => {
 
             <div className="space-y-3">
               <div className="rounded-lg border border-border overflow-hidden bg-secondary/20 hover:scale-105 transition-transform duration-300 cursor-pointer">
-                <img 
+                <LazyImage 
                   src={offscriptTranscript} 
                   alt="Session Timeline and Feedback" 
                   className="w-full h-auto"
+                  width={1200}
+                  height={800}
                 />
               </div>
               <div>

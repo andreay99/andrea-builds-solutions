@@ -43,7 +43,20 @@ export const Navigation = () => {
               </NavLink>
             </div>
 
-            <button className="text-sm font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity md:hidden">
+            {/* Resume CTA - place your resume at /public/resume.pdf or update the href to your hosted resume */}
+            <div className="hidden md:flex items-center">
+              <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
+                <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open resume in new tab" className="flex items-center gap-2 px-4 py-2">
+                  <FileText className="h-4 w-4" />
+                  <span className="text-sm font-medium tracking-wider uppercase">Resume</span>
+                </a>
+              </Button>
+            </div>
+
+            <button 
+              aria-label="Toggle navigation menu" 
+              className="text-sm font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity md:hidden"
+            >
               MENU
             </button>
           </div>
