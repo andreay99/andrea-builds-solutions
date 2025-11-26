@@ -818,12 +818,12 @@ const Home = () => {
                   className="group p-6 rounded-lg glass-strong gradient-border cursor-pointer transition-all duration-300 hover:shadow-xl"
                 >
                   <div className="mb-4 text-4xl">{item.icon}</div>
-                  <h3 className="text-xl font-bold text-accent mb-2">{item.award}</h3>
+                  <h3 className="text-xl font-bold text-foreground mb-2">{item.award}</h3>
                   <p className="text-sm text-foreground/60 mb-3">{item.event}</p>
-                  <p className="text-sm font-semibold text-foreground mb-2">📁 {item.project}</p>
+                  <p className="text-sm font-semibold text-foreground/80 mb-2">📁 {item.project}</p>
                   <p className="text-sm text-foreground/70 leading-relaxed">{item.description}</p>
                   <motion.div
-                    className="mt-4 h-1 bg-gradient-to-r from-accent to-transparent"
+                    className="mt-4 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-transparent"
                     initial={{ scaleX: 0, originX: 0 }}
                     whileInView={{ scaleX: 1 }}
                     viewport={{ once: false }}
@@ -842,9 +842,9 @@ const Home = () => {
             >
               <p className="text-lg text-foreground/70 mb-6">Continuously pushing boundaries in AI/ML innovation</p>
               <div className="inline-flex items-center gap-4">
-                <div className="h-1 w-8 bg-accent" />
-                <span className="text-sm font-semibold text-accent tracking-wide">ALWAYS LEARNING & INNOVATING</span>
-                <div className="h-1 w-8 bg-accent" />
+                <div className="h-1 w-8 bg-gradient-to-r from-blue-400 to-purple-400" />
+                <span className="text-sm font-semibold text-foreground tracking-wide">ALWAYS LEARNING & INNOVATING</span>
+                <div className="h-1 w-8 bg-gradient-to-r from-purple-400 to-blue-400" />
               </div>
             </motion.div>
           </div>
