@@ -17,6 +17,7 @@ import { MarqueeSkills } from "@/components/MarqueeSkills";
 import { GlitchText } from "@/components/GlitchText";
 import { ParticleBackground } from "@/components/ParticleBackground";
 import { ScrollColorTransition } from "@/components/ScrollColorTransition";
+import { MagneticButton } from "@/components/MagneticButton";
 
 const Home = () => {
   const featuredProjects = [
@@ -109,6 +110,52 @@ const Home = () => {
                       </p>
                     </div>
                   </div>
+
+                  {/* Animated Stats */}
+                  <motion.div 
+                    className="flex flex-wrap gap-8 md:gap-12 pt-8"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{
+                      duration: 0.8,
+                      delay: 1.8,
+                      ease: [0.22, 0.61, 0.36, 1]
+                    }}
+                  >
+                    <div className="text-left">
+                      <motion.div 
+                        className="text-4xl md:text-5xl font-bold text-accent"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 1.8, duration: 0.6 }}
+                      >
+                        4
+                      </motion.div>
+                      <p className="text-sm md:text-base text-muted-foreground mt-2">Deployed Projects</p>
+                    </div>
+                    <div className="text-left">
+                      <motion.div 
+                        className="text-4xl md:text-5xl font-bold text-accent"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 2.0, duration: 0.6 }}
+                      >
+                        2
+                      </motion.div>
+                      <p className="text-sm md:text-base text-muted-foreground mt-2">Hackathon Wins</p>
+                    </div>
+                    <div className="text-left">
+                      <motion.div 
+                        className="text-4xl md:text-5xl font-bold text-accent"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ delay: 2.2, duration: 0.6 }}
+                      >
+                        4+
+                      </motion.div>
+                      <p className="text-sm md:text-base text-muted-foreground mt-2">Languages</p>
+                    </div>
+                  </motion.div>
                 </motion.div>
                 
                 <motion.div 
@@ -141,21 +188,25 @@ const Home = () => {
                     ease: [0.22, 0.61, 0.36, 1]
                   }}
                 >
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1 sm:flex-none">
-                    <Button asChild size="lg" className="w-full sm:w-auto group text-base px-8 py-7 rounded-lg bg-gradient-to-r from-accent to-accent/80 text-background hover:from-accent hover:to-accent transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-accent/50">
-                      <a href="#projects" className="flex items-center justify-center gap-2">
-                        <span className="font-semibold">View My Projects</span>
-                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                      </a>
-                    </Button>
+                  <motion.div whileTap={{ scale: 0.98 }} className="flex-1 sm:flex-none">
+                    <MagneticButton strength={0.4} distance={120}>
+                      <Button asChild size="lg" className="w-full sm:w-auto group text-base px-8 py-7 rounded-lg bg-gradient-to-r from-accent to-accent/80 text-background hover:from-accent hover:to-accent transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-accent/50">
+                        <a href="#projects" className="flex items-center justify-center gap-2">
+                          <span className="font-semibold">View My Projects</span>
+                          <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                        </a>
+                      </Button>
+                    </MagneticButton>
                   </motion.div>
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1 sm:flex-none">
-                    <Button asChild size="lg" className="w-full sm:w-auto text-base px-8 py-7 rounded-lg border-2 border-foreground text-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-300">
-                      <a href="/resume.pdf" download className="flex items-center justify-center gap-2">
-                        <FileText className="h-5 w-5" />
-                        <span className="font-semibold">Download Resume</span>
-                      </a>
-                    </Button>
+                  <motion.div whileTap={{ scale: 0.98 }} className="flex-1 sm:flex-none">
+                    <MagneticButton strength={0.3} distance={100}>
+                      <Button asChild size="lg" className="w-full sm:w-auto text-base px-8 py-7 rounded-lg border-2 border-foreground text-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-300">
+                        <a href="/resume.pdf" download className="flex items-center justify-center gap-2">
+                          <FileText className="h-5 w-5" />
+                          <span className="font-semibold">Download Resume</span>
+                        </a>
+                      </Button>
+                    </MagneticButton>
                   </motion.div>
                 </motion.div>
               </div>
@@ -551,7 +602,16 @@ const Home = () => {
                 >
                   <Card className="hover-lift hover:shadow-lg transition-all bg-card/80 backdrop-blur h-full">
                     <CardHeader>
-                      {item.icon}
+                      <motion.div 
+                        whileHover={{ 
+                          scale: 1.15, 
+                          rotate: index === 0 ? -5 : index === 1 ? 5 : index === 2 ? -8 : 8,
+                          y: -8
+                        }}
+                        transition={{ type: "spring", stiffness: 300, damping: 10 }}
+                      >
+                        {item.icon}
+                      </motion.div>
                       <CardTitle>{item.title}</CardTitle>
                       <CardDescription>{item.description}</CardDescription>
                     </CardHeader>

@@ -5,6 +5,7 @@ import { ArrowLeft, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { ParallaxImage } from "@/components/ParallaxImage";
+import { SonaAIArchitecture } from "@/components/SonaAIArchitecture";
 import sonaArchitecture from "@/assets/sona-architecture.png";
 
 const SonaAI = () => {
@@ -79,13 +80,9 @@ const SonaAI = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Technical Architecture">
-          <ParallaxImage 
-            src={sonaArchitecture} 
-            alt="SONA AI System Architecture" 
-            className="w-full"
-          />
+          <SonaAIArchitecture />
           <p className="text-sm text-muted-foreground mt-4">
-            Architecture showing audio input processing through Librosa, TensorFlow model classification with agentic feedback, and FastAPI real-time output.
+            Hover over each component to learn more about its role in the system. The architecture processes audio input through signal processing and feature extraction, feeds it into a deep learning model, and outputs emotion classification with confidence scores.
           </p>
         </CaseStudySection>
 

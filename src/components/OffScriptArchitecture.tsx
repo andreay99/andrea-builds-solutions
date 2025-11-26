@@ -78,7 +78,7 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
 
 export const OffScriptArchitecture = () => {
   return (
-    <div className="relative w-full min-h-[750px] p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
+    <div className="relative w-full min-h-[850px] pb-32 p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
       {/* Title */}
       <div className="mb-8">
         <h3 className="text-lg font-semibold text-foreground mb-2">AI-Powered Code Learning Platform</h3>

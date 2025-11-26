@@ -5,6 +5,7 @@ import { ArrowLeft, Github } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageTransition } from "@/components/PageTransition";
 import { ParallaxImage } from "@/components/ParallaxImage";
+import { BikeshareArchitecture } from "@/components/BikeshareArchitecture";
 import bikeshareArchitecture from "@/assets/bikeshare-architecture.png";
 
 const Bikeshare = () => {
@@ -78,13 +79,9 @@ const Bikeshare = () => {
         </CaseStudySection>
 
         <CaseStudySection title="Technical Architecture">
-          <ParallaxImage 
-            src={bikeshareArchitecture} 
-            alt="Bikeshare Analysis Architecture" 
-            className="w-full"
-          />
+          <BikeshareArchitecture />
           <p className="text-sm text-muted-foreground mt-4">
-            Data flow from raw trip data through SQLite database to analytical queries producing insights on usage patterns, peak hours, and anomalies.
+            Hover over each component to learn more about its role in the system. The diagram shows the complete pipeline from raw trip data ingestion through SQLite normalization, advanced SQL analysis, and actionable business insights.
           </p>
         </CaseStudySection>
 
