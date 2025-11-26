@@ -20,6 +20,8 @@ import { ScrollColorTransition } from "@/components/ScrollColorTransition";
 import { MagneticButton } from "@/components/MagneticButton";
 import { CareerTimeline } from "@/components/CareerTimeline";
 import { CircularSkillChart } from "@/components/CircularSkillChart";
+import { ScrollProgressBar } from "@/components/ScrollProgressBar";
+import { BackToTop } from "@/components/BackToTop";
 
 const Home = () => {
   const featuredProjects = [
@@ -58,6 +60,7 @@ const Home = () => {
 
   return (
     <main className="scroll-container">
+      <ScrollProgressBar />
       {/* Hero Section */}
       <ScrollColorTransition 
         fromColor="hsl(36, 38%, 96%)" 
@@ -235,7 +238,9 @@ const Home = () => {
           <ScrollSection>
           <div className="section-container w-full">
             <div className="mb-20 md:mb-32">
-              <h2 className="mb-8 font-serif">Featured Projects</h2>
+              <h2 className="mb-8 font-serif">
+                <GlitchText>Featured Projects</GlitchText>
+              </h2>
               <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
                 A selection of my recent work in AI/ML, full-stack development, and data analysis.
               </p>
@@ -279,7 +284,9 @@ const Home = () => {
               >
                 <Badge variant="outline" className="glass text-xs">Featured Project</Badge>
               </motion.div>
-              <h2 className="mb-4 font-serif">Recall: Interview Simulator</h2>
+              <h2 className="mb-4 font-serif">
+                <GlitchText>Recall: Interview Simulator</GlitchText>
+              </h2>
               <p className="text-lg text-foreground/70 max-w-3xl leading-relaxed">
                 An advanced AI-powered interview preparation platform that provides real-time feedback and personalized coaching.
               </p>
@@ -451,7 +458,9 @@ const Home = () => {
         <ScrollSection>
           <div className="section-container w-full max-w-5xl">
             <div className="mb-20">
-              <h2 className="mb-8 font-serif">Experience</h2>
+              <h2 className="mb-8 font-serif">
+                <GlitchText>Experience</GlitchText>
+              </h2>
               <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
                 My journey in technology, from research to industry experience.
               </p>
@@ -744,6 +753,106 @@ const Home = () => {
       </ParallaxSection>
       </ScrollColorTransition>
 
+      {/* Awards & Recognition Section */}
+      <ScrollColorTransition 
+        fromColor="hsl(38, 20%, 90%)" 
+        toColor="hsl(40, 15%, 92%)"
+        className="snap-section relative"
+      >
+      <ParallaxSection 
+        bgImage={abstractBg} 
+        speed={0.3}
+        bgOpacity={0.1}
+        className="relative"
+      >
+        <section id="awards" className="flex items-center justify-center py-24">
+          <ScrollSection>
+          <div className="section-container w-full max-w-4xl">
+            <div className="mb-20">
+              <h2 className="mb-8 font-serif">
+                <GlitchText>Awards & Recognition</GlitchText>
+              </h2>
+              <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
+                Recognition for innovative work in AI/ML and full-stack development across hackathons and tech competitions.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              {[
+                {
+                  award: "Best Use of Grok (xAI)",
+                  event: "Hackathon 2025",
+                  project: "Recall - Interview Simulator",
+                  description: "Recognized for innovative implementation of xAI's Grok API in real-world application",
+                  icon: "🏆"
+                },
+                {
+                  award: "Best Use of Arm (MLH)",
+                  event: "Hackathon 2025",
+                  project: "Recall - Interview Simulator",
+                  description: "Award for optimized performance on ARM architecture and mobile deployment",
+                  icon: "⚡"
+                },
+                {
+                  award: "HackHarvard 2025 Winner",
+                  event: "HackHarvard 2025",
+                  project: "OffScript - AI Interview Prep",
+                  description: "Selected from 200+ teams for excellence in AI/ML innovation and execution",
+                  icon: "🎓"
+                },
+                {
+                  award: "NASA MIRO Program",
+                  event: "NASA - NJIT Partnership",
+                  project: "Solar Eruption AI Research",
+                  description: "Selected researcher for NASA-funded AI-powered solar eruption prediction",
+                  icon: "🚀"
+                }
+              ].map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                  className="group p-6 rounded-lg glass-strong gradient-border cursor-pointer transition-all duration-300 hover:shadow-xl"
+                >
+                  <div className="mb-4 text-4xl">{item.icon}</div>
+                  <h3 className="text-xl font-bold text-accent mb-2">{item.award}</h3>
+                  <p className="text-sm text-foreground/60 mb-3">{item.event}</p>
+                  <p className="text-sm font-semibold text-foreground mb-2">📁 {item.project}</p>
+                  <p className="text-sm text-foreground/70 leading-relaxed">{item.description}</p>
+                  <motion.div
+                    className="mt-4 h-1 bg-gradient-to-r from-accent to-transparent"
+                    initial={{ scaleX: 0, originX: 0 }}
+                    whileInView={{ scaleX: 1 }}
+                    viewport={{ once: false }}
+                    transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
+                  />
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ delay: 0.5 }}
+              className="mt-16 pt-12 border-t border-border/50 text-center"
+            >
+              <p className="text-lg text-foreground/70 mb-6">Continuously pushing boundaries in AI/ML innovation</p>
+              <div className="inline-flex items-center gap-4">
+                <div className="h-1 w-8 bg-accent" />
+                <span className="text-sm font-semibold text-accent tracking-wide">ALWAYS LEARNING & INNOVATING</span>
+                <div className="h-1 w-8 bg-accent" />
+              </div>
+            </motion.div>
+          </div>
+          </ScrollSection>
+        </section>
+      </ParallaxSection>
+      </ScrollColorTransition>
+
       {/* Contact Section */}
       <ScrollColorTransition 
         fromColor="hsl(38, 20%, 90%)" 
@@ -760,7 +869,9 @@ const Home = () => {
         <ScrollSection>
           <div className="section-container w-full max-w-4xl">
             <div className="mb-20">
-              <h2 className="mb-8 font-serif">Get in Touch</h2>
+              <h2 className="mb-8 font-serif">
+                <GlitchText>Get in Touch</GlitchText>
+              </h2>
               <p className="text-xl md:text-2xl text-foreground/70 max-w-3xl leading-relaxed">
                 I'm always interested in discussing new opportunities, collaborations, or interesting projects.
               </p>
@@ -885,6 +996,7 @@ const Home = () => {
         </section>
       </ParallaxSection>
       </ScrollColorTransition>
+      <BackToTop />
     </main>
   );
 };
