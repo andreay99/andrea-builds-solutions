@@ -25,31 +25,26 @@ const Home = () => {
       description: "Assistive memory system with facial recognition using OpenCV and MongoDB. Helps users remember people through real-time face detection and recognition.",
       techStack: ["Flask", "MongoDB", "OpenCV", "ElevenLabs TTS", "Python"],
       awards: ["Best Use of Grok (xAI)", "Best Use of Arm (MLH)"],
-      link: "/projects/recall",
-      githubLink: "https://github.com/andreay99",
+      link: "/projects/recall"
     },
     {
       title: "OffScript",
       description: "Real-time AI-powered technical interview simulator with dynamic feedback and comprehensive question generation.",
       techStack: ["Next.js", "TypeScript", "FastAPI", "Gemini AI"],
       awards: ["HackHarvard 2025"],
-      link: "/projects/offscript",
-      githubLink: "https://github.com/andreay99",
-      liveLink: "https://offscript.codestacx.com"
+      link: "/projects/offscript"
     },
     {
       title: "SONA AI",
       description: "Real-time emotion detection from voice using advanced ML techniques and agentic systems for enhanced accuracy.",
       techStack: ["Python", "TensorFlow", "Librosa", "FastAPI"],
-      link: "/projects/sona-ai",
-      githubLink: "https://github.com/andreay99",
+      link: "/projects/sona-ai"
     },
     {
       title: "Bikeshare Trip Analysis",
       description: "Comprehensive SQL-based analysis system for bikeshare operations, identifying usage patterns and optimization opportunities.",
       techStack: ["SQL", "SQLite", "Python", "Data Analysis"],
-      link: "/projects/bikeshare",
-      githubLink: "https://github.com/andreay99",
+      link: "/projects/bikeshare"
     }
   ];
 
@@ -92,27 +87,23 @@ const Home = () => {
                     ease: [0.22, 0.61, 0.36, 1]
                   }}
                 >
-                  <div className="space-y-3">
-                    <h1 className="font-serif leading-tight text-6xl md:text-7xl lg:text-8xl font-bold">
-                      <GlitchText>
-                        <TypingEffect text="Andrea" delay={500} speed={80} />
-                      </GlitchText>
-                      <br />
-                      <GlitchText>
-                        <TypingEffect text="Yanez Soto" delay={1200} speed={80} />
-                      </GlitchText>
-                    </h1>
-                    <div className="flex items-center gap-3 pt-4">
-                      <div className="h-1 w-12 bg-gradient-to-r from-accent to-accent/50" />
-                      <p className="text-lg md:text-xl font-semibold text-accent tracking-wide">
-                        AI/ML & Full-Stack Engineer
-                      </p>
-                    </div>
-                  </div>
+                  <h1 className="font-serif leading-tight">
+                    <GlitchText>
+                      <TypingEffect text="Andrea" delay={500} speed={80} />
+                    </GlitchText>
+                    <br />
+                    <GlitchText>
+                      <TypingEffect text="Yanez" delay={1200} speed={80} />
+                    </GlitchText>
+                    <br />
+                    <GlitchText>
+                      <TypingEffect text="Soto" delay={1800} speed={80} />
+                    </GlitchText>
+                  </h1>
                 </motion.div>
                 
                 <motion.div 
-                  className="max-w-3xl space-y-6"
+                  className="max-w-2xl space-y-8"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -121,18 +112,16 @@ const Home = () => {
                     ease: [0.22, 0.61, 0.36, 1]
                   }}
                 >
-                  <p className="text-xl md:text-2xl leading-relaxed text-foreground/90 font-light">
-                    I build <span className="font-semibold text-accent">AI-powered solutions</span> and <span className="font-semibold text-accent">full-stack products</span> that solve real problems. HackPrinceton 2025 winner. Currently researching AI with NASA.
+                  <p className="text-2xl md:text-3xl leading-relaxed text-foreground/90">
+                    CS student specializing in AI/ML and full-stack development.
                   </p>
-                  <div className="flex flex-wrap gap-2 pt-4">
-                    <Badge className="bg-accent/10 text-accent border border-accent/30 px-3 py-1">🏆 2x Hackathon Winner</Badge>
-                    <Badge className="bg-accent/10 text-accent border border-accent/30 px-3 py-1">🚀 4 Deployed Projects</Badge>
-                    <Badge className="bg-accent/10 text-accent border border-accent/30 px-3 py-1">🎯 AI/ML Specialist</Badge>
-                  </div>
+                  <p className="text-lg md:text-xl leading-relaxed text-foreground/70">
+                    Relentlessly building tools that solve real problems. I build AI-driven tools and full-stack products that move quickly from idea to reality.
+                  </p>
                 </motion.div>
 
                 <motion.div 
-                  className="flex flex-col sm:flex-row gap-4 pt-8"
+                  className="flex flex-col sm:flex-row gap-6 pt-8"
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{
@@ -141,19 +130,26 @@ const Home = () => {
                     ease: [0.22, 0.61, 0.36, 1]
                   }}
                 >
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1 sm:flex-none">
-                    <Button asChild size="lg" className="w-full sm:w-auto group text-base px-8 py-7 rounded-lg bg-gradient-to-r from-accent to-accent/80 text-background hover:from-accent hover:to-accent transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-accent/50">
-                      <a href="#projects" className="flex items-center justify-center gap-2">
-                        <span className="font-semibold">View My Projects</span>
-                        <ArrowRight className="h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button asChild size="lg" className="group text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all relative overflow-hidden">
+                      <a href="#projects">
+                        <span className="relative z-10">View Projects</span>
+                        <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform relative z-10" />
+                        <motion.div
+                          className="absolute inset-0 bg-foreground"
+                          initial={{ x: "-100%" }}
+                          whileHover={{ x: 0 }}
+                          transition={{ duration: 0.3 }}
+                          style={{ zIndex: 0 }}
+                        />
                       </a>
                     </Button>
                   </motion.div>
-                  <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} className="flex-1 sm:flex-none">
-                    <Button asChild size="lg" className="w-full sm:w-auto text-base px-8 py-7 rounded-lg border-2 border-foreground text-foreground bg-background hover:bg-foreground hover:text-background transition-all duration-300">
-                      <a href="/resume.pdf" download className="flex items-center justify-center gap-2">
-                        <FileText className="h-5 w-5" />
-                        <span className="font-semibold">Download Resume</span>
+                  <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                    <Button asChild size="lg" variant="outline" className="text-base px-8 py-6 rounded-none border-2 border-foreground text-foreground hover:bg-foreground hover:text-background transition-all">
+                      <a href="/resume.pdf" download>
+                        <Download className="mr-2 h-5 w-5" />
+                        Download Resume
                       </a>
                     </Button>
                   </motion.div>
