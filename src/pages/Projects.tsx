@@ -5,7 +5,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState, useMemo } from "react";
-import { ArrowRight, Zap, Trophy, Code } from "lucide-react";
+import { ArrowRight, Zap, Trophy, Code, X } from "lucide-react";
 import { GlitchText } from "@/components/GlitchText";
 import { ParallaxSection } from "@/components/ParallaxSection";
 import abstractBg from "@/assets/abstract-background.jpg";
@@ -13,6 +13,7 @@ import abstractBg from "@/assets/abstract-background.jpg";
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
+  const [selectedTech, setSelectedTech] = useState<string | null>(null);
 
   const projects = [
     {
@@ -81,13 +82,18 @@ const Projects = () => {
       ? projects 
       : projects.filter(project => project.categories.includes(activeCategory));
     
+    // Apply tech filter
+    if (selectedTech) {
+      filtered = filtered.filter(project => project.techStack.includes(selectedTech));
+    }
+    
     if (sortBy === "featured") {
       return filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
     } else if (sortBy === "awards") {
       return filtered.sort((a, b) => (b.awards?.length || 0) - (a.awards?.length || 0));
     }
     return filtered;
-  }, [activeCategory, sortBy]);
+  }, [activeCategory, sortBy, selectedTech]);
 
   return (
     <PageTransition>
@@ -164,20 +170,38 @@ const Projects = () => {
                   transition={{ delay: 0.4, duration: 0.6 }}
                   className="pt-8 border-t border-border/30"
                 >
-                  <p className="text-sm font-semibold text-foreground mb-4">Most Used Technologies</p>
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-sm font-semibold text-foreground">Most Used Technologies {selectedTech && `(Filtering by ${selectedTech})`}</p>
+                    {selectedTech && (
+                      <motion.button
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        onClick={() => setSelectedTech(null)}
+                        className="flex items-center gap-1 px-3 py-1 rounded-full bg-accent/20 text-accent text-xs font-semibold hover:bg-accent/30 transition-colors"
+                      >
+                        <X className="h-3 w-3" />
+                        Clear Filter
+                      </motion.button>
+                    )}
+                  </div>
                   <div className="flex flex-wrap gap-3">
                     {allTechs.map(([tech, count]) => (
-                      <motion.div
+                      <motion.button
                         key={tech}
                         initial={{ opacity: 0, scale: 0.8 }}
                         animate={{ opacity: 1, scale: 1 }}
                         whileHover={{ scale: 1.1, y: -3 }}
                         transition={{ delay: Math.random() * 0.3 }}
-                        className="px-4 py-2 rounded-full bg-accent/10 border border-accent/30 text-sm font-medium text-accent hover:bg-accent/20 transition-colors"
+                        onClick={() => setSelectedTech(selectedTech === tech ? null : tech)}
+                        className={`px-4 py-2 rounded-full border text-sm font-medium transition-all cursor-pointer ${
+                          selectedTech === tech
+                            ? 'bg-accent/30 border-accent/50 text-accent ring-2 ring-accent/50'
+                            : 'bg-accent/10 border-accent/30 text-accent hover:bg-accent/20'
+                        }`}
                       >
                         {tech}
                         <span className="ml-2 text-xs opacity-60">×{count}</span>
-                      </motion.div>
+                      </motion.button>
                     ))}
                   </div>
                 </motion.div>
