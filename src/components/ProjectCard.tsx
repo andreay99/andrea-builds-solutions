@@ -38,7 +38,7 @@ export const ProjectCard = ({ title, description, techStack, awards, link, githu
                 {awards.map((award, index) => (
                   <Badge 
                     key={index} 
-                    className="rounded-full border-0 bg-gradient-to-r from-accent/20 to-accent/10 text-accent text-xs font-semibold px-3 py-1 uppercase tracking-wider"
+                    className="rounded-full border border-blue-400/50 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-blue-500/10 text-blue-300 text-xs font-semibold px-3 py-1 uppercase tracking-wider"
                   >
                     <Award className="h-3 w-3 mr-1" />
                     {award}
