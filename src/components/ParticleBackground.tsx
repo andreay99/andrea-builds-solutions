@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
+import { useTheme } from '@/context/ThemeContext';
 
 interface Particle {
   x: number;
@@ -16,9 +17,11 @@ export const ParticleBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
+  const [isDark, setIsDark] = useState(false);
   const particlesRef = useRef<Particle[]>([]);
   const mouseRef = useRef({ x: 0, y: 0 });
   const animationFrameRef = useRef<number>();
+  const { resolvedTheme } = useTheme();
   
   // Parallax effect
   const { scrollY } = useScroll({
@@ -35,6 +38,16 @@ export const ParticleBackground = () => {
     checkMobile();
     window.addEventListener('resize', checkMobile);
     return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+    checkDarkMode();
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+    return () => observer.disconnect();
   }, []);
 
   useEffect(() => {
@@ -138,7 +151,8 @@ export const ParticleBackground = () => {
         // Draw particle
         ctx.beginPath();
         ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 0, 0, ${particle.opacity})`;
+        const particleColor = isDark ? `rgba(210, 210, 210, ${particle.opacity})` : `rgba(50, 50, 50, ${particle.opacity})`;
+        ctx.fillStyle = particleColor;
         ctx.fill();
 
         // Draw connections to nearby particles (only check a subset to improve performance)
@@ -154,7 +168,8 @@ export const ParticleBackground = () => {
             ctx.moveTo(particle.x, particle.y);
             ctx.lineTo(otherParticle.x, otherParticle.y);
             const opacity = (1 - distance / 120) * 0.1;
-            ctx.strokeStyle = `rgba(0, 0, 0, ${opacity})`;
+            const lineColor = isDark ? `rgba(150, 150, 200, ${opacity})` : `rgba(100, 100, 150, ${opacity})`;
+            ctx.strokeStyle = lineColor;
             ctx.lineWidth = 0.5;
             ctx.stroke();
           }
@@ -172,7 +187,7 @@ export const ParticleBackground = () => {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [isMobile]);
+  }, [isMobile, isDark]);
 
   useEffect(() => {
     if (isMobile || !containerRef.current) return;

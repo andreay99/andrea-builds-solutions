@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from "react";
 
 const techBadges = [
   { label: "AI/ML", x: "10%", y: "20%", delay: 0 },
@@ -10,6 +11,20 @@ const techBadges = [
 ];
 
 export const FloatingTechBadges = () => {
+  const [isDark, setIsDark] = useState(false);
+
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDark(document.documentElement.classList.contains('dark'));
+    };
+
+    checkDarkMode();
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {techBadges.map((badge, index) => (
@@ -19,7 +34,7 @@ export const FloatingTechBadges = () => {
           style={{ left: badge.x, top: badge.y }}
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ 
-            opacity: [0.3, 0.6, 0.3],
+            opacity: isDark ? [0.1, 0.2, 0.1] : [0.15, 0.25, 0.15],
             scale: [0.8, 1, 0.8],
             y: [0, -20, 0]
           }}
