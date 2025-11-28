@@ -59,43 +59,43 @@ All colors MUST be HSL.
 
   /* Dark mode theme */
   :root.dark {
-    /* Dark aesthetic - rich blacks and subtle grays */
-    --background: 0 0% 9%;
-    --foreground: 0 0% 95%;
+    /* Sophisticated dark aesthetic with warmth */
+    --background: 240 10% 7%;
+    --foreground: 36 38% 96%;
 
-    --card: 0 0% 12%;
-    --card-foreground: 0 0% 95%;
+    --card: 240 8% 12%;
+    --card-foreground: 36 38% 96%;
 
-    --popover: 0 0% 12%;
-    --popover-foreground: 0 0% 95%;
+    --popover: 240 8% 12%;
+    --popover-foreground: 36 38% 96%;
 
-    --primary: 0 0% 95%;
-    --primary-foreground: 0 0% 9%;
+    --primary: 36 38% 96%;
+    --primary-foreground: 240 10% 7%;
 
-    --secondary: 0 0% 20%;
-    --secondary-foreground: 0 0% 95%;
+    --secondary: 240 10% 20%;
+    --secondary-foreground: 36 38% 96%;
 
-    --muted: 0 0% 25%;
-    --muted-foreground: 0 0% 60%;
+    --muted: 240 10% 30%;
+    --muted-foreground: 240 5% 65%;
 
     --accent: 25 85% 55%; /* Keep accent consistent */
-    --accent-foreground: 0 0% 9%;
+    --accent-foreground: 240 10% 7%;
 
     --destructive: 0 70% 60%;
-    --destructive-foreground: 0 0% 9%;
+    --destructive-foreground: 240 10% 7%;
 
-    --border: 0 0% 20%;
-    --input: 0 0% 20%;
-    --ring: 0 0% 95%;
+    --border: 240 10% 25%;
+    --input: 240 10% 20%;
+    --ring: 36 38% 96%;
 
     /* Dark surface colors */
-    --surface-1: 0 0% 12%; /* Dark base */
-    --surface-2: 0 0% 15%; /* Slightly lighter dark */
-    --surface-3: 0 0% 18%; /* Even lighter dark */
+    --surface-1: 240 8% 12%; /* Dark base */
+    --surface-2: 240 10% 16%; /* Slightly lighter dark */
+    --surface-3: 240 10% 20%; /* Even lighter dark */
 
     /* Dark glassmorphism */
-    --glass-bg: 0 0% 9%;
-    --glass-border: 0 0% 30%;
+    --glass-bg: 240 10% 9%;
+    --glass-border: 240 10% 35%;
   }
 
   html {
@@ -114,7 +114,7 @@ All colors MUST be HSL.
 
   body {
     @apply text-foreground antialiased;
-    background-color: #F9F5EF;
+    background-color: hsl(var(--background));
     background-image: none;
     font-family: 'Inter', -apple-system, sans-serif;
     font-feature-settings: "rlig" 1, "calt" 1;
@@ -169,7 +169,7 @@ All colors MUST be HSL.
   }
   
   .hero-section-bg {
-    background-color: #F9F5EF;
+    background-color: hsl(var(--background));
     background-image: url('/src/assets/abstract-tech-background.jpg');
     background-repeat: no-repeat;
     background-position: center;
@@ -180,7 +180,7 @@ All colors MUST be HSL.
     content: '';
     position: absolute;
     inset: 0;
-    background-color: #F9F5EF;
+    background-color: hsl(var(--background));
     opacity: 0.9;
   }
   
