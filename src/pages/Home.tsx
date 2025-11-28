@@ -978,7 +978,7 @@ const Home = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Devpost</span>
                   <Button asChild variant="link">
-                    <a href="https://devpost.com/andreayanez" target="_blank" rel="noopener noreferrer">
+                    <a href="https://devpost.com/andreayanez11" target="_blank" rel="noopener noreferrer">
                       View Projects <ExternalLink className="ml-1 h-4 w-4" />
                     </a>
                   </Button>
