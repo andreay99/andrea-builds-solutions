@@ -212,6 +212,130 @@ const Projects = () => {
 
         {/* Projects Section */}
         <div className="section-container py-20">
+          {/* Project Impact Metrics */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            className="mb-16 space-y-8"
+          >
+            <div>
+              <h3 className="text-2xl font-bold mb-2">Project Impact Overview</h3>
+              <p className="text-foreground/60">Real-world metrics and outcomes across all projects</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+              {filteredProjects.map((project, index) => (
+                <motion.div
+                  key={project.title}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: false }}
+                  transition={{ delay: index * 0.1 }}
+                  whileHover={{ y: -5 }}
+                  className="p-6 rounded-lg glass-strong gradient-border space-y-4"
+                >
+                  <h4 className="font-semibold text-foreground truncate">{project.title}</h4>
+                  
+                  {/* Metrics Grid */}
+                  <div className="space-y-3">
+                    {/* Accuracy */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: false }}
+                      transition={{ delay: index * 0.1 + 0.1 }}
+                      className="space-y-1"
+                    >
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-foreground/70">Accuracy</span>
+                        <span className="font-semibold text-accent">{project.metrics.accuracy}</span>
+                      </div>
+                      <motion.div 
+                        className="h-2 bg-secondary rounded-full overflow-hidden"
+                        initial={{ scaleX: 0, originX: 0 }}
+                        whileInView={{ scaleX: 1 }}
+                        viewport={{ once: false }}
+                        transition={{ duration: 0.8, delay: index * 0.1 + 0.2 }}
+                      >
+                        <motion.div 
+                          className="h-full bg-gradient-to-r from-accent to-accent/60"
+                          initial={{ scaleX: 0, originX: 0 }}
+                          whileInView={{ scaleX: 1 }}
+                          viewport={{ once: false }}
+                          transition={{ duration: 0.8, delay: index * 0.1 + 0.3 }}
+                          style={{ width: project.metrics.accuracy.replace('%', '') + '%' }}
+                        />
+                      </motion.div>
+                    </motion.div>
+
+                    {/* Users */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: false }}
+                      transition={{ delay: index * 0.1 + 0.15 }}
+                      className="space-y-1"
+                    >
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-foreground/70">Users Reached</span>
+                        <span className="font-semibold text-foreground">{project.metrics.users}</span>
+                      </div>
+                      <div className="h-2 bg-secondary rounded-full overflow-hidden">
+                        <div 
+                          className="h-full bg-gradient-to-r from-blue-400 to-blue-400/60"
+                          style={{ width: '75%' }}
+                        />
+                      </div>
+                    </motion.div>
+
+                    {/* Impact */}
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: false }}
+                      transition={{ delay: index * 0.1 + 0.2 }}
+                      className="space-y-1"
+                    >
+                      <div className="flex justify-between items-center text-sm">
+                        <span className="text-foreground/70">Impact</span>
+                        <span className="font-semibold text-foreground/80">{project.metrics.impact}</span>
+                      </div>
+                      <Badge className="bg-secondary text-foreground/70 text-xs">{project.metrics.impact}</Badge>
+                    </motion.div>
+                  </div>
+
+                  {/* View Project Link */}
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: index * 0.1 + 0.25 }}
+                    className="pt-2"
+                  >
+                    <a 
+                      href={project.link}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:gap-3 transition-all"
+                    >
+                      Learn More
+                      <ArrowRight className="h-4 w-4" />
+                    </a>
+                  </motion.div>
+                </motion.div>
+              ))}
+            </div>
+
+            {filteredProjects.length === 0 && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="text-center py-8 text-foreground/60"
+              >
+                No projects found matching your filters.
+              </motion.div>
+            )}
+          </motion.div>
+
           {/* Filter and Sort Controls */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
