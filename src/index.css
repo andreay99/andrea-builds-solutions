@@ -97,9 +97,7 @@ All colors MUST be HSL.
     --glass-bg: 0 0% 9%;
     --glass-border: 0 0% 30%;
   }
-}
 
-@layer base {
   html {
     color-scheme: light dark;
   }
