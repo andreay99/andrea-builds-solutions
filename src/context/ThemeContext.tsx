@@ -15,8 +15,12 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
   const [mounted, setMounted] = useState(false);
 
-  // Initialize theme from localStorage
+  // Initialize theme from localStorage and apply immediately
   useEffect(() => {
+    // Apply dark theme immediately to avoid flash
+    const root = document.documentElement;
+    root.classList.add('dark');
+    
     const stored = localStorage.getItem('theme') as Theme | null;
     if (stored) {
       setThemeState(stored);
@@ -75,10 +79,6 @@ export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme);
   };
-
-  if (!mounted) {
-    return <>{children}</>;
-  }
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
