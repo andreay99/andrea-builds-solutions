@@ -5,9 +5,10 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState, useMemo } from "react";
-import { ArrowRight, Zap, Trophy, Code, X } from "lucide-react";
+import { ArrowRight, Zap, Trophy, Code, X, Zap as Spark, Clock, GitBranch, Server } from "lucide-react";
 import { GlitchText } from "@/components/GlitchText";
 import { ParallaxSection } from "@/components/ParallaxSection";
+import { AnimatedCounter } from "@/components/AnimatedCounter";
 import abstractBg from "@/assets/abstract-background.jpg";
 
 const Projects = () => {
@@ -220,6 +221,89 @@ const Projects = () => {
 
         {/* Projects Section */}
         <div className="section-container py-20">
+          {/* By the Numbers - Statistics Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: false }}
+            className="mb-20 space-y-12"
+          >
+            <div>
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
+                <GlitchText>By the Numbers</GlitchText>
+              </h2>
+              <p className="text-lg text-foreground/70">Portfolio impact and development statistics</p>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0 }}
+                className="p-8 rounded-lg glass-strong gradient-border space-y-4 flex flex-col items-center justify-center"
+              >
+                <GitBranch className="h-12 w-12 text-accent" />
+                <AnimatedCounter
+                  end={2850}
+                  duration={2500}
+                  delay={0}
+                  label="Lines of Code"
+                  suffix="+"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.1 }}
+                className="p-8 rounded-lg glass-strong gradient-border space-y-4 flex flex-col items-center justify-center"
+              >
+                <Spark className="h-12 w-12 text-accent" />
+                <AnimatedCounter
+                  end={18}
+                  duration={2000}
+                  delay={0.1}
+                  label="Technologies Used"
+                  suffix="+"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.2 }}
+                className="p-8 rounded-lg glass-strong gradient-border space-y-4 flex flex-col items-center justify-center"
+              >
+                <Clock className="h-12 w-12 text-accent" />
+                <AnimatedCounter
+                  end={92}
+                  duration={2500}
+                  delay={0.2}
+                  label="Hours Developing"
+                  suffix="+"
+                />
+              </motion.div>
+
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                whileInView={{ opacity: 1, scale: 1 }}
+                viewport={{ once: false }}
+                transition={{ delay: 0.3 }}
+                className="p-8 rounded-lg glass-strong gradient-border space-y-4 flex flex-col items-center justify-center"
+              >
+                <Trophy className="h-12 w-12 text-accent" />
+                <AnimatedCounter
+                  end={3}
+                  duration={2000}
+                  delay={0.3}
+                  label="Major Awards"
+                />
+              </motion.div>
+            </div>
+          </motion.div>
           {/* Project Impact Metrics */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
