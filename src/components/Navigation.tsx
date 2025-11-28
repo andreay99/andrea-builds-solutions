@@ -10,7 +10,7 @@ export const Navigation = () => {
       <div className="section-container">
         <div className="flex items-center justify-between h-20 md:h-24">
           <NavLink to="/" className="hover:opacity-70 transition-opacity">
-            <img src={logo} alt="Andrea Soto Logo" className="h-12 md:h-14 w-auto" />
+            <img src={logo} alt="Andrea Soto Logo" className="h-16 md:h-20 w-auto" />
           </NavLink>
           
           <div className="flex items-center gap-12">
