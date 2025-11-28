@@ -2,14 +2,15 @@ import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, FileText } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import logo from "@/assets/logo.png";
 
 export const Navigation = () => {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm">
       <div className="section-container">
         <div className="flex items-center justify-between h-20 md:h-24">
-          <NavLink to="/" className="text-2xl md:text-3xl font-serif font-bold text-foreground hover:opacity-70 transition-opacity">
-            AYS
+          <NavLink to="/" className="hover:opacity-70 transition-opacity">
+            <img src={logo} alt="Andrea Soto Logo" className="h-12 md:h-14 w-auto" />
           </NavLink>
           
           <div className="flex items-center gap-12">
