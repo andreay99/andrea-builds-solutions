@@ -1,5 +1,5 @@
 import { motion, useScroll, useTransform } from "framer-motion";
-import { ReactNode, useRef, useMemo } from "react";
+import { ReactNode, useRef, useState, useEffect } from "react";
 
 interface ScrollColorTransitionProps {
   children: ReactNode;
@@ -15,17 +15,27 @@ export const ScrollColorTransition = ({
   className = "" 
 }: ScrollColorTransitionProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  
+  // Check dark mode on mount and when it changes
+  useEffect(() => {
+    const checkDarkMode = () => {
+      setIsDarkMode(document.documentElement.classList.contains('dark'));
+    };
+    
+    checkDarkMode();
+    
+    // Watch for theme changes
+    const observer = new MutationObserver(checkDarkMode);
+    observer.observe(document.documentElement, { attributes: true });
+    
+    return () => observer.disconnect();
+  }, []);
   
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start end", "end start"]
   });
-
-  // Detect if dark mode is enabled
-  const isDarkMode = useMemo(() => {
-    if (typeof window === 'undefined') return false;
-    return document.documentElement.classList.contains('dark');
-  }, []);
 
   // Use appropriate colors based on theme
   const finalFromColor = isDarkMode ? 'hsl(240, 10%, 7%)' : fromColor;

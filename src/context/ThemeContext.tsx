@@ -12,14 +12,14 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
   const [theme, setThemeState] = useState<Theme>('system');
-  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('dark');
+  const [resolvedTheme, setResolvedTheme] = useState<'light' | 'dark'>('light');
   const [mounted, setMounted] = useState(false);
 
   // Initialize theme from localStorage and apply immediately
   useEffect(() => {
-    // Apply dark theme immediately to avoid flash
+    // Apply light theme initially to avoid flash
     const root = document.documentElement;
-    root.classList.add('dark');
+    root.classList.remove('dark');
     
     const stored = localStorage.getItem('theme') as Theme | null;
     if (stored) {
