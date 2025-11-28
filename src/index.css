@@ -108,7 +108,6 @@ All colors MUST be HSL.
     transition: background-color 0.3s, color 0.3s;
   }
 
-@layer base {
   * {
     @apply border-border;
   }
