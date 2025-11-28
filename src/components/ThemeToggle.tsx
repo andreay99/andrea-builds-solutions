@@ -7,7 +7,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 
 export const ThemeToggle = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
@@ -24,19 +24,21 @@ export const ThemeToggle = () => {
             size="icon"
             className="relative w-10 h-10 rounded-lg hover:bg-accent/20"
           >
-            <motion.div
-              key={resolvedTheme}
-              initial={{ rotate: -180, opacity: 0 }}
-              animate={{ rotate: 0, opacity: 1 }}
-              exit={{ rotate: 180, opacity: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              {resolvedTheme === 'dark' ? (
-                <Moon className="h-5 w-5 text-accent" />
-              ) : (
-                <Sun className="h-5 w-5 text-accent" />
-              )}
-            </motion.div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={resolvedTheme}
+                initial={{ rotate: -180, opacity: 0 }}
+                animate={{ rotate: 0, opacity: 1 }}
+                exit={{ rotate: 180, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                {resolvedTheme === 'dark' ? (
+                  <Moon className="h-5 w-5 text-accent" />
+                ) : (
+                  <Sun className="h-5 w-5 text-accent" />
+                )}
+              </motion.div>
+            </AnimatePresence>
             <span className="sr-only">Toggle theme</span>
           </Button>
         </motion.div>
