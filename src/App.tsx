@@ -11,6 +11,7 @@ import { CustomCursor } from "./components/CustomCursor";
 import { PageTransition } from "./components/PageTransition";
 import { ScrollProgressBar } from "./components/ScrollProgressBar";
 import { BackToTop } from "./components/BackToTop";
+import { ThemeProvider } from "./context/ThemeContext";
 
 // Lazy load route components for code-splitting
 const Home = lazy(() => import("./pages/Home"));
@@ -60,20 +61,22 @@ const AnimatedRoutes = () => {
 };
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <CustomCursor />
-      <ScrollProgressBar />
-      <BackToTop />
-      <BrowserRouter>
-        <Navigation />
-        <AnimatedRoutes />
-        <Footer />
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
+  <ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <CustomCursor />
+        <ScrollProgressBar />
+        <BackToTop />
+        <BrowserRouter>
+          <Navigation />
+          <AnimatedRoutes />
+          <Footer />
+        </BrowserRouter>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </ThemeProvider>
 );
 
 export default App;

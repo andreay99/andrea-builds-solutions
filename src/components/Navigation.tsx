@@ -1,6 +1,7 @@
 import { NavLink } from "@/components/NavLink";
 import { Button } from "@/components/ui/button";
 import { Github, Linkedin, FileText } from "lucide-react";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export const Navigation = () => {
   return (
@@ -44,7 +45,8 @@ export const Navigation = () => {
             </div>
 
             {/* Resume CTA - place your resume at /public/resume.pdf or update the href to your hosted resume */}
-            <div className="hidden md:flex items-center">
+            <div className="hidden md:flex items-center gap-4">
+              <ThemeToggle />
               <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all">
                 <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open resume in new tab" className="flex items-center gap-2 px-4 py-2">
                   <FileText className="h-4 w-4" />
@@ -55,9 +57,10 @@ export const Navigation = () => {
 
             <button 
               aria-label="Toggle navigation menu" 
-              className="text-sm font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity md:hidden"
+              className="text-sm font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity md:hidden flex items-center gap-3"
             >
-              MENU
+              <ThemeToggle />
+              <span>MENU</span>
             </button>
           </div>
         </div>
