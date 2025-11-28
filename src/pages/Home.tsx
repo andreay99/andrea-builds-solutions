@@ -986,7 +986,7 @@ const Home = () => {
                 <div className="flex justify-between items-center">
                   <span className="text-muted-foreground">Phone</span>
                   <Button asChild variant="link">
-                    <a href="tel:+17329979798">+1 (732) 997-9798</a>
+                    <a href="tel:+17325200494">+1 (732) 520-0494</a>
                   </Button>
                 </div>
               </CardContent>
