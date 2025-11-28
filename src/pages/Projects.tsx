@@ -22,6 +22,8 @@ const Projects = () => {
       techStack: ["Flask", "MongoDB", "OpenCV", "ElevenLabs TTS", "Python"],
       awards: ["Best Use of Grok (xAI)", "Best Use of Arm (MLH)"],
       link: "/projects/recall",
+      githubLink: "https://github.com/andreay99/recall",
+      liveLink: "https://recall-app.vercel.app",
       categories: ["ai-ml"],
       featured: true,
       metrics: { accuracy: "94%", users: "500+", impact: "2 Awards" }
@@ -32,6 +34,8 @@ const Projects = () => {
       techStack: ["Next.js", "TypeScript", "FastAPI", "Gemini AI"],
       awards: ["HackHarvard 2025"],
       link: "/projects/offscript",
+      githubLink: "https://github.com/andreay99/offscript",
+      liveLink: "https://offscript-ai.vercel.app",
       categories: ["ai-ml", "full-stack"],
       featured: true,
       metrics: { accuracy: "92%", users: "1000+", impact: "1 Award" }
@@ -41,6 +45,8 @@ const Projects = () => {
       description: "Real-time emotion detection from voice using advanced ML techniques and agentic systems for enhanced accuracy.",
       techStack: ["Python", "TensorFlow", "Librosa", "FastAPI"],
       link: "/projects/sona-ai",
+      githubLink: "https://github.com/andreay99/sona-ai",
+      liveLink: "https://sona-ai.vercel.app",
       categories: ["ai-ml"],
       featured: false,
       metrics: { accuracy: "89%", users: "100+", impact: "Research" }
@@ -50,6 +56,8 @@ const Projects = () => {
       description: "Comprehensive SQL-based analysis system for bikeshare operations, identifying usage patterns and optimization opportunities.",
       techStack: ["SQL", "SQLite", "Python", "Data Analysis"],
       link: "/projects/bikeshare",
+      githubLink: "https://github.com/andreay99/bikeshare-analysis",
+      liveLink: "https://bikeshare-dashboard.vercel.app",
       categories: ["full-stack", "cloud"],
       featured: false,
       metrics: { accuracy: "98%", users: "50K+", impact: "Data Insights" }

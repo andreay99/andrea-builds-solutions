@@ -1,10 +1,11 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { ArrowRight, Award, Github, ExternalLink } from "lucide-react";
+import { ArrowRight, Award, Github, ExternalLink, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MagneticButton } from "@/components/MagneticButton";
+import { useState } from "react";
 
 interface ProjectCardProps {
   title: string;
@@ -14,50 +15,100 @@ interface ProjectCardProps {
   link: string;
   githubLink?: string;
   liveLink?: string;
+  featured?: boolean;
 }
 
-export const ProjectCard = ({ title, description, techStack, awards, link, githubLink, liveLink }: ProjectCardProps) => {
+export const ProjectCard = ({ 
+  title, 
+  description, 
+  techStack, 
+  awards, 
+  link, 
+  githubLink, 
+  liveLink,
+  featured 
+}: ProjectCardProps) => {
+  const [isHovered, setIsHovered] = useState(false);
+
   return (
     <motion.div
       whileHover={{ y: -8 }}
       transition={{ duration: 0.3, ease: "easeOut" }}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
-      <Card className="h-full border-2 border-foreground/10 rounded-lg bg-card/95 backdrop-blur-sm hover:border-accent/30 hover:shadow-2xl transition-all duration-500 overflow-hidden group">
-        <CardHeader className="space-y-4 pb-6">
+      <Card className="h-full border-2 border-foreground/10 rounded-lg bg-card/95 backdrop-blur-sm hover:border-accent/30 hover:shadow-2xl transition-all duration-500 overflow-hidden group relative">
+        {/* Hover Overlay Glow Effect */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: isHovered ? 0.15 : 0 }}
+          transition={{ duration: 0.3 }}
+          className="absolute inset-0 bg-accent/20 pointer-events-none"
+        />
+
+        <CardHeader className="space-y-4 pb-6 relative z-10">
           <div className="space-y-3">
             <div className="flex items-start justify-between gap-3">
               <CardTitle className="text-3xl md:text-4xl font-serif leading-tight">{title}</CardTitle>
               <div className="flex items-center gap-1">
+                {featured && (
+                  <motion.div 
+                    animate={{ scale: isHovered ? 1.1 : 1 }}
+                    className="text-2xl" 
+                    title="Featured project"
+                  >
+                    ⭐
+                  </motion.div>
+                )}
                 {awards && awards.length > 0 && (
-                  <div className="text-2xl" title="Award winner">🏆</div>
+                  <motion.div 
+                    animate={{ scale: isHovered ? 1.1 : 1 }}
+                    className="text-2xl" 
+                    title="Award winner"
+                  >
+                    🏆
+                  </motion.div>
                 )}
               </div>
             </div>
             {awards && awards.length > 0 && (
               <div className="flex flex-wrap gap-2">
                 {awards.map((award, index) => (
-                  <Badge 
-                    key={index} 
-                    className="rounded-full border border-foreground/20 bg-foreground/5 text-accent text-xs font-semibold px-3 py-1 uppercase tracking-wider hover:bg-foreground/10 transition-colors"
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0.7 }}
+                    animate={{ opacity: isHovered ? 1 : 0.7 }}
+                    transition={{ delay: index * 0.05 }}
                   >
-                    <Award className="h-3 w-3 mr-1" />
-                    {award}
-                  </Badge>
+                    <Badge 
+                      className="rounded-full border border-foreground/20 bg-foreground/5 text-accent text-xs font-semibold px-3 py-1 uppercase tracking-wider hover:bg-foreground/10 transition-colors"
+                    >
+                      <Award className="h-3 w-3 mr-1" />
+                      {award}
+                    </Badge>
+                  </motion.div>
                 ))}
               </div>
             )}
           </div>
           <CardDescription className="text-base md:text-lg leading-relaxed text-foreground/80 font-normal">{description}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-6">
+        
+        <CardContent className="space-y-6 relative z-10">
           <div className="flex flex-wrap gap-2">
             {techStack.map((tech, index) => (
-              <Badge 
-                key={index} 
-                className="text-xs rounded-full border-0 bg-foreground/10 text-foreground/70 hover:bg-foreground/20 transition-colors px-3 py-1"
+              <motion.div
+                key={index}
+                initial={{ opacity: 0.6 }}
+                animate={{ opacity: isHovered ? 0.9 : 0.6 }}
+                transition={{ delay: index * 0.03 }}
               >
-                {tech}
-              </Badge>
+                <Badge 
+                  className="text-xs rounded-full border-0 bg-foreground/10 text-foreground/70 hover:bg-foreground/20 transition-colors px-3 py-1"
+                >
+                  {tech}
+                </Badge>
+              </motion.div>
             ))}
           </div>
           
@@ -71,24 +122,44 @@ export const ProjectCard = ({ title, description, techStack, awards, link, githu
               </Button>
             </MagneticButton>
             
-            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <motion.div 
+              className="flex gap-2"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: isHovered ? 1 : 0, y: isHovered ? 0 : 10 }}
+              transition={{ duration: 0.3 }}
+              style={{ pointerEvents: isHovered ? "auto" : "none" }}
+            >
               {githubLink && (
-                <Button asChild variant="outline" size="sm" className="flex-1 rounded-lg border-foreground/20 hover:border-accent hover:bg-accent/5">
-                  <a href={githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1">
-                    <Github className="h-4 w-4" />
-                    <span className="text-xs">GitHub</span>
-                  </a>
-                </Button>
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: isHovered ? 1 : 0.8, opacity: isHovered ? 1 : 0 }}
+                  transition={{ delay: 0.05 }}
+                  className="flex-1"
+                >
+                  <Button asChild variant="outline" size="sm" className="w-full rounded-lg border-foreground/20 hover:border-accent hover:bg-accent/10 transition-all">
+                    <a href={githubLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1">
+                      <Github className="h-4 w-4" />
+                      <span className="text-xs font-medium">GitHub</span>
+                    </a>
+                  </Button>
+                </motion.div>
               )}
               {liveLink && (
-                <Button asChild variant="outline" size="sm" className="flex-1 rounded-lg border-foreground/20 hover:border-accent hover:bg-accent/5">
-                  <a href={liveLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1">
-                    <ExternalLink className="h-4 w-4" />
-                    <span className="text-xs">Live</span>
-                  </a>
-                </Button>
+                <motion.div
+                  initial={{ scale: 0.8, opacity: 0 }}
+                  animate={{ scale: isHovered ? 1 : 0.8, opacity: isHovered ? 1 : 0 }}
+                  transition={{ delay: 0.1 }}
+                  className="flex-1"
+                >
+                  <Button asChild variant="outline" size="sm" className="w-full rounded-lg border-foreground/20 hover:border-accent hover:bg-accent/10 transition-all">
+                    <a href={liveLink} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-1">
+                      <ExternalLink className="h-4 w-4" />
+                      <span className="text-xs font-medium">Live Demo</span>
+                    </a>
+                  </Button>
+                </motion.div>
               )}
-            </div>
+            </motion.div>
           </div>
         </CardContent>
       </Card>
