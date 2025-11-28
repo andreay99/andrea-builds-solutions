@@ -26,7 +26,7 @@ const Projects = () => {
       liveLink: "https://recall-app.vercel.app",
       categories: ["ai-ml"],
       featured: true,
-      metrics: { accuracy: "94%", users: "500+", impact: "2 Awards" }
+      metrics: { accuracy: "94%", users: "Active Development", impact: "2 Awards" }
     },
     {
       title: "OffScript",
@@ -38,7 +38,7 @@ const Projects = () => {
       liveLink: "https://offscript-ai.vercel.app",
       categories: ["ai-ml", "full-stack"],
       featured: true,
-      metrics: { accuracy: "92%", users: "1000+", impact: "1 Award" }
+      metrics: { accuracy: "92%", users: "Early Stage", impact: "1 Award" }
     },
     {
       title: "SONA AI",
