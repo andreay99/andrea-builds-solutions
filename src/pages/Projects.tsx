@@ -6,12 +6,14 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState, useMemo } from "react";
 import { ArrowRight, Zap, Trophy, Code, X, Zap as Spark, Clock, GitBranch, Server } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 import { GlitchText } from "@/components/GlitchText";
 import { ParallaxSection } from "@/components/ParallaxSection";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
 import abstractBg from "@/assets/abstract-background.jpg";
 
 const Projects = () => {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("all");
   const [sortBy, setSortBy] = useState("featured");
   const [selectedTech, setSelectedTech] = useState<string | null>(null);
@@ -405,13 +407,13 @@ const Projects = () => {
                     transition={{ delay: index * 0.1 + 0.25 }}
                     className="pt-2"
                   >
-                    <a 
-                      href={project.link}
-                      className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:gap-3 transition-all"
+                    <button 
+                      onClick={() => navigate(project.link)}
+                      className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:gap-3 transition-all cursor-pointer"
                     >
                       Learn More
                       <ArrowRight className="h-4 w-4" />
-                    </a>
+                    </button>
                   </motion.div>
                 </motion.div>
               ))}
