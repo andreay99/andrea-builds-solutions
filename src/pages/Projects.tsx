@@ -193,7 +193,7 @@ const Projects = () => {
                       </motion.button>
                     )}
                   </div>
-                  <div className="flex flex-wrap gap-3">
+                  <div className="flex flex-wrap gap-2 md:gap-3">
                     {allTechs.map(([tech, count]) => (
                       <motion.button
                         key={tech}
@@ -202,14 +202,14 @@ const Projects = () => {
                         whileHover={{ scale: 1.1, y: -3 }}
                         transition={{ delay: Math.random() * 0.3 }}
                         onClick={() => setSelectedTech(selectedTech === tech ? null : tech)}
-                        className={`px-4 py-2 rounded-full border text-sm font-medium transition-all cursor-pointer ${
+                        className={`px-2 md:px-4 py-1 md:py-2 rounded-full border text-xs md:text-sm font-medium transition-all cursor-pointer whitespace-nowrap ${
                           selectedTech === tech
                             ? 'bg-accent/30 border-accent/50 text-accent ring-2 ring-accent/50'
                             : 'bg-accent/10 border-accent/30 text-accent hover:bg-accent/20'
                         }`}
                       >
                         {tech}
-                        <span className="ml-2 text-xs opacity-60">×{count}</span>
+                        <span className="ml-1 md:ml-2 text-xs opacity-60">×{count}</span>
                       </motion.button>
                     ))}
                   </div>

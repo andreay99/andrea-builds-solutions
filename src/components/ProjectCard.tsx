@@ -104,7 +104,7 @@ export const ProjectCard = ({
                 transition={{ delay: index * 0.03 }}
               >
                 <Badge 
-                  className="text-xs rounded-full border-0 bg-foreground/10 text-foreground/70 hover:bg-foreground/20 transition-colors px-3 py-1"
+                  className="text-xs md:text-sm rounded-full border-0 bg-foreground/10 text-foreground/70 hover:bg-foreground/20 transition-colors px-2 md:px-3 py-1 whitespace-nowrap"
                 >
                   {tech}
                 </Badge>

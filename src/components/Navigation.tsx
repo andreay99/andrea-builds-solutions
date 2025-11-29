@@ -83,35 +83,31 @@ export const Navigation = () => {
                 to="/" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
-                onClick={() => setMobileMenuOpen(false)}
               >
-                Home
+                <div onClick={() => setMobileMenuOpen(false)}>Home</div>
               </NavLink>
               <NavLink 
                 to="/projects" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
-                onClick={() => setMobileMenuOpen(false)}
               >
-                Projects
+                <div onClick={() => setMobileMenuOpen(false)}>Projects</div>
               </NavLink>
               <NavLink 
                 to="/experience" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
-                onClick={() => setMobileMenuOpen(false)}
               >
-                Experience
+                <div onClick={() => setMobileMenuOpen(false)}>Experience</div>
               </NavLink>
               <NavLink 
                 to="/contact" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
-                onClick={() => setMobileMenuOpen(false)}
               >
-                Contact
+                <div onClick={() => setMobileMenuOpen(false)}>Contact</div>
               </NavLink>
-              <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all mt-2">
+              <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all mt-2" onClick={() => setMobileMenuOpen(false)}>
                 <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open resume in new tab" className="flex items-center justify-center gap-2 px-4 py-2 w-full">
                   <FileText className="h-4 w-4" />
                   <span className="text-sm font-medium tracking-wider uppercase">Resume</span>
