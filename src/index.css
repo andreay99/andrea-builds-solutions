@@ -185,10 +185,18 @@ All colors MUST be HSL.
   }
   
   .scroll-container {
-    height: 100vh;
+    height: 100dvh;
     overflow-y: scroll;
     scroll-snap-type: y mandatory;
     scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  @media (max-height: 800px) {
+    .scroll-container {
+      height: auto;
+      min-height: 100dvh;
+    }
   }
   
   .snap-section {

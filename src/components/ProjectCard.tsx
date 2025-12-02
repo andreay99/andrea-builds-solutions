@@ -2,7 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { ArrowRight, Award, Github, ExternalLink, Zap } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { MagneticButton } from "@/components/MagneticButton";
 import { useState } from "react";
@@ -29,6 +29,15 @@ export const ProjectCard = ({
   featured 
 }: ProjectCardProps) => {
   const [isHovered, setIsHovered] = useState(false);
+  const navigate = useNavigate();
+
+  const handleCardClick = (e: React.MouseEvent) => {
+    // Don't navigate if clicking on buttons/links inside the card
+    if ((e.target as HTMLElement).closest('a, button')) {
+      return;
+    }
+    navigate(link);
+  };
 
   return (
     <motion.div
@@ -37,7 +46,10 @@ export const ProjectCard = ({
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      <Card className="h-full border-2 border-foreground/10 rounded-lg bg-card/95 backdrop-blur-sm hover:border-accent/30 hover:shadow-2xl transition-all duration-500 overflow-hidden group relative">
+      <Card 
+        className="h-full border-2 border-foreground/10 rounded-lg bg-card/95 backdrop-blur-sm hover:border-accent/30 hover:shadow-2xl transition-all duration-500 overflow-hidden group relative cursor-pointer"
+        onClick={handleCardClick}
+      >
         {/* Hover Overlay Glow Effect */}
         <motion.div
           initial={{ opacity: 0 }}

@@ -54,7 +54,7 @@ const BentoCard = ({ project, index }: { project: Project; index: number }) => {
       }}
       className={`${sizeClasses[project.size]} relative`}
     >
-      <Link to={project.link}>
+      <Link to={project.link} className="block h-full">
         <motion.div
           className="relative h-full glass-strong rounded-2xl p-6 md:p-8 overflow-hidden group gradient-border cursor-pointer"
           onHoverStart={() => setIsHovered(true)}
