@@ -51,7 +51,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   
   const scrollRootElement = getScrollRoot();
   const rootRef = scrollRootElement ? ({ current: scrollRootElement } as unknown as React.RefObject<Element>) : undefined;
-  const isInView = useInView(ref, { once: true, margin: "-100px", root: rootRef });
+  const isInView = useInView(ref, { once: false, margin: "-100px", root: rootRef });
   
   const isLeft = index % 2 === 0;
 
