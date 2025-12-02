@@ -40,7 +40,14 @@ interface TimelineNodeProps {
 
 const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
+  // If the app uses a custom scroll container ('.scroll-container') we must
+  // pass it as the root to IntersectionObserver so `useInView` fires correctly.
+  // Fallback to `null` (viewport) if not found.
+  const scrollRootElement = typeof window !== 'undefined' ? document.querySelector('.scroll-container') : null;
+  // framer-motion's useInView expects the root as a RefObject<Element> in TS
+  // so wrap the found element into a fake RefObject that points to it.
+  const rootRef = scrollRootElement ? ({ current: scrollRootElement } as unknown as React.RefObject<Element>) : null;
+  const isInView = useInView(ref, { once: true, margin: "-100px", root: rootRef });
   
   const isLeft = index % 2 === 0;
 
@@ -83,16 +90,18 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
 
         {/* Center Node */}
         <motion.div
-          className="relative z-10 flex-shrink-0"
-          initial={{ scale: 0, rotate: -180 }}
-          animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
-          transition={{ 
-            duration: 0.5, 
-            delay: index * 0.2 + 0.2,
-            type: "spring",
-            stiffness: 200
-          }}
-        >
+            className="relative z-10 flex-shrink-0"
+            // rotateX produces a downward flip effect (vs rotate which spins around Z)
+            initial={{ scale: 0, rotateX: -75 }}
+            animate={isInView ? { scale: 1, rotateX: 0 } : { scale: 0, rotateX: -75 }}
+            transition={{ 
+              duration: 0.55, 
+              delay: index * 0.18 + 0.18,
+              type: "spring",
+              stiffness: 260
+            }}
+            style={{ transformOrigin: 'top center' }}
+          >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
               <Briefcase className="h-5 w-5 text-background" />
