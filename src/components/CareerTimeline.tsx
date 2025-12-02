@@ -42,11 +42,15 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const ref = useRef<HTMLDivElement>(null);
   // If the app uses a custom scroll container ('.scroll-container') we must
   // pass it as the root to IntersectionObserver so `useInView` fires correctly.
-  // Fallback to `null` (viewport) if not found.
-  const scrollRootElement = typeof window !== 'undefined' ? document.querySelector('.scroll-container') : null;
-  // framer-motion's useInView expects the root as a RefObject<Element> in TS
-  // so wrap the found element into a fake RefObject that points to it.
-  const rootRef = scrollRootElement ? ({ current: scrollRootElement } as unknown as React.RefObject<Element>) : null;
+  // Otherwise, fallback to `null` (viewport) for standard scrolling pages.
+  const getScrollRoot = () => {
+    if (typeof window === 'undefined') return null;
+    const scrollContainer = document.querySelector('.scroll-container');
+    return scrollContainer;
+  };
+  
+  const scrollRootElement = getScrollRoot();
+  const rootRef = scrollRootElement ? ({ current: scrollRootElement } as unknown as React.RefObject<Element>) : undefined;
   const isInView = useInView(ref, { once: true, margin: "-100px", root: rootRef });
   
   const isLeft = index % 2 === 0;
