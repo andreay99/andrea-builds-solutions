@@ -62,7 +62,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className="absolute left-1/2 top-12 w-0.5 h-full bg-gradient-to-b from-accent to-muted -translate-x-1/2 hidden md:block"
           initial={{ scaleY: 0, originY: 0 }}
-          animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+          animate={isInView ? { scaleY: 1 } : { scaleY: 1 }}
           transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
         />
       )}
@@ -72,7 +72,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className={`flex-1 ${isLeft ? 'text-right' : 'text-left md:text-right'} hidden md:block`}
           initial={{ opacity: 0, x: isLeft ? 50 : -50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? 50 : -50 }}
+          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
         >
           {isLeft && (
@@ -96,7 +96,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className="relative z-10 flex-shrink-0"
           initial={{ scale: 0, rotate: -180 }}
-          animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
+          animate={isInView ? { scale: 1, rotate: 0 } : { scale: 1, rotate: 0 }}
           transition={{ 
             duration: 0.5, 
             delay: index * 0.2 + 0.2,
@@ -117,7 +117,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className={`flex-1 ${!isLeft ? 'text-left' : 'text-right md:text-left'}`}
           initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -50 : 50 }}
+          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
         >
           <div className={`${!isLeft ? 'pl-8' : 'md:pl-8'}`}>
