@@ -90,18 +90,16 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
 
         {/* Center Node */}
         <motion.div
-            className="relative z-10 flex-shrink-0"
-            // rotateX produces a downward flip effect (vs rotate which spins around Z)
-            initial={{ scale: 0, rotateX: -75 }}
-            animate={isInView ? { scale: 1, rotateX: 0 } : { scale: 0, rotateX: -75 }}
-            transition={{ 
-              duration: 0.55, 
-              delay: index * 0.18 + 0.18,
-              type: "spring",
-              stiffness: 260
-            }}
-            style={{ transformOrigin: 'top center' }}
-          >
+          className="relative z-10 flex-shrink-0"
+          initial={{ scale: 0, rotate: -180 }}
+          animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
+          transition={{ 
+            duration: 0.5, 
+            delay: index * 0.2 + 0.2,
+            type: "spring",
+            stiffness: 200
+          }}
+        >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
               <Briefcase className="h-5 w-5 text-background" />
