@@ -27,7 +27,7 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <motion.div
-            className={`transition-all duration-300 ${
+            className={`${position} absolute transition-all duration-300 ${
               isHovered ? "scale-110 z-10" : "scale-100"
             }`}
             onMouseEnter={() => setIsHovered(true)}
@@ -90,67 +90,53 @@ const DataFlowArrow = ({ label, delay = 0 }: { label: string; delay?: number }) 
 
 export const InteractiveArchitecture = () => {
   return (
-    <div className="w-full bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden p-4 md:p-8">
-      {/* Title */}
-      <div className="mb-6 md:mb-8">
-        <h3 className="text-lg md:text-xl font-semibold text-foreground mb-2">End-to-End Architecture</h3>
-        <p className="text-xs md:text-sm text-muted-foreground">Hover over components to see technical specifications</p>
-      </div>
-
-      {/* Responsive Grid Layout */}
-      <div className="space-y-6 md:space-y-0">
-        {/* Row 1: Capture Layer */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4">
-          <div className="flex justify-center">
-            <div className="w-full md:w-auto">
-              <ArchitectureNode
-                icon={<Camera className="h-6 w-6" />}
-                title="Raspberry Pi 3"
-                description="Edge device running 24/7. Captures live video via Logitech Brio webcam. Processes frames on-device and streams to backend."
-                position="static md:absolute"
-                tech="Python + OpenCV"
-                specs={[
-                  { label: "FPS", value: "30 fps" },
-                  { label: "Resolution", value: "1920x1080" },
-                  { label: "Uptime", value: "24/7" },
-                ]}
-              />
-            </div>
-          </div>
-
-          <div className="flex justify-center hidden md:flex">
-            <div className="text-xs text-muted-foreground flex items-center gap-1 self-center mb-8">
-              <Zap className="h-3 w-3 text-accent" />
-              <span>Video Stream</span>
-            </div>
-          </div>
-
-          <div className="flex justify-center">
-            <div className="w-full md:w-auto">
-              <ArchitectureNode
-                icon={<Server className="h-6 w-6" />}
-                title="Flask REST API"
-                description="Central orchestrator receiving video frames. Coordinates facial detection, embedding extraction, and database queries."
-                position="static md:absolute"
-                tech="Flask + Python"
-                specs={[
-                  { label: "Latency", value: "<200ms" },
-                  { label: "Endpoints", value: "3 routes" },
-                  { label: "Upload", value: "Multipart/form-data" },
-                ]}
-              />
-            </div>
-          </div>
+    <>
+      {/* Mobile View (Grid Layout) */}
+      <div className="md:hidden w-full bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden p-4 space-y-6">
+        {/* Title */}
+        <div>
+          <h3 className="text-lg font-semibold text-foreground mb-2">End-to-End Architecture</h3>
+          <p className="text-xs text-muted-foreground">Tap components to see technical specifications</p>
         </div>
 
-        {/* Row 1.5: ML Layer */}
-        <div className="flex justify-center">
-          <div className="w-full md:w-auto">
+        {/* Mobile Grid Layout */}
+        <div className="space-y-4">
+          <div className="flex justify-center">
+            <ArchitectureNode
+              icon={<Camera className="h-6 w-6" />}
+              title="Raspberry Pi 3"
+              description="Edge device running 24/7. Captures live video via Logitech Brio webcam. Processes frames on-device and streams to backend."
+              position="static"
+              tech="Python + OpenCV"
+              specs={[
+                { label: "FPS", value: "30 fps" },
+                { label: "Resolution", value: "1920x1080" },
+                { label: "Uptime", value: "24/7" },
+              ]}
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <ArchitectureNode
+              icon={<Server className="h-6 w-6" />}
+              title="Flask REST API"
+              description="Central orchestrator receiving video frames. Coordinates facial detection, embedding extraction, and database queries."
+              position="static"
+              tech="Flask + Python"
+              specs={[
+                { label: "Latency", value: "<200ms" },
+                { label: "Endpoints", value: "3 routes" },
+                { label: "Upload", value: "Multipart/form-data" },
+              ]}
+            />
+          </div>
+
+          <div className="flex justify-center">
             <ArchitectureNode
               icon={<Brain className="h-6 w-6" />}
               title="OpenCV + Facial Recognition"
               description="Detects faces, extracts 128-D embeddings. Performs cosine similarity search against MongoDB profiles (threshold: 0.6)."
-              position="static md:absolute"
+              position="static"
               tech="OpenCV + NumPy"
               specs={[
                 { label: "Embedding Dim", value: "128D" },
@@ -159,100 +145,255 @@ export const InteractiveArchitecture = () => {
               ]}
             />
           </div>
-        </div>
 
-        {/* Row 2: Data Layer */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
           <div className="flex justify-center">
-            <div className="w-full md:w-auto">
-              <ArchitectureNode
-                icon={<Database className="h-6 w-6" />}
-                title="MongoDB"
-                description="NoSQL database storing face embeddings, user profiles, and conversation history. Optimized for cosine similarity queries."
-                position="static md:absolute"
-                tech="MongoDB Atlas"
-                specs={[
-                  { label: "Index", value: "Cosine" },
-                  { label: "Query Time", value: "<50ms" },
-                  { label: "Storage", value: "~1MB/user" },
-                ]}
-              />
-            </div>
+            <ArchitectureNode
+              icon={<Database className="h-6 w-6" />}
+              title="MongoDB"
+              description="NoSQL database storing face embeddings, user profiles, and conversation history. Optimized for cosine similarity queries."
+              position="static"
+              tech="MongoDB Atlas"
+              specs={[
+                { label: "Index", value: "Cosine" },
+                { label: "Query Time", value: "<50ms" },
+                { label: "Storage", value: "~1MB/user" },
+              ]}
+            />
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full md:w-auto">
-              <ArchitectureNode
-                icon={<Brain className="h-6 w-6" />}
-                title="Grok-3 LLM"
-                description="Advanced language model synthesizing context. Generates natural conversational memory summaries with specific details about recognized person."
-                position="static md:absolute"
-                tech="Grok-3 API"
-                specs={[
-                  { label: "Context", value: "Streaming" },
-                  { label: "Latency", value: "~1-2s" },
-                  { label: "Model", value: "Grok-3" },
-                ]}
-              />
-            </div>
-          </div>
-        </div>
-
-        {/* Row 3: Output Layer */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-          <div className="flex justify-center">
-            <div className="w-full md:w-auto">
-              <ArchitectureNode
-                icon={<Monitor className="h-6 w-6" />}
-                title="Web Dashboard"
-                description="Real-time timeline display showing recognized people, memories, and AI-generated summaries. Built with Next.js on Vercel."
-                position="static md:absolute"
-                tech="Next.js + React"
-                specs={[
-                  { label: "Framework", value: "Next.js 15" },
-                  { label: "Updates", value: "Real-time" },
-                  { label: "Hosting", value: "Vercel" },
-                ]}
-              />
-            </div>
+            <ArchitectureNode
+              icon={<Brain className="h-6 w-6" />}
+              title="Grok-3 LLM"
+              description="Advanced language model synthesizing context. Generates natural conversational memory summaries with specific details about recognized person."
+              position="static"
+              tech="Grok-3 API"
+              specs={[
+                { label: "Context", value: "Streaming" },
+                { label: "Latency", value: "~1-2s" },
+                { label: "Model", value: "Grok-3" },
+              ]}
+            />
           </div>
 
           <div className="flex justify-center">
-            <div className="w-full md:w-auto">
-              <ArchitectureNode
-                icon={<Volume2 className="h-6 w-6" />}
-                title="ElevenLabs TTS"
-                description="Converts text summaries to natural speech. Outputs via wired earbuds for hands-free operation. Voice: Matilda."
-                position="static md:absolute"
-                tech="ElevenLabs API"
-                specs={[
-                  { label: "Latency", value: "~1s" },
-                  { label: "Voice", value: "Matilda" },
-                  { label: "Quality", value: "Ultra" },
-                ]}
-              />
-            </div>
+            <ArchitectureNode
+              icon={<Monitor className="h-6 w-6" />}
+              title="Web Dashboard"
+              description="Real-time timeline display showing recognized people, memories, and AI-generated summaries. Built with Next.js on Vercel."
+              position="static"
+              tech="Next.js + React"
+              specs={[
+                { label: "Framework", value: "Next.js 15" },
+                { label: "Updates", value: "Real-time" },
+                { label: "Hosting", value: "Vercel" },
+              ]}
+            />
+          </div>
+
+          <div className="flex justify-center">
+            <ArchitectureNode
+              icon={<Volume2 className="h-6 w-6" />}
+              title="ElevenLabs TTS"
+              description="Converts text summaries to natural speech. Outputs via wired earbuds for hands-free operation. Voice: Matilda."
+              position="static"
+              tech="ElevenLabs API"
+              specs={[
+                { label: "Latency", value: "~1s" },
+                { label: "Voice", value: "Matilda" },
+                { label: "Quality", value: "Ultra" },
+              ]}
+            />
           </div>
         </div>
-      </div>
 
-      {/* Features Section */}
-      <div className="mt-8 p-4 md:p-6 bg-secondary/30 rounded-lg border border-border/50">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs md:text-sm">
+        {/* Mobile Features Section */}
+        <div className="p-4 bg-secondary/30 rounded-lg border border-border/50 space-y-3">
           <div>
-            <p className="font-semibold text-accent mb-1">🎯 Real-time Processing</p>
+            <p className="font-semibold text-accent mb-1 text-xs">🎯 Real-time Processing</p>
             <p className="text-xs text-muted-foreground">24/7 autonomous operation without user intervention</p>
           </div>
           <div>
-            <p className="font-semibold text-accent mb-1">🔒 Privacy-First</p>
+            <p className="font-semibold text-accent mb-1 text-xs">🔒 Privacy-First</p>
             <p className="text-xs text-muted-foreground">No raw video/audio stored, only summaries</p>
           </div>
           <div>
-            <p className="font-semibold text-accent mb-1">⚡ Edge Computing</p>
+            <p className="font-semibold text-accent mb-1 text-xs">⚡ Edge Computing</p>
             <p className="text-xs text-muted-foreground">Offloads heavy ML to cloud, lightweight inference on device</p>
           </div>
         </div>
       </div>
-    </div>
+
+      {/* Desktop View (Positioned Layout) */}
+      <div className="hidden md:block relative w-full min-h-[700px] p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
+        {/* Title */}
+        <div className="mb-8">
+          <h3 className="text-xl font-semibold text-foreground mb-2">End-to-End Architecture</h3>
+          <p className="text-sm text-muted-foreground">Hover over components to see technical specifications</p>
+        </div>
+
+        {/* Row 1: Capture Layer */}
+        <ArchitectureNode
+          icon={<Camera className="h-6 w-6" />}
+          title="Raspberry Pi 3"
+          description="Edge device running 24/7. Captures live video via Logitech Brio webcam. Processes frames on-device and streams to backend."
+          position="top-24 left-8"
+          tech="Python + OpenCV"
+          specs={[
+            { label: "FPS", value: "30 fps" },
+            { label: "Resolution", value: "1920x1080" },
+            { label: "Uptime", value: "24/7" },
+          ]}
+        />
+
+        {/* Row 1: Processing Layer */}
+        <ArchitectureNode
+          icon={<Server className="h-6 w-6" />}
+          title="Flask REST API"
+          description="Central orchestrator receiving video frames. Coordinates facial detection, embedding extraction, and database queries."
+          position="top-24 left-[300px]"
+          tech="Flask + Python"
+          specs={[
+            { label: "Latency", value: "<200ms" },
+            { label: "Endpoints", value: "3 routes" },
+            { label: "Upload", value: "Multipart/form-data" },
+          ]}
+        />
+
+        {/* Row 1: ML Layer */}
+        <ArchitectureNode
+          icon={<Brain className="h-6 w-6" />}
+          title="OpenCV + Facial Recognition"
+          description="Detects faces, extracts 128-D embeddings. Performs cosine similarity search against MongoDB profiles (threshold: 0.6)."
+          position="top-24 left-[600px]"
+          tech="OpenCV + NumPy"
+          specs={[
+            { label: "Embedding Dim", value: "128D" },
+            { label: "Algorithm", value: "FaceNet" },
+            { label: "Accuracy", value: "~98%" },
+          ]}
+        />
+
+        {/* Row 2: Data Layer */}
+        <ArchitectureNode
+          icon={<Database className="h-6 w-6" />}
+          title="MongoDB"
+          description="NoSQL database storing face embeddings, user profiles, and conversation history. Optimized for cosine similarity queries."
+          position="top-[260px] left-[150px]"
+          tech="MongoDB Atlas"
+          specs={[
+            { label: "Index", value: "Cosine" },
+            { label: "Query Time", value: "<50ms" },
+            { label: "Storage", value: "~1MB/user" },
+          ]}
+        />
+
+        {/* Row 2: LLM Layer */}
+        <ArchitectureNode
+          icon={<Brain className="h-6 w-6" />}
+          title="Grok-3 LLM"
+          description="Advanced language model synthesizing context. Generates natural conversational memory summaries with specific details about recognized person."
+          position="top-[260px] left-[480px]"
+          tech="Grok-3 API"
+          specs={[
+            { label: "Context", value: "Streaming" },
+            { label: "Latency", value: "~1-2s" },
+            { label: "Model", value: "Grok-3" },
+          ]}
+        />
+
+        {/* Row 3: Output Layer */}
+        <ArchitectureNode
+          icon={<Monitor className="h-6 w-6" />}
+          title="Web Dashboard"
+          description="Real-time timeline display showing recognized people, memories, and AI-generated summaries. Built with Next.js on Vercel."
+          position="top-[480px] left-[250px]"
+          tech="Next.js + React"
+          specs={[
+            { label: "Framework", value: "Next.js 15" },
+            { label: "Updates", value: "Real-time" },
+            { label: "Hosting", value: "Vercel" },
+          ]}
+        />
+
+        {/* Row 3: Audio Output */}
+        <ArchitectureNode
+          icon={<Volume2 className="h-6 w-6" />}
+          title="ElevenLabs TTS"
+          description="Converts text summaries to natural speech. Outputs via wired earbuds for hands-free operation. Voice: Matilda."
+          position="top-[480px] left-[550px]"
+          tech="ElevenLabs API"
+          specs={[
+            { label: "Latency", value: "~1s" },
+            { label: "Voice", value: "Matilda" },
+            { label: "Quality", value: "Ultra" },
+          ]}
+        />
+
+        {/* Data Flow Indicators */}
+        <div className="absolute top-[110px] left-[180px] text-xs text-muted-foreground flex items-center gap-1">
+          <Zap className="h-3 w-3 text-accent" />
+          <span>Video Stream</span>
+        </div>
+
+        <div className="absolute top-[110px] left-[480px] text-xs text-muted-foreground flex items-center gap-1">
+          <Zap className="h-3 w-3 text-accent" />
+          <span>Face Frames</span>
+        </div>
+
+        <div className="absolute top-[350px] left-[320px] text-xs text-muted-foreground flex items-center gap-1">
+          <Clock className="h-3 w-3 text-accent" />
+          <span>Cosine Similarity</span>
+        </div>
+
+        <div className="absolute top-[350px] left-[600px] text-xs text-muted-foreground flex items-center gap-1">
+          <Brain className="h-3 w-3 text-accent" />
+          <span>LLM Summary</span>
+        </div>
+
+        {/* Features Section */}
+        <div className="absolute bottom-8 left-8 right-8 p-4 bg-secondary/30 rounded-lg border border-border/50">
+          <div className="grid grid-cols-3 gap-4 text-sm">
+            <div>
+              <p className="font-semibold text-accent mb-1">🎯 Real-time Processing</p>
+              <p className="text-xs text-muted-foreground">24/7 autonomous operation without user intervention</p>
+            </div>
+            <div>
+              <p className="font-semibold text-accent mb-1">🔒 Privacy-First</p>
+              <p className="text-xs text-muted-foreground">No raw video/audio stored, only summaries</p>
+            </div>
+            <div>
+              <p className="font-semibold text-accent mb-1">⚡ Edge Computing</p>
+              <p className="text-xs text-muted-foreground">Offloads heavy ML to cloud, lightweight inference on device</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Connecting lines (simplified with CSS) */}
+        <svg className="absolute top-0 left-0 w-full h-full pointer-events-none" style={{ zIndex: 0 }}>
+          <defs>
+            <marker
+              id="arrowhead"
+              markerWidth="10"
+              markerHeight="10"
+              refX="9"
+              refY="3"
+              orient="auto"
+              className="fill-accent/30"
+            >
+              <polygon points="0 0, 10 3, 0 6" />
+            </marker>
+          </defs>
+          {/* Camera to Flask */}
+          <line x1="150" y1="130" x2="300" y2="130" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
+          {/* Flask to OpenCV */}
+          <line x1="420" y1="130" x2="600" y2="130" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
+          {/* To DB and LLM */}
+          <line x1="700" y1="160" x2="700" y2="240" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
+          <line x1="300" y1="240" x2="300" y2="350" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
+          <line x1="550" y1="240" x2="550" y2="350" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
+        </svg>
+      </div>
+    </>
   );
 };
