@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Briefcase, GraduationCap } from 'lucide-react';
 
 interface TimelineItem {
@@ -40,19 +40,6 @@ interface TimelineNodeProps {
 
 const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  // If the app uses a custom scroll container ('.scroll-container') we must
-  // pass it as the root to IntersectionObserver so `useInView` fires correctly.
-  // Otherwise, fallback to `null` (viewport) for standard scrolling pages.
-  const getScrollRoot = () => {
-    if (typeof window === 'undefined') return null;
-    const scrollContainer = document.querySelector('.scroll-container');
-    return scrollContainer;
-  };
-  
-  const scrollRootElement = getScrollRoot();
-  const rootRef = scrollRootElement ? ({ current: scrollRootElement } as unknown as React.RefObject<Element>) : undefined;
-  const isInView = useInView(ref, { once: true, margin: "-100px", root: rootRef });
-  
   const isLeft = index % 2 === 0;
 
   return (
@@ -62,8 +49,9 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className="absolute left-1/2 top-12 w-0.5 h-full bg-gradient-to-b from-accent to-muted -translate-x-1/2 hidden md:block"
           initial={{ scaleY: 0, originY: 0 }}
-          animate={isInView ? { scaleY: 1 } : { scaleY: 0 }}
+          whileInView={{ scaleY: 1 }}
           transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         />
       )}
 
@@ -72,8 +60,9 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className={`flex-1 ${isLeft ? 'text-right' : 'text-left md:text-right'} hidden md:block`}
           initial={{ opacity: 0, x: isLeft ? 50 : -50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? 50 : -50 }}
+          whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           {isLeft && (
             <div className="pr-8">
@@ -96,13 +85,14 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className="relative z-10 flex-shrink-0"
           initial={{ scale: 0, rotate: -180 }}
-          animate={isInView ? { scale: 1, rotate: 0 } : { scale: 0, rotate: -180 }}
+          whileInView={{ scale: 1, rotate: 0 }}
           transition={{ 
             duration: 0.5, 
             delay: index * 0.2 + 0.2,
             type: "spring",
             stiffness: 200
           }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
@@ -117,8 +107,9 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         <motion.div
           className={`flex-1 ${!isLeft ? 'text-left' : 'text-right md:text-left'}`}
           initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-          animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: isLeft ? -50 : 50 }}
+          whileInView={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
+          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           <div className={`${!isLeft ? 'pl-8' : 'md:pl-8'}`}>
             {/* Mobile Layout */}
