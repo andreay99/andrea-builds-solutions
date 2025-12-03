@@ -199,9 +199,21 @@ All colors MUST be HSL.
     }
   }
   
+  @media (max-width: 768px) {
+    .scroll-container {
+      scroll-snap-type: none;
+    }
+  }
+  
   .snap-section {
     scroll-snap-align: start;
     min-height: 100vh;
+  }
+  
+  @media (max-width: 768px) {
+    .snap-section {
+      min-height: auto;
+    }
   }
   
   /* Glassmorphism effects */
