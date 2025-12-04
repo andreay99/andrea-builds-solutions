@@ -92,18 +92,18 @@ export const InteractiveArchitecture = () => {
   return (
     <>
       {/* Mobile View (Grid Layout) */}
-      <div className="md:hidden w-full bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden p-4 space-y-6">
+      <div className="md:hidden w-full bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden p-3 space-y-4">
         {/* Title */}
         <div>
-          <h3 className="text-lg font-semibold text-foreground mb-2">End-to-End Architecture</h3>
+          <h3 className="text-base font-semibold text-foreground mb-1">End-to-End Architecture</h3>
           <p className="text-xs text-muted-foreground">Tap components to see technical specifications</p>
         </div>
 
         {/* Mobile Grid Layout */}
-        <div className="space-y-4">
+        <div className="grid grid-cols-2 gap-2">
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Camera className="h-6 w-6" />}
+              icon={<Camera className="h-5 w-5" />}
               title="Raspberry Pi 3"
               description="Edge device running 24/7. Captures live video via Logitech Brio webcam. Processes frames on-device and streams to backend."
               position="static"
@@ -118,7 +118,7 @@ export const InteractiveArchitecture = () => {
 
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Server className="h-6 w-6" />}
+              icon={<Server className="h-5 w-5" />}
               title="Flask REST API"
               description="Central orchestrator receiving video frames. Coordinates facial detection, embedding extraction, and database queries."
               position="static"
@@ -133,7 +133,7 @@ export const InteractiveArchitecture = () => {
 
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Brain className="h-6 w-6" />}
+              icon={<Brain className="h-5 w-5" />}
               title="OpenCV + Facial Recognition"
               description="Detects faces, extracts 128-D embeddings. Performs cosine similarity search against MongoDB profiles (threshold: 0.6)."
               position="static"
@@ -148,7 +148,7 @@ export const InteractiveArchitecture = () => {
 
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Database className="h-6 w-6" />}
+              icon={<Database className="h-5 w-5" />}
               title="MongoDB"
               description="NoSQL database storing face embeddings, user profiles, and conversation history. Optimized for cosine similarity queries."
               position="static"
@@ -163,7 +163,7 @@ export const InteractiveArchitecture = () => {
 
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Brain className="h-6 w-6" />}
+              icon={<Brain className="h-5 w-5" />}
               title="Grok-3 LLM"
               description="Advanced language model synthesizing context. Generates natural conversational memory summaries with specific details about recognized person."
               position="static"
@@ -178,7 +178,7 @@ export const InteractiveArchitecture = () => {
 
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Monitor className="h-6 w-6" />}
+              icon={<Monitor className="h-5 w-5" />}
               title="Web Dashboard"
               description="Real-time timeline display showing recognized people, memories, and AI-generated summaries. Built with Next.js on Vercel."
               position="static"
@@ -193,7 +193,7 @@ export const InteractiveArchitecture = () => {
 
           <div className="flex justify-center">
             <ArchitectureNode
-              icon={<Volume2 className="h-6 w-6" />}
+              icon={<Volume2 className="h-5 w-5" />}
               title="ElevenLabs TTS"
               description="Converts text summaries to natural speech. Outputs via wired earbuds for hands-free operation. Voice: Matilda."
               position="static"
@@ -208,17 +208,17 @@ export const InteractiveArchitecture = () => {
         </div>
 
         {/* Mobile Features Section */}
-        <div className="p-4 bg-secondary/30 rounded-lg border border-border/50 space-y-3">
+        <div className="p-3 bg-secondary/30 rounded-lg border border-border/50 space-y-2">
           <div>
-            <p className="font-semibold text-accent mb-1 text-xs">🎯 Real-time Processing</p>
+            <p className="font-semibold text-accent mb-0.5 text-xs">🎯 Real-time Processing</p>
             <p className="text-xs text-muted-foreground">24/7 autonomous operation without user intervention</p>
           </div>
           <div>
-            <p className="font-semibold text-accent mb-1 text-xs">🔒 Privacy-First</p>
+            <p className="font-semibold text-accent mb-0.5 text-xs">🔒 Privacy-First</p>
             <p className="text-xs text-muted-foreground">No raw video/audio stored, only summaries</p>
           </div>
           <div>
-            <p className="font-semibold text-accent mb-1 text-xs">⚡ Edge Computing</p>
+            <p className="font-semibold text-accent mb-0.5 text-xs">⚡ Edge Computing</p>
             <p className="text-xs text-muted-foreground">Offloads heavy ML to cloud, lightweight inference on device</p>
           </div>
         </div>
