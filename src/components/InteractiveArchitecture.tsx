@@ -27,9 +27,9 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <motion.div
-            className={`${position} absolute transition-all duration-300 ${
+            className={`${position === "static" ? "relative" : "absolute"} transition-all duration-300 ${
               isHovered ? "scale-110 z-10" : "scale-100"
-            }`}
+            } ${position !== "static" ? position : ""}`}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             whileHover={{ scale: 1.1 }}
