@@ -27,7 +27,7 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <motion.div
-            className={`${position} absolute transition-all duration-300 ${
+            className={`${position === "static" ? "relative" : `${position} absolute`} transition-all duration-300 ${
               isHovered ? "scale-110 z-10" : "scale-100"
             }`}
             onMouseEnter={() => setIsHovered(true)}
@@ -78,12 +78,14 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
 
 export const OffScriptArchitecture = () => {
   return (
-    <div className="relative w-full min-h-[850px] pb-32 p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
-      {/* Title */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold text-foreground mb-2">AI-Powered Code Learning Platform</h3>
-        <p className="text-sm text-muted-foreground">Hover over components to see technical specifications and integrations</p>
-      </div>
+    <>
+      {/* Desktop Layout - Absolute Positioning */}
+      <div className="hidden md:block relative w-full min-h-[850px] pb-32 p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
+        {/* Title */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold text-foreground mb-2">AI-Powered Code Learning Platform</h3>
+          <p className="text-sm text-muted-foreground">Hover over components to see technical specifications and integrations</p>
+        </div>
 
       {/* Row 1: Frontend/Voice Interface */}
       <ArchitectureNode
@@ -257,6 +259,25 @@ export const OffScriptArchitecture = () => {
         <line x1="300" y1="340" x2="300" y2="500" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
         <line x1="650" y1="340" x2="650" y2="500" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
       </svg>
-    </div>
+      </div>
+
+      {/* Mobile Layout - Grid */}
+      <div className="md:hidden w-full p-4 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50">
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-foreground mb-2">AI-Powered Code Learning Platform</h3>
+          <p className="text-xs text-muted-foreground">Components shown below</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div><ArchitectureNode icon={<Code className="h-5 w-5" />} title="Monaco" description="Code editor" position="static" tech="Monaco" /></div>
+          <div><ArchitectureNode icon={<Mic className="h-5 w-5" />} title="Vapi Voice" description="Voice I/O" position="static" tech="Vapi" /></div>
+          <div><ArchitectureNode icon={<MessageSquare className="h-5 w-5" />} title="Transcript" description="Real-time" position="static" tech="React" /></div>
+          <div><ArchitectureNode icon={<Server className="h-5 w-5" />} title="FastAPI" description="Backend" position="static" tech="FastAPI" /></div>
+          <div><ArchitectureNode icon={<Database className="h-5 w-5" />} title="Database" description="SQLite" position="static" tech="SQLite" /></div>
+          <div><ArchitectureNode icon={<Brain className="h-5 w-5" />} title="Gemini AI" description="Rating engine" position="static" tech="Gemini" /></div>
+          <div><ArchitectureNode icon={<BarChart3 className="h-5 w-5" />} title="Analytics" description="Insights" position="static" tech="Charts" /></div>
+          <div><ArchitectureNode icon={<Zap className="h-5 w-5" />} title="Recommendations" description="ML-powered" position="static" tech="ML" /></div>
+        </div>
+      </div>
+    </>
   );
 };

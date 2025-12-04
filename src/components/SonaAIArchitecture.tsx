@@ -27,7 +27,7 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
       <Tooltip delayDuration={0}>
         <TooltipTrigger asChild>
           <motion.div
-            className={`${position} absolute transition-all duration-300 ${
+            className={`${position === "static" ? "relative" : `${position} absolute`} transition-all duration-300 ${
               isHovered ? "scale-110 z-10" : "scale-100"
             }`}
             onMouseEnter={() => setIsHovered(true)}
@@ -78,12 +78,14 @@ const ArchitectureNode = ({ icon, title, description, position, tech, specs, col
 
 export const SonaAIArchitecture = () => {
   return (
-    <div className="relative w-full min-h-[850px] pb-32 p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
-      {/* Title */}
-      <div className="mb-8">
-        <h3 className="text-lg font-semibold text-foreground mb-2">Real-Time Emotion Detection Pipeline</h3>
-        <p className="text-sm text-muted-foreground">Hover over components to see technical specifications and data flow</p>
-      </div>
+    <>
+      {/* Desktop Layout - Absolute Positioning */}
+      <div className="hidden md:block relative w-full min-h-[850px] pb-32 p-8 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50 overflow-hidden">
+        {/* Title */}
+        <div className="mb-8">
+          <h3 className="text-lg font-semibold text-foreground mb-2">Real-Time Emotion Detection Pipeline</h3>
+          <p className="text-sm text-muted-foreground">Hover over components to see technical specifications and data flow</p>
+        </div>
 
       {/* Row 1: Input & Signal Processing */}
       <ArchitectureNode
@@ -257,6 +259,25 @@ export const SonaAIArchitecture = () => {
         <line x1="250" y1="340" x2="250" y2="500" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
         <line x1="650" y1="340" x2="650" y2="500" stroke="currentColor" strokeWidth="1" className="stroke-accent/20" />
       </svg>
-    </div>
+      </div>
+
+      {/* Mobile Layout - Grid */}
+      <div className="md:hidden w-full p-4 bg-gradient-to-br from-background via-background to-secondary/10 rounded-lg border border-border/50">
+        <div className="mb-6">
+          <h3 className="text-lg font-semibold text-foreground mb-2">Real-Time Emotion Detection Pipeline</h3>
+          <p className="text-xs text-muted-foreground">Components shown below</p>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          <div><ArchitectureNode icon={<Mic className="h-5 w-5" />} title="Audio Input" description="Real-time voice" position="static" tech="Microphone" /></div>
+          <div><ArchitectureNode icon={<Zap className="h-5 w-5" />} title="Signal Processing" description="Audio normalization" position="static" tech="Python" /></div>
+          <div><ArchitectureNode icon={<Brain className="h-5 w-5" />} title="Feature Extraction" description="MFCC analysis" position="static" tech="Librosa" /></div>
+          <div><ArchitectureNode icon={<Server className="h-5 w-5" />} title="ML Model" description="Emotion classifier" position="static" tech="TensorFlow" /></div>
+          <div><ArchitectureNode icon={<Activity className="h-5 w-5" />} title="Real-Time Processing" description="Streaming inference" position="static" tech="FastAPI" /></div>
+          <div><ArchitectureNode icon={<Database className="h-5 w-5" />} title="Database" description="Store results" position="static" tech="PostgreSQL" /></div>
+          <div><ArchitectureNode icon={<BarChart3 className="h-5 w-5" />} title="Analytics" description="Trend analysis" position="static" tech="Charts" /></div>
+          <div><ArchitectureNode icon={<Cpu className="h-5 w-5" />} title="Insights" description="Personalized data" position="static" tech="ML" /></div>
+        </div>
+      </div>
+    </>
   );
 };
