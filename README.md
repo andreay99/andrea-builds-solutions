@@ -1,73 +1,155 @@
-# Welcome to your Lovable project
+# Andrea's Portfolio Website
 
-## Project info
+A modern, interactive portfolio website showcasing full-stack AI/ML projects, technical architecture, and professional experience. Built with React, TypeScript, and Framer Motion for smooth animations and engaging user interactions.
 
-**URL**: https://lovable.dev/projects/d047117e-201c-4009-8067-409832aa6cd3
+🌐 **Live Site**: [andrea-builds-solutions.vercel.app](https://andrea-builds-solutions.vercel.app)
 
-## How can I edit this code?
+## ✨ Features
 
-There are several ways of editing your application.
+- **Interactive Project Showcases**: Detailed case studies with technical architecture diagrams, demo videos, and impact metrics
+- **Responsive Design**: Fully optimized for desktop, tablet, and mobile devices
+- **Smooth Animations**: Framer Motion animations, scroll effects, and interactive components
+- **Tech Architecture Visualizations**: Interactive diagrams showing system design for each project
+- **Dark/Light Theme Support**: Tailwind CSS with theme switching
+- **Performance Optimized**: Vite build system, lazy image loading, code splitting
+- **Accessible**: WCAG compliant with proper semantic HTML and ARIA attributes
 
-**Use Lovable**
+## 🚀 Featured Projects
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/d047117e-201c-4009-8067-409832aa6cd3) and start prompting.
+### Recall
+**AI-powered digital memory assistant for Alzheimer's & Dementia patients**
+- Best Use of Grok (xAI) - HackPrinceton 2025
+- Best Use of Arm (MLH) - HackPrinceton 2025
+- Tech: Raspberry Pi, OpenCV, Flask, MongoDB, ElevenLabs TTS
 
-Changes made via Lovable will be committed automatically to this repo.
+### OffScript
+**Real-time AI-powered technical interview simulator with dynamic feedback**
+- Tech: Next.js, FastAPI, Vapi Voice AI, Gemini AI, SQLite, Monaco Editor
 
-**Use your preferred IDE**
+### SONA AI
+**Real-time emotion detection and mental health insights platform**
+- Tech: FastAPI, TensorFlow, PostgreSQL, Librosa, React
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Bikeshare Analytics
+**Data analytics pipeline for NYC Citi Bike share system**
+- Tech: Python, PostgreSQL, Pandas, Plotly, Prophet ML
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🛠️ Tech Stack
 
-Follow these steps:
+- **Frontend**: React 18, TypeScript, Vite v5.4.19
+- **Styling**: Tailwind CSS 3.4.17, PostCSS
+- **Animation**: Framer Motion
+- **UI Components**: shadcn/ui
+- **Routing**: React Router DOM
+- **Deployment**: Vercel
+- **Build Tool**: Vite
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+## 📦 Getting Started
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Prerequisites
+- Node.js 16+ 
+- npm or bun
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Installation
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```bash
+# Clone the repository
+git clone https://github.com/andreay99/andrea-builds-solutions.git
+cd andrea-builds-solutions
+
+# Install dependencies
+npm install
+
+# Start development server
 npm run dev
+
+# Build for production
+npm run build
+
+# Preview production build
+npm run preview
 ```
 
-**Edit a file directly in GitHub**
+The development server will start at `http://localhost:5173`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/          # Reusable React components
+│   ├── ui/             # shadcn/ui components
+│   ├── Navigation.tsx   # Main navigation
+│   ├── CareerTimeline.tsx
+│   ├── InteractiveArchitecture.tsx
+│   └── ...
+├── pages/              # Page components
+│   ├── Home.tsx
+│   ├── Experience.tsx
+│   ├── Projects.tsx
+│   ├── Contact.tsx
+│   └── projects/       # Individual project pages
+├── hooks/              # Custom React hooks
+├── lib/                # Utilities and helpers
+├── assets/             # Images and media
+└── index.css          # Global styles
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🎨 Design Highlights
 
-## What technologies are used for this project?
+- **Custom Cursor**: Magnetic button effects with smooth interactions
+- **Parallax Scrolling**: Background parallax effects on scroll
+- **Responsive Grid**: Bento-style project grid that adapts to screen size
+- **Interactive Charts**: Skill visualization with circular charts
+- **Smooth Transitions**: Page transitions and route animations
+- **Mobile-First**: Optimized mobile experience with touch-friendly components
 
-This project is built with:
+## 🚀 Deployment
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+The site is deployed on **Vercel** with automatic CI/CD from the main branch.
 
-## How can I deploy this project?
+```bash
+# Deploy to production
+vercel --prod
+```
 
-Simply open [Lovable](https://lovable.dev/projects/d047117e-201c-4009-8067-409832aa6cd3) and click on Share -> Publish.
+### SPA Routing
+Uses `vercel.json` to configure client-side routing for React Router:
+```json
+{
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
+```
 
-## Can I connect a custom domain to my Lovable project?
+## 📱 Responsive Breakpoints
 
-Yes, you can!
+- **Mobile**: < 640px
+- **Tablet**: 640px - 1024px  
+- **Desktop**: > 1024px
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+Architecture components adapt:
+- **Desktop**: Interactive absolute-positioned diagrams with SVG connectors
+- **Mobile**: Clean 2-column grid layout
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+## 🔄 Recent Updates
+
+- ✅ Fixed mobile scroll container height with responsive viewport
+- ✅ Made entire project cards clickable
+- ✅ Added responsive architecture layouts for all projects
+- ✅ Implemented timeline animations with Framer Motion
+- ✅ Fixed SPA routing with Vercel configuration
+
+## 📝 License
+
+Personal portfolio - © 2025 Andrea. All rights reserved.
+
+## 🤝 Contact
+
+- **Email**: [Contact page](https://andrea-builds-solutions.vercel.app/contact)
+- **GitHub**: [@andreay99](https://github.com/andreay99)
+- **LinkedIn**: [Andrea's LinkedIn]
+
+---
+
+**Built with ❤️ using React, TypeScript, and Framer Motion**
