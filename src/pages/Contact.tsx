@@ -11,7 +11,7 @@ const Contact = () => {
         <div className="mb-12">
           <h1 className="mb-4">Get in Touch</h1>
           <p className="text-lg text-muted-foreground mb-4">
-            I'm a Computer Science student at Stevens Institute of Technology specializing in AI/ML and full-stack development. 
+            I'm a Computer Science student at New Jersey Institute of Technology specializing in AI/ML and full-stack development. 
             With expertise in facial recognition, natural language processing, and computer vision, I build intelligent systems 
             that solve real-world problems.
           </p>
