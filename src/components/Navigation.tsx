@@ -12,8 +12,14 @@ export const Navigation = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm">
       <div className="section-container">
         <div className="flex items-center justify-between h-20 md:h-24">
-          <NavLink to="/" className="hover:opacity-70 transition-opacity" onClick={() => setMobileMenuOpen(false)}>
-            <img src={logo} alt="Andrea Soto Logo" className="h-16 md:h-20 w-auto" />
+          <NavLink 
+            to="/" 
+            className="hover:opacity-70 transition-opacity cursor-pointer flex items-center"
+            onClick={() => setMobileMenuOpen(false)}
+            title="Go to home page"
+            aria-label="Andrea Soto - Home"
+          >
+            <img src={logo} alt="Andrea Soto Logo - Click to return home" className="h-16 md:h-20 w-auto hover:scale-105 transition-transform" />
           </NavLink>
           
           <div className="flex items-center gap-12">
@@ -83,31 +89,35 @@ export const Navigation = () => {
                 to="/" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
+                onClick={() => setMobileMenuOpen(false)}
               >
-                <div onClick={() => setMobileMenuOpen(false)}>Home</div>
+                Home
               </NavLink>
               <NavLink 
                 to="/projects" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
+                onClick={() => setMobileMenuOpen(false)}
               >
-                <div onClick={() => setMobileMenuOpen(false)}>Projects</div>
+                Projects
               </NavLink>
               <NavLink 
                 to="/experience" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
+                onClick={() => setMobileMenuOpen(false)}
               >
-                <div onClick={() => setMobileMenuOpen(false)}>Experience</div>
+                Experience
               </NavLink>
               <NavLink 
                 to="/contact" 
                 className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
                 activeClassName="opacity-100 bg-foreground/10 rounded"
+                onClick={() => setMobileMenuOpen(false)}
               >
-                <div onClick={() => setMobileMenuOpen(false)}>Contact</div>
+                Contact
               </NavLink>
-              <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all mt-2" onClick={() => setMobileMenuOpen(false)}>
+              <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all mt-2">
                 <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open resume in new tab" className="flex items-center justify-center gap-2 px-4 py-2 w-full">
                   <FileText className="h-4 w-4" />
                   <span className="text-sm font-medium tracking-wider uppercase">Resume</span>
