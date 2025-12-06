@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useState, useMemo } from "react";
 import { ArrowRight, Zap, Trophy, Code, X, Zap as Spark, Clock, GitBranch, Server } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { GlitchText } from "@/components/GlitchText";
 import { ParallaxSection } from "@/components/ParallaxSection";
 import { AnimatedCounter } from "@/components/AnimatedCounter";
@@ -320,15 +320,15 @@ const Projects = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredProjects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
-                  transition={{ delay: index * 0.1 }}
-                  whileHover={{ y: -5 }}
-                  className="p-6 rounded-lg glass-strong gradient-border space-y-4"
-                >
+                <Link key={project.title} to={project.link} className="block h-full">
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: false }}
+                    transition={{ delay: index * 0.1 }}
+                    whileHover={{ y: -5 }}
+                    className="p-6 rounded-lg glass-strong gradient-border space-y-4 h-full cursor-pointer"
+                  >
                   <h4 className="font-semibold text-foreground truncate">{project.title}</h4>
                   
                   {/* Metrics Grid */}
@@ -407,15 +407,15 @@ const Projects = () => {
                     transition={{ delay: index * 0.1 + 0.25 }}
                     className="pt-2"
                   >
-                    <button 
-                      onClick={() => navigate(project.link)}
+                    <div 
                       className="inline-flex items-center gap-2 text-sm font-semibold text-accent hover:gap-3 transition-all cursor-pointer"
                     >
                       Learn More
                       <ArrowRight className="h-4 w-4" />
-                    </button>
+                    </div>
                   </motion.div>
-                </motion.div>
+                  </motion.div>
+                </Link>
               ))}
             </div>
 
