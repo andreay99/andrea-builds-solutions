@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import { Suspense, lazy } from "react";
+import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { Navigation } from "./components/Navigation";
 import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
@@ -19,6 +20,7 @@ const Projects = lazy(() => import("./pages/Projects"));
 const Experience = lazy(() => import("./pages/Experience"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Blog = lazy(() => import("./pages/Blog"));
+const Analytics = lazy(() => import("./pages/Analytics"));
 const Recall = lazy(() => import("./pages/projects/Recall"));
 const OffScript = lazy(() => import("./pages/projects/OffScript"));
 const SonaAI = lazy(() => import("./pages/projects/SonaAI"));
@@ -52,6 +54,7 @@ const AnimatedRoutes = () => {
           <Route path="/projects/bikeshare" element={<PageTransition><Bikeshare /></PageTransition>} />
           <Route path="/experience" element={<PageTransition><Experience /></PageTransition>} />
           <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+          <Route path="/analytics" element={<PageTransition><Analytics /></PageTransition>} />
           <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
           <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
         </Routes>
@@ -69,6 +72,7 @@ const App = () => (
         <CustomCursor />
         <ScrollProgressBar />
         <BackToTop />
+        <VercelAnalytics />
         <BrowserRouter>
           <Navigation />
           <AnimatedRoutes />
