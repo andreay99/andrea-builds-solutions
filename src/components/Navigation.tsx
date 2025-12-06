@@ -52,6 +52,13 @@ export const Navigation = () => {
               >
                 Contact
               </NavLink>
+              <NavLink 
+                to="/analytics" 
+                className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity"
+                activeClassName="opacity-100"
+              >
+                Analytics
+              </NavLink>
             </div>
 
             {/* Resume CTA - place your resume at /public/resume.pdf or update the href to your hosted resume */}
@@ -116,6 +123,14 @@ export const Navigation = () => {
                 onClick={() => setMobileMenuOpen(false)}
               >
                 Contact
+              </NavLink>
+              <NavLink 
+                to="/analytics" 
+                className="text-sm font-medium tracking-wider uppercase text-foreground hover:opacity-70 transition-opacity px-2 py-2"
+                activeClassName="opacity-100 bg-foreground/10 rounded"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Analytics
               </NavLink>
               <Button asChild variant="default" className="rounded-none border-2 border-foreground text-foreground bg-transparent hover:bg-foreground hover:text-background transition-all mt-2">
                 <a href="/resume.pdf" target="_blank" rel="noopener noreferrer" aria-label="Open resume in new tab" className="flex items-center justify-center gap-2 px-4 py-2 w-full">
