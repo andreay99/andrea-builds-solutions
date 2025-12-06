@@ -1,5 +1,5 @@
-import { motion, useInView } from "framer-motion";
-import { useRef, Children, isValidElement, cloneElement } from "react";
+import { motion } from "framer-motion";
+import { useRef, Children } from "react";
 
 interface CaseStudySectionProps {
   title: string;
@@ -8,7 +8,6 @@ interface CaseStudySectionProps {
 
 export const CaseStudySection = ({ title, children }: CaseStudySectionProps) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -30,8 +29,9 @@ export const CaseStudySection = ({ title, children }: CaseStudySectionProps) => 
     <motion.section
       ref={ref}
       initial={{ opacity: 0, y: 50 }}
-      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
+      viewport={{ once: true, margin: "-100px" }}
       className="mb-16"
     >
       <div className="flex items-center gap-4 mb-6">
@@ -42,7 +42,8 @@ export const CaseStudySection = ({ title, children }: CaseStudySectionProps) => 
         className="text-muted-foreground leading-relaxed space-y-4"
         variants={containerVariants}
         initial="hidden"
-        animate={isInView ? "visible" : "hidden"}
+        whileInView="visible"
+        viewport={{ once: true, margin: "-100px" }}
       >
         {Children.map(children, (child, index) => (
           <motion.div key={index} variants={itemVariants}>
