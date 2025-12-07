@@ -42,9 +42,14 @@ const queryClient = new QueryClient();
 const AnimatedRoutes = () => {
   const location = useLocation();
 
-  // Scroll to top on route change
+  // Scroll to top on route change with a slight delay to allow animations to register viewport position
   useEffect(() => {
-    window.scrollTo(0, 0);
+    // Use requestAnimationFrame to ensure scroll happens after layout
+    const scrollTimer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 50);
+    
+    return () => clearTimeout(scrollTimer);
   }, [location.pathname]);
 
   return (
