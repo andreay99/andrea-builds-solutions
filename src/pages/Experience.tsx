@@ -118,13 +118,15 @@ const Experience = () => {
         </section>
 
         {/* Career Timeline */}
-        <section className="mb-16">
+        <section className="mb-16" style={{ minHeight: '400px' }}>
           <div className="flex items-center gap-3 mb-12">
             <Briefcase className="h-6 w-6 text-accent" />
             <h2 className="text-3xl font-bold">Career Journey</h2>
           </div>
           
-          <CareerTimeline items={timelineData} />
+          <div style={{ display: 'block', visibility: 'visible' }}>
+            <CareerTimeline items={timelineData} />
+          </div>
         </section>
 
         {/* Work Experience */}
