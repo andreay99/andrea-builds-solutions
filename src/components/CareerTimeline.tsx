@@ -1,4 +1,5 @@
-import { useRef, useEffect } from 'react';
+import { useRef } from 'react';
+import { Briefcase, GraduationCap } from 'lucide-react';
 
 interface TimelineItem {
   id: string;
@@ -41,42 +42,7 @@ interface TimelineNodeProps {
 
 const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
   const isLeft = index % 2 === 0;
-
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    // Set canvas size (56px = 14 * 4 for Tailwind size)
-    canvas.width = 56;
-    canvas.height = 56;
-
-    // Get accent color from CSS variable
-    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-    const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--background').trim();
-
-    // Draw circle background
-    ctx.fillStyle = accentColor || '#0891b2';
-    ctx.beginPath();
-    ctx.arc(28, 28, 26, 0, Math.PI * 2);
-    ctx.fill();
-
-    // Draw border
-    ctx.strokeStyle = bgColor || '#ffffff';
-    ctx.lineWidth = 4;
-    ctx.stroke();
-
-    // Draw emoji (larger, more visible)
-    ctx.font = 'bold 32px Arial, sans-serif';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillStyle = bgColor || '#ffffff';
-    ctx.fillText(item.type === 'work' ? '💼' : '🎓', 28, 28);
-  }, [item.type]);
 
   return (
     <div ref={ref} className="relative pb-12 last:pb-0">
@@ -109,17 +75,23 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
           )}
         </div>
 
-        {/* Center Node - Canvas Based */}
-        <canvas
-          ref={canvasRef}
-          className="flex-shrink-0"
+        {/* Center Node */}
+        <div
+          className="flex-shrink-0 w-12 h-12 flex items-center justify-center"
           style={{ 
             zIndex: 50,
             pointerEvents: 'auto',
-            position: 'relative',
-            display: 'block'
+            position: 'relative'
           }}
-        />
+        >
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
+            {item.type === 'work' ? (
+              <Briefcase className="h-5 w-5 text-background" />
+            ) : (
+              <GraduationCap className="h-5 w-5 text-background" />
+            )}
+          </div>
+        </div>
 
         {/* Right Content (Desktop) / Main Content (Mobile) */}
         <div
