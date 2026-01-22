@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { motion } from 'framer-motion';
 import { Briefcase, GraduationCap } from 'lucide-react';
 
 interface TimelineItem {
@@ -18,7 +19,10 @@ interface CareerTimelineProps {
 
 export const CareerTimeline = ({ items }: CareerTimelineProps) => {
   return (
-    <div className="relative">
+    <motion.div 
+      className="relative"
+      layoutId="timeline-root"
+    >
       {items.map((item, index) => (
         <TimelineNode 
           key={item.id} 
@@ -27,7 +31,7 @@ export const CareerTimeline = ({ items }: CareerTimelineProps) => {
           isLast={index === items.length - 1}
         />
       ))}
-    </div>
+    </motion.div>
   );
 };
 
