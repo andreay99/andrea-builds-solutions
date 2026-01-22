@@ -45,7 +45,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const isLeft = index % 2 === 0;
 
   return (
-    <div ref={ref} className="relative pb-12 last:pb-0" style={{ contain: 'layout' }}>
+    <div ref={ref} className="relative pb-12 last:pb-0">
       {/* Vertical Line */}
       {!isLast && (
         <div
@@ -77,21 +77,16 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
 
         {/* Center Node */}
         <div
-          className="w-12 h-12 flex items-center justify-center"
+          className="w-12 h-12 flex items-center justify-center flex-shrink-0"
           style={{ 
-            position: 'absolute',
-            left: '50%',
-            top: '0',
-            transform: 'translateX(-50%)',
-            WebkitTransform: 'translateX(-50%)',
             zIndex: 50,
             pointerEvents: 'auto',
-            backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            contain: 'paint'
+            opacity: 1,
+            visibility: 'visible',
+            display: 'flex'
           }}
         >
-          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg" style={{ contain: 'content' }}>
+          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
               <Briefcase className="h-5 w-5 text-background" />
             ) : (
