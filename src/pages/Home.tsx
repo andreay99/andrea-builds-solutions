@@ -6,7 +6,7 @@ import { ArrowRight, Download, Mail, Linkedin, Github, FileText, ExternalLink, B
 import { Link } from "react-router-dom";
 import { motion, useInView } from "framer-motion";
 import { ParallaxSection } from "@/components/ParallaxSection";
-import { useRef } from "react";
+import { useRef, useMemo } from "react";
 import abstractBg from "@/assets/abstract-background.jpg";
 import spaceBg from "@/assets/space-background.jpg";
 import techBg from "@/assets/abstract-tech-background.jpg";
@@ -22,6 +22,12 @@ import { CareerTimeline } from "@/components/CareerTimeline";
 import { CircularSkillChart } from "@/components/CircularSkillChart";
 import { ScrollProgressBar } from "@/components/ScrollProgressBar";
 import { BackToTop } from "@/components/BackToTop";
+
+// Performance optimization: reduce animations for better Safari performance
+const shouldReduceAnimations = () => {
+  if (typeof window === 'undefined') return false;
+  return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+};
 
 const Home = () => {
   const featuredProjects = [
@@ -310,8 +316,8 @@ const Home = () => {
 
                 <div className="grid grid-cols-2 gap-4">
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                     className="p-4 rounded-lg bg-secondary/50 border border-border/50"
@@ -320,8 +326,8 @@ const Home = () => {
                     <p className="text-sm text-foreground/70">Awards Won</p>
                   </motion.div>
                   <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    whileInView={{ opacity: 1, scale: 1 }}
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
                     viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                     className="p-4 rounded-lg bg-secondary/50 border border-border/50"
