@@ -59,7 +59,7 @@ const Home = () => {
   ];
 
   return (
-    <main className="scroll-container">
+    <main className="w-full">
       <ScrollProgressBar />
       {/* Hero Section */}
       <ScrollColorTransition 
@@ -279,7 +279,7 @@ const Home = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 className="inline-block mb-4"
               >
                 <Badge variant="outline" className="glass text-xs">Featured Project</Badge>
@@ -297,7 +297,7 @@ const Home = () => {
               <motion.div
                 initial={{ opacity: 0, x: -30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ delay: 0.1 }}
                 className="space-y-6"
               >
@@ -312,7 +312,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                     className="p-4 rounded-lg bg-secondary/50 border border-border/50"
                   >
@@ -322,7 +322,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     whileInView={{ opacity: 1, scale: 1 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                     className="p-4 rounded-lg bg-secondary/50 border border-border/50"
                   >
@@ -352,7 +352,7 @@ const Home = () => {
               <motion.div
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 transition={{ delay: 0.2 }}
                 className="relative"
               >
@@ -360,7 +360,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                     className="p-6 rounded-lg glass-strong gradient-border space-y-3"
                   >
@@ -375,7 +375,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                     className="p-6 rounded-lg glass-strong gradient-border space-y-3"
                   >
@@ -390,7 +390,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.5 }}
                     className="p-6 rounded-lg glass-strong gradient-border space-y-3"
                   >
@@ -405,7 +405,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.6 }}
                     className="p-6 rounded-lg glass-strong gradient-border space-y-3"
                   >
@@ -424,7 +424,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ delay: 0.3 }}
               className="mt-16 pt-12 border-t border-border/50 text-center"
             >
@@ -529,7 +529,7 @@ const Home = () => {
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: false }}
+                viewport={{ once: true }}
                 className="mb-12"
               >
                 <MarqueeSkills 
@@ -546,7 +546,7 @@ const Home = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.1 }}
                   className="space-y-4"
                 >
@@ -571,14 +571,14 @@ const Home = () => {
                           initial={{ scaleX: 0, originX: 0 }}
                           whileInView={{ scaleX: 1 }}
                           transition={{ duration: 0.8, delay: 0.2 }}
-                          viewport={{ once: false }}
+                          viewport={{ once: true }}
                         >
                           <motion.div 
                             className="h-full bg-gradient-to-r from-accent to-accent/60"
                             initial={{ scaleX: 0, originX: 0 }}
                             whileInView={{ scaleX: 1 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
-                            viewport={{ once: false }}
+                            viewport={{ once: true }}
                             style={{ width: `${skill.level}%` }}
                           />
                         </motion.div>
@@ -590,7 +590,7 @@ const Home = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.2 }}
                   className="space-y-4"
                 >
@@ -615,14 +615,14 @@ const Home = () => {
                           initial={{ scaleX: 0, originX: 0 }}
                           whileInView={{ scaleX: 1 }}
                           transition={{ duration: 0.8, delay: 0.2 }}
-                          viewport={{ once: false }}
+                          viewport={{ once: true }}
                         >
                           <motion.div 
                             className="h-full bg-gradient-to-r from-accent to-accent/60"
                             initial={{ scaleX: 0, originX: 0 }}
                             whileInView={{ scaleX: 1 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
-                            viewport={{ once: false }}
+                            viewport={{ once: true }}
                             style={{ width: `${skill.level}%` }}
                           />
                         </motion.div>
@@ -634,7 +634,7 @@ const Home = () => {
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: 0.3 }}
                   className="space-y-4"
                 >
@@ -659,14 +659,14 @@ const Home = () => {
                           initial={{ scaleX: 0, originX: 0 }}
                           whileInView={{ scaleX: 1 }}
                           transition={{ duration: 0.8, delay: 0.2 }}
-                          viewport={{ once: false }}
+                          viewport={{ once: true }}
                         >
                           <motion.div 
                             className="h-full bg-gradient-to-r from-accent to-accent/60"
                             initial={{ scaleX: 0, originX: 0 }}
                             whileInView={{ scaleX: 1 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
-                            viewport={{ once: false }}
+                            viewport={{ once: true }}
                             style={{ width: `${skill.level}%` }}
                           />
                         </motion.div>
@@ -683,7 +683,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.1 }}
                   >
                     <p className="text-xs text-muted-foreground mb-2">Languages</p>
@@ -697,7 +697,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.2 }}
                   >
                     <p className="text-xs text-muted-foreground mb-2">Frameworks</p>
@@ -711,7 +711,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.3 }}
                   >
                     <p className="text-xs text-muted-foreground mb-2">Cloud & DevOps</p>
@@ -725,7 +725,7 @@ const Home = () => {
                   <motion.div
                     initial={{ opacity: 0, y: 10 }}
                     whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ delay: 0.4 }}
                   >
                     <p className="text-xs text-muted-foreground mb-2">Languages (Spoken)</p>
@@ -812,7 +812,7 @@ const Home = () => {
                   key={index}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: false }}
+                  viewport={{ once: true }}
                   transition={{ delay: index * 0.1 }}
                   whileHover={{ scale: 1.02, y: -5 }}
                   className="group p-6 rounded-lg glass-strong gradient-border cursor-pointer transition-all duration-300 hover:shadow-xl"
@@ -826,7 +826,7 @@ const Home = () => {
                     className="mt-4 h-1 bg-gradient-to-r from-blue-400 via-purple-400 to-transparent"
                     initial={{ scaleX: 0, originX: 0 }}
                     whileInView={{ scaleX: 1 }}
-                    viewport={{ once: false }}
+                    viewport={{ once: true }}
                     transition={{ duration: 0.6, delay: index * 0.1 + 0.2 }}
                   />
                 </motion.div>
@@ -836,7 +836,7 @@ const Home = () => {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: false }}
+              viewport={{ once: true }}
               transition={{ delay: 0.5 }}
               className="mt-16 pt-12 border-t border-border/50 text-center"
             >
@@ -936,7 +936,7 @@ const Home = () => {
                   key={index}
                   initial={{ opacity: 0, y: 40, scale: 0.95 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: false, amount: 0.3 }}
+                  viewport={{ once: true, amount: 0.3 }}
                   transition={{
                     duration: 0.6,
                     delay: index * 0.1,
@@ -1004,7 +1004,7 @@ const Home = () => {
 // Scroll animation wrapper component with enhanced smooth animations
 const ScrollSection = ({ children }: { children: React.ReactNode }) => {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: false, amount: 0.2 });
+  const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
     <motion.div

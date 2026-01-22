@@ -1,5 +1,4 @@
 import { useRef } from 'react';
-import { motion } from 'framer-motion';
 import { Briefcase, GraduationCap } from 'lucide-react';
 
 interface TimelineItem {
@@ -46,23 +45,15 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
     <div ref={ref} className="relative pb-12 last:pb-0">
       {/* Vertical Line */}
       {!isLast && (
-        <motion.div
+        <div
           className="absolute left-1/2 top-12 w-0.5 h-full bg-gradient-to-b from-accent to-muted -translate-x-1/2 hidden md:block"
-          initial={{ scaleY: 0, originY: 0 }}
-          whileInView={{ scaleY: 1 }}
-          transition={{ duration: 0.6, delay: index * 0.2 + 0.3 }}
-          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         />
       )}
 
       <div className="flex items-center justify-between gap-8">
         {/* Left Content (Desktop) */}
-        <motion.div
+        <div
           className={`flex-1 ${isLeft ? 'text-right' : 'text-left md:text-right'} hidden md:block`}
-          initial={{ opacity: 0, x: isLeft ? 50 : -50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.2 }}
-          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           {isLeft && (
             <div className="pr-8">
@@ -79,20 +70,11 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
               )}
             </div>
           )}
-        </motion.div>
+        </div>
 
         {/* Center Node */}
-        <motion.div
+        <div
           className="relative z-10 flex-shrink-0"
-          initial={{ scale: 0, rotate: -180 }}
-          whileInView={{ scale: 1, rotate: 0 }}
-          transition={{ 
-            duration: 0.5, 
-            delay: index * 0.2 + 0.2,
-            type: "spring",
-            stiffness: 200
-          }}
-          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
@@ -101,15 +83,11 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
               <GraduationCap className="h-5 w-5 text-background" />
             )}
           </div>
-        </motion.div>
+        </div>
 
         {/* Right Content (Desktop) / Main Content (Mobile) */}
-        <motion.div
+        <div
           className={`flex-1 ${!isLeft ? 'text-left' : 'text-right md:text-left'}`}
-          initial={{ opacity: 0, x: isLeft ? -50 : 50 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: index * 0.2 }}
-          viewport={{ once: true, margin: "0px 0px -100px 0px" }}
         >
           <div className={`${!isLeft ? 'pl-8' : 'md:pl-8'}`}>
             {/* Mobile Layout */}
@@ -162,7 +140,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
               </div>
             )}
           </div>
-        </motion.div>
+        </div>
       </div>
     </div>
   );
