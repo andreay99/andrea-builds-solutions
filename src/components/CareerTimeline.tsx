@@ -53,7 +53,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         />
       )}
 
-      <div className="flex items-center justify-between gap-8">
+      <div className="flex items-center justify-between gap-8" style={{ position: 'relative' }}>
         {/* Left Content (Desktop) */}
         <div
           className={`flex-1 ${isLeft ? 'text-right' : 'text-left md:text-right'} hidden md:block`}
@@ -77,16 +77,17 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
 
         {/* Center Node */}
         <div
-          className="flex-shrink-0 w-12 h-12 flex items-center justify-center"
+          className="w-12 h-12 flex items-center justify-center"
           style={{ 
-            pointerEvents: 'auto', 
-            zIndex: 10,
-            position: 'relative',
+            position: 'absolute',
+            left: '50%',
+            top: '0',
+            transform: 'translateX(-50%)',
+            WebkitTransform: 'translateX(-50%)',
+            zIndex: 50,
+            pointerEvents: 'auto',
             backfaceVisibility: 'hidden',
-            WebkitBackfaceVisibility: 'hidden',
-            transform: 'translateZ(0)',
-            WebkitTransform: 'translateZ(0)',
-            willChange: 'transform'
+            WebkitBackfaceVisibility: 'hidden'
           }}
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
