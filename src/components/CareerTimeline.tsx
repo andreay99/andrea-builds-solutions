@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import { Briefcase, GraduationCap } from 'lucide-react';
 
 interface TimelineItem {
@@ -42,7 +42,25 @@ interface TimelineNodeProps {
 
 const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const iconRef = useRef<HTMLDivElement>(null);
   const isLeft = index % 2 === 0;
+  const [iconVisible, setIconVisible] = useState(true);
+
+  useEffect(() => {
+    // Force icon to stay visible by checking and fixing every frame
+    const checkInterval = setInterval(() => {
+      if (iconRef.current) {
+        const computed = window.getComputedStyle(iconRef.current);
+        if (computed.opacity === '0' || computed.display === 'none' || computed.visibility === 'hidden') {
+          iconRef.current.style.opacity = '1';
+          iconRef.current.style.display = 'flex';
+          iconRef.current.style.visibility = 'visible';
+        }
+      }
+    }, 100);
+
+    return () => clearInterval(checkInterval);
+  }, []);
 
   return (
     <div ref={ref} className="relative pb-12 last:pb-0">
@@ -77,13 +95,15 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
 
         {/* Center Node */}
         <div
+          ref={iconRef}
           className="w-12 h-12 flex items-center justify-center flex-shrink-0"
           style={{ 
             zIndex: 50,
             pointerEvents: 'auto',
             opacity: 1,
             visibility: 'visible',
-            display: 'flex'
+            display: 'flex',
+            position: 'relative'
           }}
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
