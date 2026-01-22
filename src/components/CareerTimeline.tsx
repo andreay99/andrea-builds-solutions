@@ -1,5 +1,4 @@
 import { useRef, useEffect, useState } from 'react';
-import { Briefcase, GraduationCap } from 'lucide-react';
 
 interface TimelineItem {
   id: string;
@@ -108,9 +107,13 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
-              <Briefcase className="h-5 w-5 text-background" />
+              <svg className="h-5 w-5 text-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20 7h-4V5c0-1.1-.9-2-2-2h-4c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V9c0-1.1-.9-2-2-2zm-6-2h4v2h-4V5z"/>
+              </svg>
             ) : (
-              <GraduationCap className="h-5 w-5 text-background" />
+              <svg className="h-5 w-5 text-background" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M18 2H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 14c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm9-9H6V4h12v1z"/>
+              </svg>
             )}
           </div>
         </div>
