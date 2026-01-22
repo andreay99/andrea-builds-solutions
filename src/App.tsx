@@ -3,7 +3,6 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
-import { AnimatePresence } from "framer-motion";
 import { Suspense, lazy, useEffect } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { Navigation } from "./components/Navigation";
@@ -60,23 +59,21 @@ const AnimatedRoutes = () => {
   }, [location.pathname]);
 
   return (
-    <AnimatePresence mode="wait">
-      <Suspense fallback={<RouteLoadingFallback />}>
-        <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-          <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
-          <Route path="/projects/recall" element={<PageTransition><Recall /></PageTransition>} />
-          <Route path="/projects/offscript" element={<PageTransition><OffScript /></PageTransition>} />
-          <Route path="/projects/sona-ai" element={<PageTransition><SonaAI /></PageTransition>} />
-          <Route path="/projects/bikeshare" element={<PageTransition><Bikeshare /></PageTransition>} />
-          <Route path="/experience" element={<PageTransition><Experience /></PageTransition>} />
-          <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-          <Route path="/analytics" element={<PageTransition><Analytics /></PageTransition>} />
-          <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
-          <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-        </Routes>
-      </Suspense>
-    </AnimatePresence>
+    <Suspense fallback={<RouteLoadingFallback />}>
+      <Routes location={location} key={location.pathname}>
+        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+        <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
+        <Route path="/projects/recall" element={<PageTransition><Recall /></PageTransition>} />
+        <Route path="/projects/offscript" element={<PageTransition><OffScript /></PageTransition>} />
+        <Route path="/projects/sona-ai" element={<PageTransition><SonaAI /></PageTransition>} />
+        <Route path="/projects/bikeshare" element={<PageTransition><Bikeshare /></PageTransition>} />
+        <Route path="/experience" element={<PageTransition><Experience /></PageTransition>} />
+        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+        <Route path="/analytics" element={<PageTransition><Analytics /></PageTransition>} />
+        <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
+      </Routes>
+    </Suspense>
   );
 };
 
