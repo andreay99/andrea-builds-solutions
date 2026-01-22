@@ -74,7 +74,7 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
 
         {/* Center Node */}
         <div
-          className="relative z-10 flex-shrink-0"
+          className="flex-shrink-0 w-12 h-12 flex items-center justify-center"
         >
           <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/70 flex items-center justify-center border-4 border-background shadow-lg">
             {item.type === 'work' ? (
