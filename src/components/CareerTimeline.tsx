@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 
 interface TimelineItem {
   id: string;
@@ -41,7 +41,42 @@ interface TimelineNodeProps {
 
 const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
   const ref = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   const isLeft = index % 2 === 0;
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Set canvas size (56px = 14 * 4 for Tailwind size)
+    canvas.width = 56;
+    canvas.height = 56;
+
+    // Get accent color from CSS variable
+    const accentColor = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+    const bgColor = getComputedStyle(document.documentElement).getPropertyValue('--background').trim();
+
+    // Draw circle background
+    ctx.fillStyle = accentColor || '#0891b2';
+    ctx.beginPath();
+    ctx.arc(28, 28, 26, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Draw border
+    ctx.strokeStyle = bgColor || '#ffffff';
+    ctx.lineWidth = 4;
+    ctx.stroke();
+
+    // Draw emoji (larger, more visible)
+    ctx.font = 'bold 32px Arial, sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = bgColor || '#ffffff';
+    ctx.fillText(item.type === 'work' ? '💼' : '🎓', 28, 28);
+  }, [item.type]);
 
   return (
     <div ref={ref} className="relative pb-12 last:pb-0">
@@ -74,24 +109,17 @@ const TimelineNode = ({ item, index, isLast }: TimelineNodeProps) => {
           )}
         </div>
 
-        {/* Center Node */}
-        <div
-          className="w-14 h-14 flex items-center justify-center flex-shrink-0"
+        {/* Center Node - Canvas Based */}
+        <canvas
+          ref={canvasRef}
+          className="flex-shrink-0"
           style={{ 
             zIndex: 50,
             pointerEvents: 'auto',
             position: 'relative',
-            background: 'linear-gradient(135deg, var(--accent), rgba(var(--accent-rgb), 0.7))',
-            borderRadius: '50%',
-            border: '4px solid var(--background)',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.15)',
-            fontSize: '28px',
-            fontWeight: 'bold',
-            color: 'var(--background)'
+            display: 'block'
           }}
-        >
-          {item.type === 'work' ? '💼' : '🎓'}
-        </div>
+        />
 
         {/* Right Content (Desktop) / Main Content (Mobile) */}
         <div
