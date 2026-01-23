@@ -1,4 +1,5 @@
 import { NavLink } from "@/components/NavLink";
+import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
 
 export const Footer = () => {
   return (
@@ -49,8 +50,38 @@ export const Footer = () => {
           </div>
         </div>
         
-        <div className="mt-12 pt-8 border-t border-border text-center text-sm text-muted-foreground">
-          © {new Date().getFullYear()} Andrea Yanez Soto. All rights reserved.
+        <div className="mt-12 pt-8 border-t border-border">
+          <div className="flex justify-center gap-6 mb-6">
+            <a 
+              href="https://github.com/andreay99" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-accent transition-colors hover:scale-110 transform"
+              aria-label="GitHub"
+            >
+              <Github className="w-5 h-5" />
+            </a>
+            <a 
+              href="https://www.linkedin.com/in/andrea-yanez-soto-8b4653218" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="text-muted-foreground hover:text-accent transition-colors hover:scale-110 transform"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-5 h-5" />
+            </a>
+            <a 
+              href="mailto:andreayanez11@outlook.com"
+              className="text-muted-foreground hover:text-accent transition-colors hover:scale-110 transform"
+              aria-label="Email"
+            >
+              <Mail className="w-5 h-5" />
+            </a>
+          </div>
+          
+          <div className="text-center text-sm text-muted-foreground">
+            © {new Date().getFullYear()} Andrea Yanez Soto. All rights reserved.
+          </div>
         </div>
       </div>
     </footer>
