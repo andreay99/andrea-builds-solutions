@@ -13,9 +13,26 @@ interface Metric {
 
 export const AnalyticsDashboard = () => {
   const [mounted, setMounted] = useState(false);
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
+    
+    // Try to fetch real analytics
+    const fetchAnalytics = async () => {
+      try {
+        const response = await fetch('/api/analytics');
+        const data = await response.json();
+        setAnalyticsData(data);
+      } catch (error) {
+        console.log('Using demo data - Vercel Analytics API not configured');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchAnalytics();
   }, []);
 
   // Sample data - in production, these would come from Vercel Analytics API
@@ -23,7 +40,7 @@ export const AnalyticsDashboard = () => {
   const metrics: Metric[] = [
     {
       label: "Total Visits",
-      value: "1,247",
+      value: analyticsData?.visits || "1,247",
       icon: <Eye className="h-8 w-8" />,
       color: "from-blue-500 to-blue-600",
       trend: "+12% this week",
