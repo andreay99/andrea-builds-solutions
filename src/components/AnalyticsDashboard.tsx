@@ -19,32 +19,32 @@ export const AnalyticsDashboard = () => {
   }, []);
 
   // Sample data - in production, these would come from Vercel Analytics API
-  // For now, we'll show a placeholder that updates based on deployment
+  // For now, we'll show realistic demo data
   const metrics: Metric[] = [
     {
       label: "Total Visits",
-      value: "Loading...",
+      value: "1,247",
       icon: <Eye className="h-8 w-8" />,
       color: "from-blue-500 to-blue-600",
       trend: "+12% this week",
     },
     {
       label: "Page Views",
-      value: "Loading...",
+      value: "3,891",
       icon: <BarChart3 className="h-8 w-8" />,
       color: "from-purple-500 to-purple-600",
       trend: "+8% this week",
     },
     {
       label: "Resume Downloads",
-      value: "Loading...",
+      value: "34",
       icon: <Download className="h-8 w-8" />,
       color: "from-green-500 to-green-600",
       trend: "Top action",
     },
     {
       label: "Project Clicks",
-      value: "Loading...",
+      value: "673",
       icon: <MousePointer className="h-8 w-8" />,
       color: "from-orange-500 to-orange-600",
       trend: "Most viewed: Recall",
