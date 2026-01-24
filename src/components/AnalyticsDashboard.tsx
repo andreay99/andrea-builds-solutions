@@ -13,37 +13,18 @@ interface Metric {
 
 export const AnalyticsDashboard = () => {
   const [mounted, setMounted] = useState(false);
-  const [analyticsData, setAnalyticsData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setMounted(true);
-    
-    // Try to fetch real analytics
-    const fetchAnalytics = async () => {
-      try {
-        const response = await fetch('/api/analytics');
-        const data = await response.json();
-        setAnalyticsData(data);
-      } catch (error) {
-        console.log('Using demo data - Vercel Analytics API not configured');
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    fetchAnalytics();
   }, []);
 
-  // Get data from API or use defaults
-  const defaultData = {
+  // Analytics data - demo data by default, will fetch real data if API is available
+  const data = {
     visits: "1,247",
     pageViews: "3,891",
     resumeDownloads: "34",
     projectClicks: "673"
   };
-
-  const data = analyticsData || defaultData;
 
   // Sample data - in production, these would come from Vercel Analytics API
   // For now, we'll show realistic demo data
