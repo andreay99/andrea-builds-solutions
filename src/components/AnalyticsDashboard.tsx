@@ -35,33 +35,43 @@ export const AnalyticsDashboard = () => {
     fetchAnalytics();
   }, []);
 
+  // Get data from API or use defaults
+  const defaultData = {
+    visits: "1,247",
+    pageViews: "3,891",
+    resumeDownloads: "34",
+    projectClicks: "673"
+  };
+
+  const data = analyticsData || defaultData;
+
   // Sample data - in production, these would come from Vercel Analytics API
   // For now, we'll show realistic demo data
   const metrics: Metric[] = [
     {
       label: "Total Visits",
-      value: analyticsData?.visits || "1,247",
+      value: data.visits,
       icon: <Eye className="h-8 w-8" />,
       color: "from-blue-500 to-blue-600",
       trend: "+12% this week",
     },
     {
       label: "Page Views",
-      value: "3,891",
+      value: data.pageViews,
       icon: <BarChart3 className="h-8 w-8" />,
       color: "from-purple-500 to-purple-600",
       trend: "+8% this week",
     },
     {
       label: "Resume Downloads",
-      value: "34",
+      value: data.resumeDownloads,
       icon: <Download className="h-8 w-8" />,
       color: "from-green-500 to-green-600",
       trend: "Top action",
     },
     {
       label: "Project Clicks",
-      value: "673",
+      value: data.projectClicks,
       icon: <MousePointer className="h-8 w-8" />,
       color: "from-orange-500 to-orange-600",
       trend: "Most viewed: Recall",
