@@ -1,7 +1,7 @@
+import { Eye, BarChart3, Download, MousePointer, Mail, TrendingUp } from "lucide-react";
+import { Card } from "@/components/ui/card";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { BarChart3, TrendingUp, Eye, Download, MousePointer, Mail } from "lucide-react";
-import { Card } from "@/components/ui/card";
 
 interface Metric {
   label: string;
@@ -18,7 +18,7 @@ export const AnalyticsDashboard = () => {
     setMounted(true);
   }, []);
 
-  // Demo analytics data - displayed immediately on page load
+  // Demo analytics data
   const metrics: Metric[] = [
     {
       label: "Total Visits",
