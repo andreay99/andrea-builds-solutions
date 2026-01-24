@@ -18,7 +18,7 @@ export const AnalyticsDashboard = () => {
     setMounted(true);
   }, []);
 
-  // Metrics with hardcoded demo data
+  // Demo analytics data - displayed immediately on page load
   const metrics: Metric[] = [
     {
       label: "Total Visits",
