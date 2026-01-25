@@ -19,7 +19,7 @@ const Projects = lazy(() => import("./pages/Projects"));
 const Experience = lazy(() => import("./pages/Experience"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Blog = lazy(() => import("./pages/Blog"));
-const Analytics = lazy(() => import("./pages/Analytics"));
+import Analytics from "./pages/Analytics"; // Import directly - don't lazy load
 const Recall = lazy(() => import("./pages/projects/Recall"));
 const OffScript = lazy(() => import("./pages/projects/OffScript"));
 const SonaAI = lazy(() => import("./pages/projects/SonaAI"));
