@@ -59,21 +59,19 @@ const AnimatedRoutes = () => {
   }, [location.pathname]);
 
   return (
-    <Suspense fallback={<RouteLoadingFallback />}>
-      <Routes location={location} key={location.pathname}>
-        <Route path="/" element={<PageTransition><Home /></PageTransition>} />
-        <Route path="/projects" element={<PageTransition><Projects /></PageTransition>} />
-        <Route path="/projects/recall" element={<PageTransition><Recall /></PageTransition>} />
-        <Route path="/projects/offscript" element={<PageTransition><OffScript /></PageTransition>} />
-        <Route path="/projects/sona-ai" element={<PageTransition><SonaAI /></PageTransition>} />
-        <Route path="/projects/bikeshare" element={<PageTransition><Bikeshare /></PageTransition>} />
-        <Route path="/experience" element={<PageTransition><Experience /></PageTransition>} />
-        <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
-        <Route path="/analytics" element={<PageTransition><Analytics /></PageTransition>} />
-        <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
-        <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
-      </Routes>
-    </Suspense>
+    <Routes location={location} key={location.pathname}>
+      <Route path="/" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Home /></PageTransition></Suspense>} />
+      <Route path="/projects" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Projects /></PageTransition></Suspense>} />
+      <Route path="/projects/recall" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Recall /></PageTransition></Suspense>} />
+      <Route path="/projects/offscript" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OffScript /></PageTransition></Suspense>} />
+      <Route path="/projects/sona-ai" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><SonaAI /></PageTransition></Suspense>} />
+      <Route path="/projects/bikeshare" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Bikeshare /></PageTransition></Suspense>} />
+      <Route path="/experience" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Experience /></PageTransition></Suspense>} />
+      <Route path="/contact" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Contact /></PageTransition></Suspense>} />
+      <Route path="/analytics" element={<Analytics />} />
+      <Route path="/blog" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Blog /></PageTransition></Suspense>} />
+      <Route path="*" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><NotFound /></PageTransition></Suspense>} />
+    </Routes>
   );
 };
 
