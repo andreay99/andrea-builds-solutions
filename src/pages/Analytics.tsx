@@ -67,7 +67,7 @@ const Analytics = () => {
             transition={{ duration: 0.6 }}
             className="mb-12"
           >
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">Analytics</h1>
+            <h1 className="text-4xl md:text-5xl font-bold mb-4">📊 Analytics</h1>
             <p className="text-xl text-muted-foreground max-w-2xl">
               Real-time metrics tracking portfolio engagement, project interest, and visitor behavior.
               Powered by <a href="https://vercel.com/analytics" target="_blank" rel="noopener noreferrer" className="text-accent hover:underline">Vercel Analytics</a>.
