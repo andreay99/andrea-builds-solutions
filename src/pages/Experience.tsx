@@ -470,6 +470,31 @@ const Experience = () => {
                 </CardContent>
               </Card>
             </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-100px" }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+            >
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Award className="h-5 w-5 text-accent" />
+                    HackPrinceton SP2026
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="font-semibold mb-2">KineticLab ROM-COM - Stroke & TBI Rehabilitation System</p>
+                  <div className="space-y-1 text-sm text-muted-foreground">
+                    <p>Built core ML pipeline: gesture classifier (Random Forest), feature extractor, and FMA-UE scoring engine</p>
+                    <p>Implemented MediaPipe-based motion tracking and adaptive ROM calibration</p>
+                    <p>Wired FastAPI backend endpoints for real-time WebSocket pipeline</p>
+                    <p>Tech: Python · MediaPipe · FastAPI · scikit-learn · React · TypeScript</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
           </div>
         </section>
 
