@@ -55,6 +55,17 @@ const Projects = () => {
       metrics: { accuracy: "89%", users: "100+", impact: "Research" }
     },
     {
+      title: "KineticLab ROM-COM",
+      description: "Webcam-only stroke & TBI upper-extremity rehabilitation system with adaptive ROM calibration, automated FMA-UE clinical scoring, and Arduino haptic feedback. Built at HackPrinceton SP2026.",
+      techStack: ["React", "TypeScript", "FastAPI", "MediaPipe", "Python", "Three.js", "Arduino"],
+      awards: ["HackPrinceton SP2026"],
+      link: "/projects/rom-com",
+      githubLink: "https://github.com/tomiwaaluko/ROM-com",
+      categories: ["ai-ml", "full-stack"],
+      featured: true,
+      metrics: { accuracy: "99%", users: "Healthcare", impact: "HackPrinceton" }
+    },
+    {
       title: "OSEHS Digital Twin",
       description: "Orbital Solar Energy Harvesting Swarm digital twin for NASA ORBIT Challenge Phase 2. Real-time 3D simulation with swarm coordination, fault tolerance, and KPP tracking across a 3-year heliocentric mission.",
       techStack: ["Python", "NumPy", "Matplotlib", "Orbital Mechanics", "Swarm AI"],
