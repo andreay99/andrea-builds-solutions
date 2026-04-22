@@ -18,7 +18,7 @@ const ROMCom = () => {
           </Button>
 
           <div className="mb-8">
-            <h1 className="mb-4">KineticLab ROM-COM</h1>
+            <h1 className="mb-4">ROM-COM</h1>
             <p className="text-xl text-muted-foreground mb-6">
               Webcam-based stroke & TBI upper-extremity rehabilitation system — HackPrinceton SP2026
             </p>
@@ -42,7 +42,7 @@ const ROMCom = () => {
 
           <CaseStudySection title="Overview">
             <p>
-              KineticLab ROM-COM is a $0-hardware rehabilitation system for stroke and TBI patients recovering upper-extremity motor function. Using only a laptop webcam, it runs a full clinical-grade rehab session — adaptive ROM calibration, real-time exercise guidance, and automated Fugl-Meyer Assessment (FMA-UE) subscale scoring for the therapist dashboard.
+              ROM-COM is a $0-hardware rehabilitation system for stroke and TBI patients recovering upper-extremity motor function. Using only a laptop webcam, it runs a full clinical-grade rehab session — adaptive ROM calibration, real-time exercise guidance, and automated Fugl-Meyer Assessment (FMA-UE) subscale scoring for the therapist dashboard.
             </p>
             <p>
               Built in 24 hours at HackPrinceton SP2026, competing in the Best Healthcare Hack and Best Hardware Hack tracks.
@@ -66,7 +66,7 @@ const ROMCom = () => {
 
           <CaseStudySection title="Solution">
             <p>
-              KineticLab differentiates on three axes no competitor stacks together:
+              ROM-COM differentiates on three axes no competitor stacks together:
             </p>
             <ul className="list-disc list-inside space-y-2 ml-4">
               <li><span className="font-semibold">$0 hardware floor</span> — runs on any laptop webcam, no purchased equipment needed</li>

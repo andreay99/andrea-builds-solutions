@@ -485,7 +485,7 @@ const Experience = () => {
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <p className="font-semibold mb-2">KineticLab ROM-COM - Stroke & TBI Rehabilitation System</p>
+                  <p className="font-semibold mb-2">ROM-COM - Stroke & TBI Rehabilitation System</p>
                   <div className="space-y-1 text-sm text-muted-foreground">
                     <p>Built core ML pipeline: gesture classifier (Random Forest), feature extractor, and FMA-UE scoring engine</p>
                     <p>Implemented MediaPipe-based motion tracking and adaptive ROM calibration</p>
