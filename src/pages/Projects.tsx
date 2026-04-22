@@ -55,7 +55,7 @@ const Projects = () => {
       metrics: { accuracy: "89%", users: "100+", impact: "Research" }
     },
     {
-      title: "KineticLab ROM-COM",
+      title: "ROM-COM",
       description: "Webcam-only stroke & TBI upper-extremity rehabilitation system with adaptive ROM calibration, automated FMA-UE clinical scoring, and Arduino haptic feedback. Built at HackPrinceton SP2026.",
       techStack: ["React", "TypeScript", "FastAPI", "MediaPipe", "Python", "Three.js", "Arduino"],
       awards: ["HackPrinceton SP2026"],
