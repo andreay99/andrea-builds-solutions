@@ -55,6 +55,17 @@ const Projects = () => {
       metrics: { accuracy: "89%", users: "100+", impact: "Research" }
     },
     {
+      title: "OSEHS Digital Twin",
+      description: "Orbital Solar Energy Harvesting Swarm digital twin for NASA ORBIT Challenge Phase 2. Real-time 3D simulation with swarm coordination, fault tolerance, and KPP tracking across a 3-year heliocentric mission.",
+      techStack: ["Python", "NumPy", "Matplotlib", "Orbital Mechanics", "Swarm AI"],
+      awards: ["NASA ORBIT Challenge Phase 2"],
+      link: "/projects/osehs",
+      githubLink: "https://github.com/andreay99/OSEHS-simulation",
+      categories: ["ai-ml"],
+      featured: true,
+      metrics: { accuracy: "94%", users: "Star Maker Team", impact: "NASA Challenge" }
+    },
+    {
       title: "Bikeshare Trip Analysis",
       description: "Comprehensive SQL-based analysis system for bikeshare operations, identifying usage patterns and optimization opportunities.",
       techStack: ["SQL", "SQLite", "Python", "Data Analysis"],

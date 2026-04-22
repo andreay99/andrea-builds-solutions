@@ -24,6 +24,7 @@ const Recall = lazy(() => import("./pages/projects/Recall"));
 const OffScript = lazy(() => import("./pages/projects/OffScript"));
 const SonaAI = lazy(() => import("./pages/projects/SonaAI"));
 const Bikeshare = lazy(() => import("./pages/projects/Bikeshare"));
+const OSEHS = lazy(() => import("./pages/projects/OSEHS"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Loading fallback component
@@ -66,6 +67,7 @@ const AnimatedRoutes = () => {
       <Route path="/projects/offscript" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OffScript /></PageTransition></Suspense>} />
       <Route path="/projects/sona-ai" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><SonaAI /></PageTransition></Suspense>} />
       <Route path="/projects/bikeshare" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Bikeshare /></PageTransition></Suspense>} />
+      <Route path="/projects/osehs" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OSEHS /></PageTransition></Suspense>} />
       <Route path="/experience" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Experience /></PageTransition></Suspense>} />
       <Route path="/contact" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Contact /></PageTransition></Suspense>} />
       <Route path="/analytics" element={<Analytics />} />
