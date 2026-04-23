@@ -77,7 +77,7 @@ const Home = () => {
         </div>
 
         <div className="hero-stats" style={{ display:'flex', gap:36, flexWrap:'wrap', justifyContent:'center', animationDelay:'650ms' }}>
-          {[['7','Projects'],['3','Awards'],['NASA','Research'],['Apple','Industry']].map(([v,l]) => (
+          {[['6','Projects'],['3','Awards'],['NASA','Research'],['Apple','Industry']].map(([v,l]) => (
             <div key={l}>
               <div style={{ fontFamily:'Space Grotesk, sans-serif', fontSize:'clamp(1.8rem,3vw,2.4rem)', fontWeight:700, lineHeight:1, color:'#f0f0f5' }}>{v}</div>
               <div style={{ fontSize:11, color:'rgba(240,240,245,0.45)', letterSpacing:'0.08em', textTransform:'uppercase', marginTop:5 }}>{l}</div>
