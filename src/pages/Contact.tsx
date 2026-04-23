@@ -34,10 +34,15 @@ const Contact = () => {
     try {
       const r = await fetch('https://formspree.io/f/xzzbyrqk', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(form),
       });
-      setStatus(r.ok ? 'sent' : 'error');
+      if (r.ok) {
+        setStatus('sent');
+        setForm({ name: '', email: '', message: '' });
+      } else {
+        setStatus('error');
+      }
     } catch {
       setStatus('error');
     }
