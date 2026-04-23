@@ -84,28 +84,31 @@ const Projects = () => {
         {phase < 3 && featured.map((p, i) => {
           const isFront = i === 0;
           const isExpanding = phase >= 2 && isFront;
-          const w = isExpanding ? '100%' : CARD_W[i];
-          const h = isExpanding ? '100%' : CARD_H[i];
+
+          // Always explicitly center via left/top + translate so expansion animates outward from center
+          const left = isExpanding ? 0 : '50%';
+          const top  = isExpanding ? 0 : '50%';
 
           let transform = '';
           if (phase === 0) {
-            transform = 'translateY(700px)';
+            transform = 'translate(-50%, calc(-50% + 700px))';
           } else if (phase === 1) {
-            transform = `translateY(${STACK_Y[i]}px)`;
+            transform = `translate(-50%, calc(-50% + ${STACK_Y[i]}px))`;
           } else if (phase >= 2) {
-            transform = isFront ? 'none' : `translateY(${STACK_Y[i] + 60}px)`;
+            transform = isFront ? 'none' : `translate(-50%, calc(-50% + ${STACK_Y[i] + 60}px))`;
           }
 
           return (
             <div key={p.id} style={{
               position: 'absolute',
-              width: w, maxWidth: isExpanding ? 'none' : undefined,
-              height: isExpanding ? '100%' : h,
-              top: isExpanding ? 0 : undefined,
-              left: isExpanding ? 0 : undefined,
+              left, top,
+              width:  isExpanding ? '100%' : CARD_W[i],
+              height: isExpanding ? '100%' : CARD_H[i],
+              maxWidth: isExpanding ? 'none' : undefined,
               borderRadius: isExpanding ? 0 : 18,
               background: PROJECT_GRADIENTS[i],
               transform,
+              transformOrigin: 'center center',
               opacity: phase === 0 ? 0 : phase >= 2 && !isFront ? 0 : STACK_O[i],
               zIndex: isFront ? 3 : i === 1 ? 2 : 1,
               transition: `all ${isExpanding ? '1s' : '0.8s'} cubic-bezier(0.22,1,0.36,1)`,
