@@ -6,7 +6,6 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { Navigation } from "./components/Navigation";
-import { Footer } from "./components/Footer";
 import { CustomCursor } from "./components/CustomCursor";
 import { PageTransition } from "./components/PageTransition";
 import { ScrollProgressBar } from "./components/ScrollProgressBar";
@@ -92,7 +91,9 @@ const App = () => (
         <BrowserRouter>
           <Navigation />
           <AnimatedRoutes />
-          <Footer />
+          <footer style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '32px', textAlign: 'center', color: 'rgba(240,240,245,0.22)', fontSize: 13, fontFamily: 'Inter, sans-serif', position: 'relative', zIndex: 2 }}>
+            Andrea Yanez Soto · andreasoto.dev · Built with intention
+          </footer>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
