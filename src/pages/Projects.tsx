@@ -85,30 +85,27 @@ const Projects = () => {
           const isFront = i === 0;
           const isExpanding = phase >= 2 && isFront;
 
-          // Always explicitly center via left/top + translate so expansion animates outward from center
-          const left = isExpanding ? 0 : '50%';
-          const top  = isExpanding ? 0 : '50%';
-
-          let transform = '';
-          if (phase === 0) {
-            transform = 'translate(-50%, calc(-50% + 700px))';
-          } else if (phase === 1) {
-            transform = `translate(-50%, calc(-50% + ${STACK_Y[i]}px))`;
+          // inset:0 + margin:auto centers the card; width/height grow to 100% expanding from center.
+          // transform:translateY handles the deck stagger — no percentage-based translations that
+          // would recalculate mid-transition and cause the top-left jump.
+          let transform = 'translateY(700px)';
+          if (phase === 1) {
+            transform = `translateY(${STACK_Y[i]}px)`;
           } else if (phase >= 2) {
-            transform = isFront ? 'none' : `translate(-50%, calc(-50% + ${STACK_Y[i] + 60}px))`;
+            transform = isFront ? 'translateY(0px)' : `translateY(${STACK_Y[i] + 60}px)`;
           }
 
           return (
             <div key={p.id} style={{
               position: 'absolute',
-              left, top,
+              inset: 0,
+              margin: 'auto',
               width:  isExpanding ? '100%' : CARD_W[i],
               height: isExpanding ? '100%' : CARD_H[i],
               maxWidth: isExpanding ? 'none' : undefined,
               borderRadius: isExpanding ? 0 : 18,
               background: PROJECT_GRADIENTS[i],
               transform,
-              transformOrigin: 'center center',
               opacity: phase === 0 ? 0 : phase >= 2 && !isFront ? 0 : STACK_O[i],
               zIndex: isFront ? 3 : i === 1 ? 2 : 1,
               transition: `all ${isExpanding ? '1s' : '0.8s'} cubic-bezier(0.22,1,0.36,1)`,
