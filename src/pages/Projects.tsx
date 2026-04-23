@@ -4,51 +4,92 @@ import { Github, ExternalLink, ArrowRight, Star } from 'lucide-react';
 
 const ACCENT = '#00C9D8';
 
-// Project Hail Mary — cold deep space, nebula bleeds, distant stars
+// Vivid cinematic space — each card is a different scene
 const SPACE_BG = [
-  // Tau Ceti system: near-black + pale blue starlight bleed + indigo dust cloud
-  `radial-gradient(ellipse at 78% 22%, rgba(160,200,255,0.13) 0%, transparent 28%),
-   radial-gradient(ellipse at 18% 68%, rgba(30,60,180,0.18) 0%, transparent 50%),
-   radial-gradient(ellipse at 50% 50%, rgba(10,20,80,0.25) 0%, transparent 70%),
-   linear-gradient(160deg, #00030d 0%, #010820 55%, #020c2a 100%)`,
-  // Nebula corridor: violet + ember dust, like a stellar nursery seen from afar
-  `radial-gradient(ellipse at 65% 28%, rgba(110,25,170,0.22) 0%, transparent 38%),
-   radial-gradient(ellipse at 28% 72%, rgba(180,60,20,0.12) 0%, transparent 45%),
-   radial-gradient(ellipse at 50% 50%, rgba(40,10,70,0.3) 0%, transparent 65%),
-   linear-gradient(145deg, #060008 0%, #0e0318 55%, #130422 100%)`,
-  // Cold void + distant gas giant glow: teal-blue aurora on the horizon
-  `radial-gradient(ellipse at 55% 82%, rgba(0,120,100,0.18) 0%, transparent 40%),
-   radial-gradient(ellipse at 80% 18%, rgba(20,80,180,0.15) 0%, transparent 38%),
-   radial-gradient(ellipse at 25% 45%, rgba(0,50,80,0.2) 0%, transparent 55%),
-   linear-gradient(155deg, #000a09 0%, #010e12 55%, #021520 100%)`,
+  // Emerald nebula: dense gaseous clouds, deep forest greens + teal wisps
+  `radial-gradient(ellipse at 42% 32%, rgba(0,255,110,0.32) 0%, rgba(0,200,80,0.2) 20%, transparent 52%),
+   radial-gradient(ellipse at 78% 18%, rgba(0,230,190,0.26) 0%, transparent 30%),
+   radial-gradient(ellipse at 18% 68%, rgba(0,160,60,0.28) 0%, transparent 42%),
+   radial-gradient(ellipse at 58% 72%, rgba(0,100,50,0.38) 0%, transparent 40%),
+   linear-gradient(160deg, #000900 0%, #001503 50%, #000a01 100%)`,
+  // Crimson nebula: hot pink/magenta stellar cloud + dense scattered stars
+  `radial-gradient(ellipse at 50% 38%, rgba(255,50,130,0.42) 0%, rgba(220,0,90,0.3) 22%, transparent 50%),
+   radial-gradient(ellipse at 20% 18%, rgba(200,0,70,0.3) 0%, transparent 36%),
+   radial-gradient(ellipse at 80% 75%, rgba(255,40,110,0.22) 0%, transparent 40%),
+   radial-gradient(ellipse at 46% 55%, rgba(160,0,50,0.45) 0%, transparent 58%),
+   linear-gradient(148deg, #130004 0%, #1e0008 50%, #0f0003 100%)`,
+  // Ringed planet: electric blue rings, near-total black void
+  `radial-gradient(ellipse at 36% 50%, rgba(0,150,255,0.2) 0%, transparent 38%),
+   radial-gradient(ellipse at 65% 50%, rgba(0,210,255,0.14) 0%, transparent 32%),
+   radial-gradient(ellipse at 50% 50%, rgba(0,70,140,0.28) 0%, transparent 62%),
+   linear-gradient(158deg, #000208 0%, #000610 55%, #000408 100%)`,
 ];
 
-// Star glows per card: color of the "primary star" in that scene
-const STAR_GLOW = [
-  'rgba(160,200,255,0.22)',   // pale blue-white — Tau Ceti
-  'rgba(200,120,255,0.18)',   // violet — nebula core
-  'rgba(80,220,200,0.18)',    // teal — gas giant aurora
+// Nebula glow color per card
+const NEBULA_GLOW = [
+  'rgba(0,240,100,0.32)',   // emerald
+  'rgba(255,60,140,0.38)',  // crimson
+  'rgba(0,190,255,0.28)',   // electric blue
 ];
 
-// Deterministic star field — seeded per card so stars don't shift on re-render
+// Star tint per card — stars themselves pick up the nebula color
+const STAR_TINT: [number,number,number][] = [
+  [120, 255, 160],   // green-tinted stars
+  [255, 120, 160],   // red/pink-tinted stars
+  [120, 200, 255],   // blue-tinted stars
+];
+
 const buildStars = (seed: number, count: number) => {
   const rng = (n: number) => { let x = Math.sin(seed * 9301 + n * 49297 + 233) * 93280; return x - Math.floor(x); };
   return Array.from({ length: count }, (_, i) => ({
     cx: rng(i * 3)     * 100,
     cy: rng(i * 3 + 1) * 100,
-    r:  rng(i * 3 + 2) * 1.4 + 0.3,
-    o:  rng(i * 3 + 2) * 0.55 + 0.25,
+    r:  rng(i * 3 + 2) * 1.6 + 0.25,
+    o:  rng(i * 3 + 2) * 0.6 + 0.25,
+    tinted: rng(i * 3 + 1) > 0.45,  // ~55% of stars pick up nebula tint
   }));
 };
 
-const StarField = ({ seed, count = 110 }: { seed: number; count?: number }) => {
+const StarField = ({ seed, count = 120, tint }: { seed: number; count?: number; tint: [number,number,number] }) => {
   const stars = useMemo(() => buildStars(seed, count), [seed, count]);
+  const [tr,tg,tb] = tint;
   return (
     <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} aria-hidden>
-      {stars.map((s, i) => <circle key={i} cx={`${s.cx}%`} cy={`${s.cy}%`} r={s.r} fill={`rgba(255,255,255,${s.o.toFixed(2)})`}/>)}
+      {stars.map((s, i) => {
+        const fill = s.tinted
+          ? `rgba(${tr},${tg},${tb},${(s.o * 0.65).toFixed(2)})`
+          : `rgba(255,255,255,${s.o.toFixed(2)})`;
+        return <circle key={i} cx={`${s.cx}%`} cy={`${s.cy}%`} r={s.r} fill={fill}/>;
+      })}
     </svg>
   );
 };
+
+// Ringed planet SVG overlay for card 2
+const PlanetRings = () => (
+  <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none', overflow:'visible' }}
+    viewBox="0 0 620 340" preserveAspectRatio="xMidYMid slice" aria-hidden>
+    <defs>
+      <radialGradient id="pg" cx="38%" cy="32%" r="65%">
+        <stop offset="0%" stopColor="#0d2545"/>
+        <stop offset="55%" stopColor="#030a1c"/>
+        <stop offset="100%" stopColor="#000005"/>
+      </radialGradient>
+    </defs>
+    {/* Rings behind planet (drawn first) */}
+    <ellipse cx="-30" cy="100" rx="540" ry="128" fill="none" stroke="rgba(0,150,255,0.12)" strokeWidth="1.5" transform="rotate(-11,-30,100)"/>
+    <ellipse cx="-30" cy="100" rx="490" ry="116" fill="none" stroke="rgba(0,175,255,0.22)" strokeWidth="1"   transform="rotate(-11,-30,100)"/>
+    <ellipse cx="-30" cy="100" rx="440" ry="104" fill="none" stroke="rgba(255,255,255,0.72)" strokeWidth="2" transform="rotate(-11,-30,100)"/>
+    <ellipse cx="-30" cy="100" rx="395" ry="93"  fill="none" stroke="rgba(0,200,255,0.58)" strokeWidth="2.5" transform="rotate(-11,-30,100)"/>
+    <ellipse cx="-30" cy="100" rx="350" ry="82"  fill="none" stroke="rgba(0,180,255,0.42)" strokeWidth="1.5" transform="rotate(-11,-30,100)"/>
+    <ellipse cx="-30" cy="100" rx="310" ry="72"  fill="none" stroke="rgba(200,165,55,0.38)" strokeWidth="1"  transform="rotate(-11,-30,100)"/>
+    <ellipse cx="-30" cy="100" rx="268" ry="62"  fill="none" stroke="rgba(0,160,255,0.3)"  strokeWidth="1.5" transform="rotate(-11,-30,100)"/>
+    {/* Planet body occludes rings that pass behind it */}
+    <circle cx="-30" cy="100" r="235" fill="url(#pg)"/>
+    {/* Atmospheric rim glow */}
+    <circle cx="-30" cy="100" r="235" fill="none" stroke="rgba(0,120,220,0.35)" strokeWidth="8"/>
+  </svg>
+);
 
 const PROJECTS = [
   { id:'recall', title:'Recall', description:'Assistive memory system with facial recognition using OpenCV and MongoDB. Helps users remember people through real-time face detection and recognition.', techStack:['Flask','MongoDB','OpenCV','ElevenLabs TTS','Python'], awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], githubLink:'https://github.com/andreay99/recall', liveLink:'https://recall-app.vercel.app', link:'/projects/recall', categories:['ai-ml'] },
@@ -156,20 +197,22 @@ const Projects = () => {
                 ? '0 32px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05)'
                 : '0 16px 48px rgba(0,0,0,0.7)',
             }}>
-              {/* Star field */}
-              <StarField seed={i + 1} count={isFront ? 140 : 90} />
-              {/* Primary star point */}
-              <div style={{ position:'absolute', top:'18%', right:'22%', width:3, height:3, borderRadius:'50%', background:'#fff', boxShadow:`0 0 6px 3px ${STAR_GLOW[i]}, 0 0 20px 8px ${STAR_GLOW[i]}`, pointerEvents:'none' }}/>
-              {/* Nebula glow */}
-              <div style={{ position:'absolute', top:'10%', left:'55%', width:340, height:260, borderRadius:'50%', background:`radial-gradient(ellipse, ${STAR_GLOW[i]} 0%, transparent 70%)`, filter:'blur(50px)', pointerEvents:'none' }}/>
-              {/* Bottom vignette so label reads cleanly */}
-              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:120, background:'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)', pointerEvents:'none' }}/>
-              {/* Bottom edge accent bar — visible on back cards */}
-              {!isFront && <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:`rgba(255,255,255,0.08)` }}/>}
+              {/* Dense tinted star field */}
+              <StarField seed={i + 1} count={i === 1 ? 280 : isFront ? 160 : 100} tint={STAR_TINT[i]} />
+              {/* Planet rings overlay on card 2 */}
+              {i === 2 && <PlanetRings />}
+              {/* Nebula volume glow */}
+              <div style={{ position:'absolute', top:'8%', left:'40%', width:380, height:300, borderRadius:'50%', background:`radial-gradient(ellipse, ${NEBULA_GLOW[i]} 0%, transparent 70%)`, filter:'blur(55px)', pointerEvents:'none' }}/>
+              {/* Secondary nebula lobe */}
+              <div style={{ position:'absolute', top:'45%', left:'10%', width:260, height:200, borderRadius:'50%', background:`radial-gradient(ellipse, ${NEBULA_GLOW[i].replace(/[\d.]+\)$/, '0.18)')} 0%, transparent 70%)`, filter:'blur(45px)', pointerEvents:'none' }}/>
+              {/* Bright hot-core star (only on green + crimson cards) */}
+              {i !== 2 && <div style={{ position:'absolute', top:'22%', left:'58%', width:i===1?5:4, height:i===1?5:4, borderRadius:'50%', background:'#fff', boxShadow:`0 0 8px 4px ${NEBULA_GLOW[i]}, 0 0 24px 10px ${NEBULA_GLOW[i]}`, pointerEvents:'none' }}/>}
+              {/* Bottom vignette */}
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:130, background:'linear-gradient(to top, rgba(0,0,0,0.82) 0%, transparent 100%)', pointerEvents:'none' }}/>
               {/* Label */}
               {!isExpanding && (
                 <div style={{ position:'absolute', bottom:22, left:24, zIndex:2 }}>
-                  <p style={{ fontSize:10, color:'rgba(200,220,255,0.6)', letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>{p.techStack[0]}</p>
+                  <p style={{ fontSize:10, color:`rgba(${STAR_TINT[i].join(',')},0.7)`, letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>{p.techStack[0]}</p>
                   <p style={{ fontFamily:'Space Grotesk,sans-serif', fontSize: isFront ? '1.4rem' : '1.1rem', fontWeight:700, color:'#f0f0f5', opacity: isFront ? 1 : 0.65 }}>{p.title}</p>
                 </div>
               )}
@@ -179,12 +222,13 @@ const Projects = () => {
 
         {phase >= 3 && (
           <div style={{ position:'relative', width:'100%', height:520, background:SPACE_BG[hero], overflow:'hidden', animation:'fadeUp 0.5s ease both' }}>
-            <StarField seed={hero + 1} count={180} />
-            {/* Primary star */}
-            <div style={{ position:'absolute', top:'15%', right:'18%', width:4, height:4, borderRadius:'50%', background:'#fff', boxShadow:`0 0 8px 4px ${STAR_GLOW[hero]}, 0 0 28px 10px ${STAR_GLOW[hero]}`, pointerEvents:'none' }}/>
-            {/* Nebula glow */}
-            <div style={{ position:'absolute', top:'5%', left:'50%', width:500, height:380, borderRadius:'50%', background:`radial-gradient(ellipse, ${STAR_GLOW[hero]} 0%, transparent 70%)`, filter:'blur(60px)', pointerEvents:'none' }}/>
-            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 55%, transparent 100%)' }}/>
+            <StarField seed={hero + 1} count={hero === 1 ? 320 : 200} tint={STAR_TINT[hero]} />
+            {hero === 2 && <PlanetRings />}
+            {/* Hero nebula glow */}
+            <div style={{ position:'absolute', top:'5%', left:'45%', width:580, height:440, borderRadius:'50%', background:`radial-gradient(ellipse, ${NEBULA_GLOW[hero]} 0%, transparent 70%)`, filter:'blur(65px)', pointerEvents:'none' }}/>
+            <div style={{ position:'absolute', top:'40%', left:'5%', width:340, height:260, borderRadius:'50%', background:`radial-gradient(ellipse, ${NEBULA_GLOW[hero].replace(/[\d.]+\)$/, '0.15)')} 0%, transparent 70%)`, filter:'blur(50px)', pointerEvents:'none' }}/>
+            {hero !== 2 && <div style={{ position:'absolute', top:'18%', right:'20%', width:5, height:5, borderRadius:'50%', background:'#fff', boxShadow:`0 0 10px 5px ${NEBULA_GLOW[hero]}, 0 0 32px 12px ${NEBULA_GLOW[hero]}`, pointerEvents:'none' }}/>}
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)' }}/>
             <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 40px 40px', zIndex:2 }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', maxWidth:1100, margin:'0 auto', flexWrap:'wrap', gap:20 }}>
                 <div style={{ maxWidth:560 }}>
