@@ -1,315 +1,216 @@
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Mail, Linkedin, Github, FileText, ExternalLink, Send, CheckCircle2, AlertCircle } from "lucide-react";
-import { PageTransition } from "@/components/PageTransition";
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { Mail, Linkedin, Github, FileText, ExternalLink, Send } from "lucide-react";
+import { PageTransition } from "@/components/PageTransition";
+
+const ACCENT = '#00C9D8';
+
+const LINKS = [
+  {
+    icon: Mail,
+    label: 'Email',
+    sub: 'Direct contact',
+    href: 'mailto:andreayanez11@outlook.com',
+    text: 'andreayanez11@outlook.com',
+    external: false,
+  },
+  {
+    icon: Linkedin,
+    label: 'LinkedIn',
+    sub: 'Connect professionally',
+    href: 'https://www.linkedin.com/in/andrea-yanez-soto-8b4653218',
+    text: 'View Profile',
+    external: true,
+  },
+  {
+    icon: Github,
+    label: 'GitHub',
+    sub: 'Explore my code',
+    href: 'https://github.com/andreay99',
+    text: 'View Repositories',
+    external: true,
+  },
+  {
+    icon: FileText,
+    label: 'Resume',
+    sub: 'Download my CV',
+    href: '/resume.pdf',
+    text: 'Download PDF',
+    external: false,
+    download: true,
+  },
+];
+
+const inputStyle: React.CSSProperties = {
+  width: '100%',
+  background: 'rgba(255,255,255,0.04)',
+  border: '1px solid rgba(255,255,255,0.1)',
+  borderRadius: 10,
+  padding: '11px 14px',
+  fontSize: 14,
+  color: '#f0f0f5',
+  fontFamily: 'Inter, sans-serif',
+  outline: 'none',
+  boxSizing: 'border-box',
+  transition: 'border-color 0.2s',
+};
+
+const labelStyle: React.CSSProperties = {
+  fontSize: 12,
+  fontWeight: 600,
+  color: 'rgba(240,240,245,0.55)',
+  letterSpacing: '0.05em',
+  textTransform: 'uppercase',
+  marginBottom: 6,
+  display: 'block',
+};
 
 const Contact = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<"idle" | "success" | "error">("idle");
-  const [statusMessage, setStatusMessage] = useState("");
+  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
+    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
-
     try {
-      const response = await fetch("https://formspree.io/f/xzzbyrqk", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+      const res = await fetch('https://formspree.io/f/xzzbyrqk', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
       });
-
-      if (response.ok) {
-        setStatus("success");
-        setStatusMessage("Thanks for reaching out! I'll get back to you soon.");
-        setFormData({ name: "", email: "", subject: "", message: "" });
-        setTimeout(() => setStatus("idle"), 5000);
+      if (res.ok) {
+        setStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => setStatus('idle'), 5000);
       } else {
-        setStatus("error");
-        setStatusMessage("Something went wrong. Please try again.");
-        setTimeout(() => setStatus("idle"), 5000);
+        setStatus('error');
+        setTimeout(() => setStatus('idle'), 5000);
       }
-    } catch (error) {
-      setStatus("error");
-      setStatusMessage("Failed to send message. Please try again or email me directly.");
-      setTimeout(() => setStatus("idle"), 5000);
+    } catch {
+      setStatus('error');
+      setTimeout(() => setStatus('idle'), 5000);
     } finally {
       setLoading(false);
     }
   };
 
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 10 },
-    visible: { opacity: 1, y: 0 },
-  };
-
   return (
     <PageTransition>
-      <div className="min-h-screen pt-24 pb-20">
-        <div className="section-container max-w-4xl">
-          <div className="mb-12">
-            <h1 className="mb-4">Get in Touch</h1>
-            <p className="text-lg text-muted-foreground mb-4">
-              I'm a Computer Science student at New Jersey Institute of Technology specializing in AI/ML and full-stack development. 
-              With expertise in facial recognition, natural language processing, and computer vision, I build intelligent systems 
-              that solve real-world problems.
+      <div style={{ background: '#08090e', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+        <div className="page-enter" style={{ paddingTop: 120, paddingBottom: 100 }}>
+          <div style={{ maxWidth: 780, margin: '0 auto', padding: '0 32px' }}>
+
+            {/* Header */}
+            <p style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: ACCENT, marginBottom: 14, fontWeight: 600 }}>Contact</p>
+            <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 700, color: '#f0f0f5', marginBottom: 14, lineHeight: 1.1 }}>Get in Touch</h2>
+            <p style={{ color: 'rgba(240,240,245,0.45)', fontSize: 15, marginBottom: 56, maxWidth: 520 }}>
+              Open to collaborations, research opportunities, and full-time roles. Let's build something.
             </p>
-            <p className="text-lg text-muted-foreground">
-              I'm passionate about leveraging cutting-edge AI technologies and cloud platforms to create innovative solutions. 
-              Whether you're looking to collaborate on an exciting project, discuss emerging technologies, or explore opportunities 
-              in software engineering and AI, I'd love to connect!
-            </p>
-          </div>
 
-          {/* Contact Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="mb-12"
-          >
-            <Card className="backdrop-blur-sm bg-card/80 border-border/50">
-              <CardHeader>
-                <CardTitle>Send me a Message</CardTitle>
-                <CardDescription>Fill out the form below and I'll get back to you as soon as possible.</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSubmit} className="space-y-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <label htmlFor="name" className="text-sm font-medium">
-                        Name
-                      </label>
-                      <Input
-                        id="name"
-                        name="name"
-                        value={formData.name}
-                        onChange={handleChange}
-                        required
-                        placeholder="Your name"
-                        className="rounded-lg"
-                      />
-                    </div>
-                    <div className="space-y-2">
-                      <label htmlFor="email" className="text-sm font-medium">
-                        Email
-                      </label>
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        required
-                        placeholder="your@email.com"
-                        className="rounded-lg"
-                      />
-                    </div>
+            {/* Form */}
+            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '32px', marginBottom: 40 }}>
+              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '1rem', fontWeight: 600, color: '#f0f0f5', marginBottom: 4 }}>Send a Message</h3>
+              <p style={{ fontSize: 13, color: 'rgba(240,240,245,0.35)', marginBottom: 24 }}>I'll get back to you as soon as possible.</p>
+
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+                  <div>
+                    <label style={labelStyle} htmlFor="name">Name</label>
+                    <input id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Your name" style={inputStyle}
+                      onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
                   </div>
-
-                  <div className="space-y-2">
-                    <label htmlFor="subject" className="text-sm font-medium">
-                      Subject
-                    </label>
-                    <Input
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
-                      placeholder="What is this about?"
-                      className="rounded-lg"
-                    />
+                  <div>
+                    <label style={labelStyle} htmlFor="email">Email</label>
+                    <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="your@email.com" style={inputStyle}
+                      onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
                   </div>
+                </div>
 
-                  <div className="space-y-2">
-                    <label htmlFor="message" className="text-sm font-medium">
-                      Message
-                    </label>
-                    <Textarea
-                      id="message"
-                      name="message"
-                      value={formData.message}
-                      onChange={handleChange}
-                      required
-                      placeholder="Your message..."
-                      className="min-h-[150px] rounded-lg resize-none"
-                    />
+                <div>
+                  <label style={labelStyle} htmlFor="subject">Subject</label>
+                  <input id="subject" name="subject" value={formData.subject} onChange={handleChange} required placeholder="What is this about?" style={inputStyle}
+                    onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
+                </div>
+
+                <div>
+                  <label style={labelStyle} htmlFor="message">Message</label>
+                  <textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Your message..." rows={5}
+                    style={{ ...inputStyle, resize: 'none', lineHeight: 1.6 }}
+                    onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
+                </div>
+
+                {status === 'success' && (
+                  <div style={{ padding: '12px 16px', borderRadius: 10, background: 'rgba(0,201,216,0.08)', border: '1px solid rgba(0,201,216,0.3)', color: ACCENT, fontSize: 13 }}>
+                    Thanks for reaching out! I'll get back to you soon.
                   </div>
+                )}
+                {status === 'error' && (
+                  <div style={{ padding: '12px 16px', borderRadius: 10, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171', fontSize: 13 }}>
+                    Something went wrong. Please try again or email me directly.
+                  </div>
+                )}
 
-                  {/* Status Messages */}
-                  {status === "success" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-2 p-4 rounded-lg bg-green-500/10 border border-green-500/30 text-green-600"
-                    >
-                      <CheckCircle2 className="h-5 w-5" />
-                      <p className="text-sm">{statusMessage}</p>
-                    </motion.div>
-                  )}
-
-                  {status === "error" && (
-                    <motion.div
-                      initial={{ opacity: 0, y: -10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      className="flex items-center gap-2 p-4 rounded-lg bg-red-500/10 border border-red-500/30 text-red-600"
-                    >
-                      <AlertCircle className="h-5 w-5" />
-                      <p className="text-sm">{statusMessage}</p>
-                    </motion.div>
-                  )}
-
-                  <Button
-                    type="submit"
-                    disabled={loading}
-                    className="w-full rounded-lg"
-                  >
-                    {loading ? (
-                      <>
-                        <span className="animate-spin mr-2">⏳</span>
-                        Sending...
-                      </>
-                    ) : (
-                      <>
-                        <Send className="mr-2 h-4 w-4" />
-                        Send Message
-                      </>
-                    )}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </motion.div>
-
-          {/* Quick Contact Methods */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12"
-          >
-            <motion.div variants={itemVariants}>
-              <Card className="hover-lift hover:shadow-lg transition-all">
-                <CardHeader>
-                  <Mail className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>Email</CardTitle>
-                  <CardDescription>Direct email contact</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="mailto:andreayanez11@outlook.com">
-                      andreayanez11@outlook.com
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <Card className="hover-lift hover:shadow-lg transition-all">
-                <CardHeader>
-                  <Linkedin className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>LinkedIn</CardTitle>
-                  <CardDescription>Connect professionally</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="https://www.linkedin.com/in/andrea-yanez-soto-8b4653218" target="_blank" rel="noopener noreferrer">
-                      View Profile
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <Card className="hover-lift hover:shadow-lg transition-all">
-                <CardHeader>
-                  <Github className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>GitHub</CardTitle>
-                  <CardDescription>Explore my code</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="https://github.com/andreay99" target="_blank" rel="noopener noreferrer">
-                      View Repositories
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={itemVariants}>
-              <Card className="hover-lift hover:shadow-lg transition-all">
-                <CardHeader>
-                  <FileText className="h-8 w-8 text-accent mb-2" />
-                  <CardTitle>Resume</CardTitle>
-                  <CardDescription>Download my CV</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <Button asChild className="w-full" variant="default">
-                    <a href="/resume.pdf" download>
-                      Download PDF
-                      <ExternalLink className="ml-2 h-4 w-4" />
-                    </a>
-                  </Button>
-                </CardContent>
-              </Card>
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-secondary/30 rounded-lg p-6 border border-border/50"
-          >
-            <CardTitle className="mb-4">Additional Links</CardTitle>
-            <div className="flex flex-col gap-3">
-              <Button asChild variant="outline" className="justify-start">
-                <a href="https://devpost.com/andreay99" target="_blank" rel="noopener noreferrer">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  Devpost Profile
-                </a>
-              </Button>
-              <Button asChild variant="outline" className="justify-start">
-                <a href="tel:7325200494">
-                  <ExternalLink className="mr-2 h-4 w-4" />
-                  (732) 520-0494
-                </a>
-              </Button>
+                <button type="submit" disabled={loading} style={{
+                  display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                  padding: '12px 24px', borderRadius: 40, background: loading ? 'rgba(0,201,216,0.5)' : ACCENT,
+                  color: '#fff', fontWeight: 600, fontSize: 14, fontFamily: 'Space Grotesk, sans-serif',
+                  border: 'none', cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.25s',
+                  alignSelf: 'flex-start',
+                }}>
+                  <Send size={15} />
+                  {loading ? 'Sending…' : 'Send Message'}
+                </button>
+              </form>
             </div>
-          </motion.div>
+
+            {/* Links grid */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))', gap: 12, marginBottom: 32 }}>
+              {LINKS.map(link => {
+                const Icon = link.icon;
+                return (
+                  <a key={link.label} href={link.href}
+                    {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    {...(link.download ? { download: true } : {})}
+                    style={{
+                      display: 'flex', alignItems: 'center', gap: 14,
+                      background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
+                      borderRadius: 14, padding: '16px 18px', textDecoration: 'none',
+                      transition: 'border-color 0.25s, transform 0.25s, box-shadow 0.25s',
+                    }}
+                    onMouseEnter={e => { const el = e.currentTarget; el.style.borderColor = `${ACCENT}50`; el.style.transform = 'translateY(-2px)'; el.style.boxShadow = '0 12px 40px rgba(0,0,0,0.35)'; }}
+                    onMouseLeave={e => { const el = e.currentTarget; el.style.borderColor = 'rgba(255,255,255,0.07)'; el.style.transform = ''; el.style.boxShadow = ''; }}>
+                    <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(0,201,216,0.06)', border: '1px solid rgba(0,201,216,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Icon size={18} color={ACCENT} />
+                    </div>
+                    <div>
+                      <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: 14, color: '#f0f0f5', lineHeight: 1.2 }}>{link.label}</div>
+                      <div style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)', marginTop: 2 }}>{link.sub}</div>
+                    </div>
+                  </a>
+                );
+              })}
+            </div>
+
+            {/* Additional links */}
+            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <a href="https://devpost.com/andreay99" target="_blank" rel="noopener noreferrer"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'rgba(240,240,245,0.45)', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 8, padding: '7px 14px', transition: 'color 0.2s, border-color 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = `${ACCENT}50`; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(240,240,245,0.45)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; }}>
+                <ExternalLink size={13} /> Devpost
+              </a>
+              <a href="tel:7325200494"
+                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'rgba(240,240,245,0.45)', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 8, padding: '7px 14px', transition: 'color 0.2s, border-color 0.2s' }}
+                onMouseEnter={e => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = `${ACCENT}50`; }}
+                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(240,240,245,0.45)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; }}>
+                (732) 520-0494
+              </a>
+            </div>
+
+          </div>
         </div>
       </div>
     </PageTransition>
