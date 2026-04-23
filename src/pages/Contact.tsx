@@ -1,99 +1,45 @@
 import { useState } from "react";
-import { Mail, Linkedin, Github, FileText, ExternalLink, Send } from "lucide-react";
+import { Mail, Github, Linkedin, Send } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
 
 const ACCENT = '#00C9D8';
 
 const LINKS = [
-  {
-    icon: Mail,
-    label: 'Email',
-    sub: 'Direct contact',
-    href: 'mailto:andreayanez11@outlook.com',
-    text: 'andreayanez11@outlook.com',
-    external: false,
-  },
-  {
-    icon: Linkedin,
-    label: 'LinkedIn',
-    sub: 'Connect professionally',
-    href: 'https://www.linkedin.com/in/andrea-yanez-soto-8b4653218',
-    text: 'View Profile',
-    external: true,
-  },
-  {
-    icon: Github,
-    label: 'GitHub',
-    sub: 'Explore my code',
-    href: 'https://github.com/andreay99',
-    text: 'View Repositories',
-    external: true,
-  },
-  {
-    icon: FileText,
-    label: 'Resume',
-    sub: 'Download my CV',
-    href: '/resume.pdf',
-    text: 'Download PDF',
-    external: false,
-    download: true,
-  },
+  { Icon: Mail,     label: 'Email',    value: 'andreayanez11@outlook.com',                         href: 'mailto:andreayanez11@outlook.com' },
+  { Icon: Github,   label: 'GitHub',   value: 'github.com/andreay99',                              href: 'https://github.com/andreay99' },
+  { Icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/andrea-yanez-soto',                 href: 'https://www.linkedin.com/in/andrea-yanez-soto-8b4653218' },
 ];
 
-const inputStyle: React.CSSProperties = {
-  width: '100%',
+const fieldStyle: React.CSSProperties = {
   background: 'rgba(255,255,255,0.04)',
   border: '1px solid rgba(255,255,255,0.1)',
   borderRadius: 10,
-  padding: '11px 14px',
-  fontSize: 14,
   color: '#f0f0f5',
+  padding: '14px 16px',
+  fontSize: 14,
   fontFamily: 'Inter, sans-serif',
   outline: 'none',
-  boxSizing: 'border-box',
   transition: 'border-color 0.2s',
-};
-
-const labelStyle: React.CSSProperties = {
-  fontSize: 12,
-  fontWeight: 600,
-  color: 'rgba(240,240,245,0.55)',
-  letterSpacing: '0.05em',
-  textTransform: 'uppercase',
-  marginBottom: 6,
-  display: 'block',
+  width: '100%',
+  boxSizing: 'border-box' as const,
 };
 
 const Contact = () => {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-  const [loading, setLoading] = useState(false);
-  const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
-    setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setStatus('sending');
     try {
-      const res = await fetch('https://formspree.io/f/xzzbyrqk', {
+      const r = await fetch('https://formspree.io/f/xzzbyrqk', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(form),
       });
-      if (res.ok) {
-        setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-        setTimeout(() => setStatus('idle'), 5000);
-      } else {
-        setStatus('error');
-        setTimeout(() => setStatus('idle'), 5000);
-      }
+      setStatus(r.ok ? 'sent' : 'error');
     } catch {
       setStatus('error');
-      setTimeout(() => setStatus('idle'), 5000);
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -101,115 +47,70 @@ const Contact = () => {
     <PageTransition>
       <div style={{ background: '#08090e', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
         <div className="page-enter" style={{ paddingTop: 120, paddingBottom: 100 }}>
-          <div style={{ maxWidth: 780, margin: '0 auto', padding: '0 32px' }}>
+          <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 32px' }}>
 
-            {/* Header */}
-            <p style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: ACCENT, marginBottom: 14, fontWeight: 600 }}>Contact</p>
-            <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 700, color: '#f0f0f5', marginBottom: 14, lineHeight: 1.1 }}>Get in Touch</h2>
-            <p style={{ color: 'rgba(240,240,245,0.45)', fontSize: 15, marginBottom: 56, maxWidth: 520 }}>
-              Open to collaborations, research opportunities, and full-time roles. Let's build something.
+            <p style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: ACCENT, marginBottom: 14, fontWeight: 600 }}>Let's talk</p>
+            <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 700, color: '#f0f0f5', marginBottom: 14, lineHeight: 1.1 }}>Contact</h2>
+            <p style={{ color: 'rgba(240,240,245,0.45)', fontSize: 15, marginBottom: 56, maxWidth: 440 }}>
+              Open to full-time roles, research collaborations, and interesting projects.
             </p>
 
-            {/* Form */}
-            <div style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, padding: '32px', marginBottom: 40 }}>
-              <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '1rem', fontWeight: 600, color: '#f0f0f5', marginBottom: 4 }}>Send a Message</h3>
-              <p style={{ fontSize: 13, color: 'rgba(240,240,245,0.35)', marginBottom: 24 }}>I'll get back to you as soon as possible.</p>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
 
-              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
-                  <div>
-                    <label style={labelStyle} htmlFor="name">Name</label>
-                    <input id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="Your name" style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                  </div>
-                  <div>
-                    <label style={labelStyle} htmlFor="email">Email</label>
-                    <input id="email" name="email" type="email" value={formData.email} onChange={handleChange} required placeholder="your@email.com" style={inputStyle}
-                      onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={labelStyle} htmlFor="subject">Subject</label>
-                  <input id="subject" name="subject" value={formData.subject} onChange={handleChange} required placeholder="What is this about?" style={inputStyle}
-                    onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                </div>
-
-                <div>
-                  <label style={labelStyle} htmlFor="message">Message</label>
-                  <textarea id="message" name="message" value={formData.message} onChange={handleChange} required placeholder="Your message..." rows={5}
-                    style={{ ...inputStyle, resize: 'none', lineHeight: 1.6 }}
-                    onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
-                </div>
-
-                {status === 'success' && (
-                  <div style={{ padding: '12px 16px', borderRadius: 10, background: 'rgba(0,201,216,0.08)', border: '1px solid rgba(0,201,216,0.3)', color: ACCENT, fontSize: 13 }}>
-                    Thanks for reaching out! I'll get back to you soon.
-                  </div>
+              {/* Form */}
+              <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {(['name', 'email', 'message'] as const).map(field =>
+                  field === 'message' ? (
+                    <textarea key={field} placeholder="Message" value={form[field]}
+                      onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))} required
+                      rows={5} style={{ ...fieldStyle, resize: 'vertical', minHeight: 120, lineHeight: 1.6 }}
+                      onFocus={e => (e.target.style.borderColor = ACCENT)}
+                      onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
+                  ) : (
+                    <input key={field} type={field === 'email' ? 'email' : 'text'}
+                      placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
+                      value={form[field]} onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))} required
+                      style={fieldStyle}
+                      onFocus={e => (e.target.style.borderColor = ACCENT)}
+                      onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
+                  )
                 )}
-                {status === 'error' && (
-                  <div style={{ padding: '12px 16px', borderRadius: 10, background: 'rgba(239,68,68,0.08)', border: '1px solid rgba(239,68,68,0.3)', color: '#f87171', fontSize: 13 }}>
-                    Something went wrong. Please try again or email me directly.
-                  </div>
-                )}
-
-                <button type="submit" disabled={loading} style={{
+                <button type="submit" disabled={status === 'sending'} style={{
                   display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                  padding: '12px 24px', borderRadius: 40, background: loading ? 'rgba(0,201,216,0.5)' : ACCENT,
+                  padding: '12px 24px', borderRadius: 40, background: ACCENT,
                   color: '#fff', fontWeight: 600, fontSize: 14, fontFamily: 'Space Grotesk, sans-serif',
-                  border: 'none', cursor: loading ? 'not-allowed' : 'pointer', transition: 'all 0.25s',
-                  alignSelf: 'flex-start',
+                  border: 'none', cursor: status === 'sending' ? 'not-allowed' : 'pointer',
+                  opacity: status === 'sending' ? 0.6 : 1, transition: 'opacity 0.2s',
                 }}>
-                  <Send size={15} />
-                  {loading ? 'Sending…' : 'Send Message'}
+                  {status === 'sending' ? 'Sending…' : status === 'sent' ? 'Sent ✓' : <><Send size={15} /> Send Message</>}
                 </button>
+                {status === 'error' && (
+                  <p style={{ fontSize: 13, color: '#f87171', margin: 0 }}>Something went wrong. Please try again.</p>
+                )}
               </form>
-            </div>
 
-            {/* Links grid */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))', gap: 12, marginBottom: 32 }}>
-              {LINKS.map(link => {
-                const Icon = link.icon;
-                return (
-                  <a key={link.label} href={link.href}
-                    {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                    {...(link.download ? { download: true } : {})}
+              {/* Link cards */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+                {LINKS.map(({ Icon, label, value, href }) => (
+                  <a key={label} href={href} target="_blank" rel="noopener noreferrer"
                     style={{
-                      display: 'flex', alignItems: 'center', gap: 14,
+                      padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14,
+                      textDecoration: 'none', color: 'inherit',
                       background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
-                      borderRadius: 14, padding: '16px 18px', textDecoration: 'none',
-                      transition: 'border-color 0.25s, transform 0.25s, box-shadow 0.25s',
+                      borderRadius: 14, transition: 'border-color 0.25s, transform 0.25s',
                     }}
-                    onMouseEnter={e => { const el = e.currentTarget; el.style.borderColor = `${ACCENT}50`; el.style.transform = 'translateY(-2px)'; el.style.boxShadow = '0 12px 40px rgba(0,0,0,0.35)'; }}
-                    onMouseLeave={e => { const el = e.currentTarget; el.style.borderColor = 'rgba(255,255,255,0.07)'; el.style.transform = ''; el.style.boxShadow = ''; }}>
-                    <div style={{ width: 40, height: 40, borderRadius: 10, background: 'rgba(0,201,216,0.06)', border: '1px solid rgba(0,201,216,0.12)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                      <Icon size={18} color={ACCENT} />
-                    </div>
+                    onMouseEnter={e => { e.currentTarget.style.borderColor = `${ACCENT}50`; e.currentTarget.style.transform = 'translateY(-2px)'; }}
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.transform = ''; }}>
+                    <Icon size={20} color={ACCENT} />
                     <div>
-                      <div style={{ fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600, fontSize: 14, color: '#f0f0f5', lineHeight: 1.2 }}>{link.label}</div>
-                      <div style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)', marginTop: 2 }}>{link.sub}</div>
+                      <div style={{ fontSize: 11, color: 'rgba(240,240,245,0.45)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 2 }}>{label}</div>
+                      <div style={{ fontSize: 14, color: '#f0f0f5' }}>{value}</div>
                     </div>
                   </a>
-                );
-              })}
-            </div>
+                ))}
+              </div>
 
-            {/* Additional links */}
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 28, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <a href="https://devpost.com/andreay99" target="_blank" rel="noopener noreferrer"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'rgba(240,240,245,0.45)', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 8, padding: '7px 14px', transition: 'color 0.2s, border-color 0.2s' }}
-                onMouseEnter={e => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = `${ACCENT}50`; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(240,240,245,0.45)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; }}>
-                <ExternalLink size={13} /> Devpost
-              </a>
-              <a href="tel:7325200494"
-                style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, color: 'rgba(240,240,245,0.45)', textDecoration: 'none', border: '1px solid rgba(255,255,255,0.09)', borderRadius: 8, padding: '7px 14px', transition: 'color 0.2s, border-color 0.2s' }}
-                onMouseEnter={e => { e.currentTarget.style.color = ACCENT; e.currentTarget.style.borderColor = `${ACCENT}50`; }}
-                onMouseLeave={e => { e.currentTarget.style.color = 'rgba(240,240,245,0.45)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; }}>
-                (732) 520-0494
-              </a>
             </div>
-
           </div>
         </div>
       </div>
