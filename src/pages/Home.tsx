@@ -3,7 +3,8 @@ import { ArrowRight } from 'lucide-react';
 import { BlackHoleCanvas } from '@/components/BlackHoleCanvas';
 import { RollingText } from '@/components/RollingText';
 
-const ACCENT = '#FF6B35';
+const ACCENT = '#00C9D8';
+const ACCENT_RGB = '0,201,216';
 
 const STACK = [
   { name:'Python',     cat:'Language',   slug:'python',     color:'3776AB' },
@@ -24,7 +25,7 @@ const Home = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="page-enter" style={{ position:'relative', zIndex:1, background:'#08090e', minHeight:'100vh' }}>
+    <div className="page-enter" style={{ position:'relative', zIndex:1, minHeight:'100vh' }}>
       <BlackHoleCanvas />
 
       {/* Hero */}
@@ -33,7 +34,7 @@ const Home = () => {
         justifyContent:'center', alignItems:'center', textAlign:'center',
         padding:'120px 32px 80px', position:'relative', zIndex:2,
       }}>
-        <div style={{ position:'fixed', inset:0, zIndex:-1, background:'rgba(8,9,14,0.55)', pointerEvents:'none' }}/>
+        <div style={{ position:'fixed', inset:0, zIndex:0, background:'rgba(8,9,14,0.55)', pointerEvents:'none' }}/>
 
         <p className="hero-sub" style={{ fontSize:12, letterSpacing:'0.15em', textTransform:'uppercase', color:ACCENT, marginBottom:24, fontWeight:600, animationDelay:'0ms' }}>
           Available for opportunities
@@ -73,7 +74,7 @@ const Home = () => {
         </div>
       </section>
 
-      <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(255,107,53,0.15),transparent)', margin:'0 32px' }}/>
+      <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(0,201,216,0.15),transparent)', margin:'0 32px' }}/>
 
       {/* MY STACK */}
       <section style={{ padding:'80px 0', position:'relative', zIndex:2 }}>
@@ -89,7 +90,7 @@ const Home = () => {
               <div key={tool.name} style={{ background:'rgba(255,255,255,0.03)', border:'1px solid rgba(255,255,255,0.07)', borderRadius:14, padding:'14px 18px', display:'flex', alignItems:'center', gap:14, transition:'border-color 0.3s,transform 0.3s,box-shadow 0.3s' }}
                 onMouseEnter={e=>{const el=e.currentTarget as HTMLDivElement;el.style.borderColor='rgba(255,255,255,0.15)';el.style.transform='translateY(-3px)';el.style.boxShadow='0 16px 48px rgba(0,0,0,0.4)';}}
                 onMouseLeave={e=>{const el=e.currentTarget as HTMLDivElement;el.style.borderColor='rgba(255,255,255,0.07)';el.style.transform='';el.style.boxShadow='';}}>
-                <div style={{ width:44, height:44, borderRadius:10, flexShrink:0, background:'rgba(255,107,53,0.06)', border:'1px solid rgba(255,107,53,0.12)', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                <div style={{ width:44, height:44, borderRadius:10, flexShrink:0, background:'rgba(0,201,216,0.06)', border:'1px solid rgba(0,201,216,0.12)', display:'flex', alignItems:'center', justifyContent:'center' }}>
                   <img src={`https://cdn.simpleicons.org/${tool.slug}/${tool.color}`} alt={tool.name} width={22} height={22} style={{ display:'block' }}
                     onError={e=>{const el=e.currentTarget as HTMLImageElement;el.style.display='none';if(el.parentNode)(el.parentNode as HTMLElement).innerHTML=`<span style="font-size:12px;font-weight:700;color:#${tool.color};font-family:monospace">${tool.name.slice(0,2).toUpperCase()}</span>`;}}/>
                 </div>

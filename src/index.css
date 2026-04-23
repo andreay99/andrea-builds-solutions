@@ -397,3 +397,5 @@ body::before {
     animation-play-state: paused;
   }
 }
+
+#root { background: transparent; }
