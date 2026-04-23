@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="768" viewBox="0 0 1344 768">
+  <rect width="1344" height="768" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <text x="672" y="52" text-anchor="middle" font-family="Inter, sans-serif" font-size="18" font-weight="600" fill="#1a1a2e">OSEHS Digital Twin — System Architecture</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Row 1: Input → Orbital Engine → Swarm Coordinator -->
+  <!-- Box: Mission Parameters -->
+  <rect x="60" y="120" width="180" height="90" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="150" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">Mission</text>
+  <text x="150" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">Parameters</text>
+  <text x="150" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Heliocentric orbit config</text>
+
+  <!-- Arrow -->
+  <line x1="240" y1="165" x2="286" y2="165" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Box: Kepler Solver -->
+  <rect x="288" y="120" width="180" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="378" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">Kepler</text>
+  <text x="378" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">Solver</text>
+  <text x="378" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Classical orbital elements</text>
+
+  <!-- Arrow -->
+  <line x1="468" y1="165" x2="514" y2="165" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Box: Position / Velocity Engine -->
+  <rect x="516" y="120" width="180" height="90" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="606" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">Position /</text>
+  <text x="606" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">Velocity Engine</text>
+  <text x="606" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">NumPy propagation · ×12 units</text>
+
+  <!-- Arrow -->
+  <line x1="696" y1="165" x2="742" y2="165" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Box: Swarm Coordinator -->
+  <rect x="744" y="120" width="180" height="90" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="834" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Swarm</text>
+  <text x="834" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Coordinator</text>
+  <text x="834" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Pearl necklace formation</text>
+
+  <!-- Arrow -->
+  <line x1="924" y1="165" x2="970" y2="165" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Box: Formation Checker -->
+  <rect x="972" y="120" width="180" height="90" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="1062" y="155" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Formation</text>
+  <text x="1062" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Checker</text>
+  <text x="1062" y="196" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Spacing · collision · shadow</text>
+
+  <!-- Vertical arrow down from Formation Checker -->
+  <line x1="1062" y1="210" x1="1062" y1="210" x2="1062" y2="286" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Row 2: Fault Handler ← Formation Checker → KPP Tracker → GUI -->
+
+  <!-- Box: Fault Handler -->
+  <rect x="744" y="288" width="180" height="90" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="834" y="323" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#991b1b">Fault</text>
+  <text x="834" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#991b1b">Handler</text>
+  <text x="834" y="364" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">10% dropout · auto-recovery</text>
+
+  <!-- Horizontal arrow from Formation Checker down-left to Fault Handler -->
+  <line x1="1062" y1="333" x2="972" y2="333" stroke="#6b7280" stroke-width="1.5" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <text x="1017" y="325" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#9ca3af">violation detected</text>
+
+  <!-- Box: KPP Tracker -->
+  <rect x="972" y="288" width="180" height="90" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1062" y="323" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#166534">KPP</text>
+  <text x="1062" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#166534">Tracker</text>
+  <text x="1062" y="364" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Energy · uptime · efficiency</text>
+
+  <!-- Arrow right from KPP Tracker -->
+  <line x1="1152" y1="333" x2="1198" y2="333" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Box: Matplotlib GUI -->
+  <rect x="1200" y="288" width="108" height="90" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="1254" y="323" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">Real-time</text>
+  <text x="1254" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">GUI</text>
+  <text x="1254" y="364" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Matplotlib · 3D</text>
+
+  <!-- Vertical arrow from Swarm Coordinator down to Fault Handler -->
+  <line x1="834" y1="210" x2="834" y2="286" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Row 3: Mission Output -->
+  <!-- Vertical arrow down from KPP Tracker -->
+  <line x1="1062" y1="378" x2="1062" y2="454" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Box: Mission Report -->
+  <rect x="744" y="456" width="516" height="80" rx="12" fill="#f0fdf4" stroke="#16a34a" stroke-width="2"/>
+  <text x="1002" y="491" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#166534">Mission Report</text>
+  <text x="1002" y="515" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" fill="#166534">94% simulation accuracy · 0 collisions · 0 shadow violations · 95% autonomous recovery · 3-year run</text>
+
+  <!-- Vertical arrow from Fault Handler down -->
+  <line x1="834" y1="378" x2="834" y2="454" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Left side label -->
+  <rect x="60" y="288" width="180" height="90" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="150" y="323" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#475569">12 Satellite</text>
+  <text x="150" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#475569">Swarm Units</text>
+  <text x="150" y="364" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">Individual state tracking</text>
+
+  <!-- Arrow from swarm units to swarm coordinator (upward) -->
+  <line x1="240" y1="333" x2="742" y2="210" stroke="#6b7280" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrow)"/>
+
+  <!-- Legend -->
+  <rect x="60" y="600" width="520" height="100" rx="8" fill="#f8f9fa" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="320" y="625" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#374151">Stack</text>
+  <rect x="80" y="638" width="10" height="10" rx="2" fill="#fef3c7" stroke="#d97706"/>
+  <text x="98" y="649" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Orbital Mechanics (NumPy · SciPy)</text>
+  <rect x="280" y="638" width="10" height="10" rx="2" fill="#f3e8ff" stroke="#7c3aed"/>
+  <text x="298" y="649" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Swarm AI (Python)</text>
+  <rect x="80" y="662" width="10" height="10" rx="2" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="98" y="673" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Fault Tolerance</text>
+  <rect x="280" y="662" width="10" height="10" rx="2" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="298" y="673" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">KPP Tracking · Matplotlib GUI</text>
+</svg>
