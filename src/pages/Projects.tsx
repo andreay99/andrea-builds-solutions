@@ -1,13 +1,54 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Github, ExternalLink, ArrowRight, Star } from 'lucide-react';
 
 const ACCENT = '#00C9D8';
-const PROJECT_GRADIENTS = [
-  'linear-gradient(135deg, #0a0020 0%, #2d0060 50%, #7c1fa8 100%)',
-  'linear-gradient(135deg, #001018 0%, #003d4d 50%, #007a94 100%)',
-  'linear-gradient(135deg, #001810 0%, #003d20 50%, #007a40 100%)',
+
+// Project Hail Mary — cold deep space, nebula bleeds, distant stars
+const SPACE_BG = [
+  // Tau Ceti system: near-black + pale blue starlight bleed + indigo dust cloud
+  `radial-gradient(ellipse at 78% 22%, rgba(160,200,255,0.13) 0%, transparent 28%),
+   radial-gradient(ellipse at 18% 68%, rgba(30,60,180,0.18) 0%, transparent 50%),
+   radial-gradient(ellipse at 50% 50%, rgba(10,20,80,0.25) 0%, transparent 70%),
+   linear-gradient(160deg, #00030d 0%, #010820 55%, #020c2a 100%)`,
+  // Nebula corridor: violet + ember dust, like a stellar nursery seen from afar
+  `radial-gradient(ellipse at 65% 28%, rgba(110,25,170,0.22) 0%, transparent 38%),
+   radial-gradient(ellipse at 28% 72%, rgba(180,60,20,0.12) 0%, transparent 45%),
+   radial-gradient(ellipse at 50% 50%, rgba(40,10,70,0.3) 0%, transparent 65%),
+   linear-gradient(145deg, #060008 0%, #0e0318 55%, #130422 100%)`,
+  // Cold void + distant gas giant glow: teal-blue aurora on the horizon
+  `radial-gradient(ellipse at 55% 82%, rgba(0,120,100,0.18) 0%, transparent 40%),
+   radial-gradient(ellipse at 80% 18%, rgba(20,80,180,0.15) 0%, transparent 38%),
+   radial-gradient(ellipse at 25% 45%, rgba(0,50,80,0.2) 0%, transparent 55%),
+   linear-gradient(155deg, #000a09 0%, #010e12 55%, #021520 100%)`,
 ];
+
+// Star glows per card: color of the "primary star" in that scene
+const STAR_GLOW = [
+  'rgba(160,200,255,0.22)',   // pale blue-white — Tau Ceti
+  'rgba(200,120,255,0.18)',   // violet — nebula core
+  'rgba(80,220,200,0.18)',    // teal — gas giant aurora
+];
+
+// Deterministic star field — seeded per card so stars don't shift on re-render
+const buildStars = (seed: number, count: number) => {
+  const rng = (n: number) => { let x = Math.sin(seed * 9301 + n * 49297 + 233) * 93280; return x - Math.floor(x); };
+  return Array.from({ length: count }, (_, i) => ({
+    cx: rng(i * 3)     * 100,
+    cy: rng(i * 3 + 1) * 100,
+    r:  rng(i * 3 + 2) * 1.4 + 0.3,
+    o:  rng(i * 3 + 2) * 0.55 + 0.25,
+  }));
+};
+
+const StarField = ({ seed, count = 110 }: { seed: number; count?: number }) => {
+  const stars = useMemo(() => buildStars(seed, count), [seed, count]);
+  return (
+    <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} aria-hidden>
+      {stars.map((s, i) => <circle key={i} cx={`${s.cx}%`} cy={`${s.cy}%`} r={s.r} fill={`rgba(255,255,255,${s.o.toFixed(2)})`}/>)}
+    </svg>
+  );
+};
 
 const PROJECTS = [
   { id:'recall', title:'Recall', description:'Assistive memory system with facial recognition using OpenCV and MongoDB. Helps users remember people through real-time face detection and recognition.', techStack:['Flask','MongoDB','OpenCV','ElevenLabs TTS','Python'], awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], githubLink:'https://github.com/andreay99/recall', liveLink:'https://recall-app.vercel.app', link:'/projects/recall', categories:['ai-ml'] },
@@ -104,7 +145,7 @@ const Projects = () => {
               height: isExpanding ? '100%' : CARD_H[i],
               maxWidth: isExpanding ? 'none' : undefined,
               borderRadius: isExpanding ? 0 : 18,
-              background: PROJECT_GRADIENTS[i],
+              background: SPACE_BG[i],
               transform,
               opacity: phase === 0 ? 0 : phase >= 2 && !isFront ? 0 : STACK_O[i],
               zIndex: isFront ? 3 : i === 1 ? 2 : 1,
@@ -112,20 +153,24 @@ const Projects = () => {
               transitionDelay: phase === 1 ? `${STAGGER[i]}s` : '0s',
               overflow: 'hidden',
               boxShadow: isFront
-                ? '0 32px 80px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.06)'
-                : '0 16px 48px rgba(0,0,0,0.6)',
+                ? '0 32px 80px rgba(0,0,0,0.9), 0 0 0 1px rgba(255,255,255,0.05)'
+                : '0 16px 48px rgba(0,0,0,0.7)',
             }}>
-              {/* Grid texture */}
-              <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px)' }}/>
-              {/* Glow orb */}
-              <div style={{ position:'absolute', top:'25%', left:'60%', width:280, height:280, borderRadius:'50%', background:'radial-gradient(circle, rgba(0,201,216,0.18) 0%, transparent 70%)', filter:'blur(40px)', pointerEvents:'none' }}/>
+              {/* Star field */}
+              <StarField seed={i + 1} count={isFront ? 140 : 90} />
+              {/* Primary star point */}
+              <div style={{ position:'absolute', top:'18%', right:'22%', width:3, height:3, borderRadius:'50%', background:'#fff', boxShadow:`0 0 6px 3px ${STAR_GLOW[i]}, 0 0 20px 8px ${STAR_GLOW[i]}`, pointerEvents:'none' }}/>
+              {/* Nebula glow */}
+              <div style={{ position:'absolute', top:'10%', left:'55%', width:340, height:260, borderRadius:'50%', background:`radial-gradient(ellipse, ${STAR_GLOW[i]} 0%, transparent 70%)`, filter:'blur(50px)', pointerEvents:'none' }}/>
+              {/* Bottom vignette so label reads cleanly */}
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:120, background:'linear-gradient(to top, rgba(0,0,0,0.7) 0%, transparent 100%)', pointerEvents:'none' }}/>
               {/* Bottom edge accent bar — visible on back cards */}
-              {!isFront && <div style={{ position:'absolute', bottom:0, left:0, right:0, height:3, background:`rgba(0,201,216,0.3)` }}/>}
+              {!isFront && <div style={{ position:'absolute', bottom:0, left:0, right:0, height:2, background:`rgba(255,255,255,0.08)` }}/>}
               {/* Label */}
               {!isExpanding && (
                 <div style={{ position:'absolute', bottom:22, left:24, zIndex:2 }}>
-                  <p style={{ fontSize:10, color:'rgba(0,201,216,0.75)', letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>{p.techStack[0]}</p>
-                  <p style={{ fontFamily:'Space Grotesk,sans-serif', fontSize: isFront ? '1.4rem' : '1.1rem', fontWeight:700, color:'#fff', opacity: isFront ? 1 : 0.7 }}>{p.title}</p>
+                  <p style={{ fontSize:10, color:'rgba(200,220,255,0.6)', letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>{p.techStack[0]}</p>
+                  <p style={{ fontFamily:'Space Grotesk,sans-serif', fontSize: isFront ? '1.4rem' : '1.1rem', fontWeight:700, color:'#f0f0f5', opacity: isFront ? 1 : 0.65 }}>{p.title}</p>
                 </div>
               )}
             </div>
@@ -133,9 +178,13 @@ const Projects = () => {
         })}
 
         {phase >= 3 && (
-          <div style={{ position:'relative', width:'100%', height:520, background:PROJECT_GRADIENTS[hero], overflow:'hidden', animation:'fadeUp 0.5s ease both' }}>
-            <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px)' }}/>
-            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(8,9,14,1) 0%, rgba(8,9,14,0.4) 50%, transparent 100%)' }}/>
+          <div style={{ position:'relative', width:'100%', height:520, background:SPACE_BG[hero], overflow:'hidden', animation:'fadeUp 0.5s ease both' }}>
+            <StarField seed={hero + 1} count={180} />
+            {/* Primary star */}
+            <div style={{ position:'absolute', top:'15%', right:'18%', width:4, height:4, borderRadius:'50%', background:'#fff', boxShadow:`0 0 8px 4px ${STAR_GLOW[hero]}, 0 0 28px 10px ${STAR_GLOW[hero]}`, pointerEvents:'none' }}/>
+            {/* Nebula glow */}
+            <div style={{ position:'absolute', top:'5%', left:'50%', width:500, height:380, borderRadius:'50%', background:`radial-gradient(ellipse, ${STAR_GLOW[hero]} 0%, transparent 70%)`, filter:'blur(60px)', pointerEvents:'none' }}/>
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.35) 55%, transparent 100%)' }}/>
             <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 40px 40px', zIndex:2 }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', maxWidth:1100, margin:'0 auto', flexWrap:'wrap', gap:20 }}>
                 <div style={{ maxWidth:560 }}>
@@ -149,8 +198,8 @@ const Projects = () => {
                 </div>
                 <div style={{ display:'flex', gap:10, alignItems:'center' }}>
                   {featured.map((p,i)=>(
-                    <div key={p.id} onClick={()=>setHero(i)} style={{ width:88, height:56, borderRadius:10, cursor:'pointer', flexShrink:0, background:PROJECT_GRADIENTS[i], border:`2px solid ${hero===i?ACCENT:'rgba(255,255,255,0.12)'}`, opacity:hero===i?1:0.5, transform:hero===i?'scale(1.08)':'scale(1)', transition:'all 0.25s ease', display:'flex', alignItems:'flex-end', padding:'6px 8px' }}>
-                      <span style={{ fontSize:9, fontFamily:'Space Grotesk,sans-serif', fontWeight:700, color:'rgba(255,255,255,0.8)' }}>{p.title}</span>
+                    <div key={p.id} onClick={()=>setHero(i)} style={{ width:88, height:56, borderRadius:10, cursor:'pointer', flexShrink:0, background:SPACE_BG[i], border:`2px solid ${hero===i?ACCENT:'rgba(255,255,255,0.1)'}`, opacity:hero===i?1:0.5, transform:hero===i?'scale(1.08)':'scale(1)', transition:'all 0.25s ease', display:'flex', alignItems:'flex-end', padding:'6px 8px', overflow:'hidden', position:'relative' }}>
+                      <span style={{ fontSize:9, fontFamily:'Space Grotesk,sans-serif', fontWeight:700, color:'rgba(255,255,255,0.85)', position:'relative', zIndex:1 }}>{p.title}</span>
                     </div>
                   ))}
                 </div>
