@@ -71,18 +71,63 @@ const Projects = () => {
 
   const heroProject = featured[hero];
 
+  // Physical deck: front card narrowest/highest, back card widest/lowest
+  const CARD_W  = ['min(58vw,620px)', 'min(65vw,700px)', 'min(72vw,780px)'];
+  const CARD_H  = [340, 358, 376];
+  const STACK_Y = [-24, 18, 60];   // front above center, back cards below
+  const STACK_O = [1, 0.78, 0.52];
+  const STAGGER = [0.22, 0.10, 0]; // back enters first
+
   return (
     <div style={{ background:'#08090e', minHeight:'100vh', position:'relative', zIndex:1 }}>
-      <div style={{ position:'relative', width:'100%', height:phase>=3?'auto':'100vh', minHeight:phase>=3?520:'100vh', background:'#08090e', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
+      <div style={{ position:'relative', width:'100%', height:phase>=3?'auto':'100vh', minHeight:phase>=3?520:'100vh', background:'#08090e', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center', perspective:'1200px' }}>
         {phase < 3 && featured.map((p, i) => {
           const isFront = i === 0;
-          const stackY=[0,18,36][i], stackS=[1,0.93,0.86][i], stackO=[1,0.7,0.45][i], staggerD=[0.22,0.12,0][i];
-          const isExpanding = phase>=2 && isFront;
+          const isExpanding = phase >= 2 && isFront;
+          const w = isExpanding ? '100%' : CARD_W[i];
+          const h = isExpanding ? '100%' : CARD_H[i];
+
+          let transform = '';
+          if (phase === 0) {
+            transform = 'translateY(700px)';
+          } else if (phase === 1) {
+            transform = `translateY(${STACK_Y[i]}px)`;
+          } else if (phase >= 2) {
+            transform = isFront ? 'none' : `translateY(${STACK_Y[i] + 60}px)`;
+          }
+
           return (
-            <div key={p.id} style={{ position:'absolute', width:isExpanding?'100%':'62%', maxWidth:isExpanding?'none':780, height:isExpanding?'100%':420, top:isExpanding?0:undefined, left:isExpanding?0:undefined, borderRadius:isExpanding?0:20, background:PROJECT_GRADIENTS[i], transform:phase===0?`translateY(600px) scale(${stackS})`:phase===1?`translateY(${stackY}px) scale(${stackS})`:isFront?'none':`translateY(${stackY+40}px) scale(${stackS*0.92})`, opacity:phase===0?0:phase>=2&&!isFront?0:stackO, zIndex:isFront?3:i===1?2:1, transition:`all ${isExpanding?'1s':'0.75s'} cubic-bezier(0.22,1,0.36,1)`, transitionDelay:phase===1?`${staggerD}s`:'0s', overflow:'hidden', boxShadow:isFront?'0 40px 100px rgba(0,0,0,0.9)':'0 20px 50px rgba(0,0,0,0.6)' }}>
+            <div key={p.id} style={{
+              position: 'absolute',
+              width: w, maxWidth: isExpanding ? 'none' : undefined,
+              height: isExpanding ? '100%' : h,
+              top: isExpanding ? 0 : undefined,
+              left: isExpanding ? 0 : undefined,
+              borderRadius: isExpanding ? 0 : 18,
+              background: PROJECT_GRADIENTS[i],
+              transform,
+              opacity: phase === 0 ? 0 : phase >= 2 && !isFront ? 0 : STACK_O[i],
+              zIndex: isFront ? 3 : i === 1 ? 2 : 1,
+              transition: `all ${isExpanding ? '1s' : '0.8s'} cubic-bezier(0.22,1,0.36,1)`,
+              transitionDelay: phase === 1 ? `${STAGGER[i]}s` : '0s',
+              overflow: 'hidden',
+              boxShadow: isFront
+                ? '0 32px 80px rgba(0,0,0,0.85), 0 0 0 1px rgba(255,255,255,0.06)'
+                : '0 16px 48px rgba(0,0,0,0.6)',
+            }}>
+              {/* Grid texture */}
               <div style={{ position:'absolute', inset:0, pointerEvents:'none', background:'repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.03) 39px,rgba(255,255,255,0.03) 40px)' }}/>
-              <div style={{ position:'absolute', top:'30%', left:'60%', width:300, height:300, borderRadius:'50%', background:'radial-gradient(circle, rgba(0,201,216,0.15) 0%, transparent 70%)', filter:'blur(40px)', pointerEvents:'none' }}/>
-              {!isExpanding && <div style={{ position:'absolute', bottom:24, left:28, zIndex:2 }}><p style={{ fontSize:11, color:'rgba(0,201,216,0.8)', letterSpacing:'0.1em', textTransform:'uppercase', marginBottom:4 }}>{p.techStack[0]}</p><p style={{ fontFamily:'Space Grotesk,sans-serif', fontSize:'1.5rem', fontWeight:700, color:'#fff' }}>{p.title}</p></div>}
+              {/* Glow orb */}
+              <div style={{ position:'absolute', top:'25%', left:'60%', width:280, height:280, borderRadius:'50%', background:'radial-gradient(circle, rgba(0,201,216,0.18) 0%, transparent 70%)', filter:'blur(40px)', pointerEvents:'none' }}/>
+              {/* Bottom edge accent bar — visible on back cards */}
+              {!isFront && <div style={{ position:'absolute', bottom:0, left:0, right:0, height:3, background:`rgba(0,201,216,0.3)` }}/>}
+              {/* Label */}
+              {!isExpanding && (
+                <div style={{ position:'absolute', bottom:22, left:24, zIndex:2 }}>
+                  <p style={{ fontSize:10, color:'rgba(0,201,216,0.75)', letterSpacing:'0.12em', textTransform:'uppercase', marginBottom:3 }}>{p.techStack[0]}</p>
+                  <p style={{ fontFamily:'Space Grotesk,sans-serif', fontSize: isFront ? '1.4rem' : '1.1rem', fontWeight:700, color:'#fff', opacity: isFront ? 1 : 0.7 }}>{p.title}</p>
+                </div>
+              )}
             </div>
           );
         })}
