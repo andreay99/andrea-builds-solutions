@@ -16,13 +16,14 @@ interface ProjectDetailProps {
   metrics: Metric[];
   techStack: string[];
   arch?: string;
+  simComponent?: React.ReactNode;
   githubLink?: string;
   liveLink?: string;
 }
 
 const ProjectDetail = ({
   title, techLabel, description, highlight,
-  awards = [], metrics, techStack, arch,
+  awards = [], metrics, techStack, arch, simComponent,
   githubLink, liveLink,
 }: ProjectDetailProps) => {
   const navigate = useNavigate();
@@ -78,8 +79,11 @@ const ProjectDetail = ({
               ))}
             </div>
 
+            {/* Live simulation (overrides static arch diagram) */}
+            {simComponent && simComponent}
+
             {/* Architecture */}
-            {arch ? (
+            {!simComponent && arch ? (
               <div style={{ marginBottom: 40, borderRadius: 14, overflow: 'hidden', border: `1px solid rgba(${ACCENT_RGB},0.2)` }}>
                 <div style={{ background: 'rgba(255,255,255,0.04)', borderBottom: `1px solid rgba(${ACCENT_RGB},0.15)`, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
                   <div style={{ display: 'flex', gap: 6 }}>
@@ -93,7 +97,7 @@ const ProjectDetail = ({
                 </div>
                 <img src={arch} alt={`${title} architecture`} style={{ width: '100%', display: 'block', filter: 'brightness(0.92) contrast(1.05)' }}/>
               </div>
-            ) : (
+            ) : !simComponent && (
               <div style={{ height: 220, borderRadius: 14, marginBottom: 40, border: '1px solid var(--border)', background: 'repeating-linear-gradient(45deg,rgba(255,255,255,0.015) 0px,rgba(255,255,255,0.015) 1px,transparent 1px,transparent 14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
                 <div style={{ fontSize: 11, color: 'var(--text-dim)', letterSpacing: '0.1em', textTransform: 'uppercase' }}>Architecture Diagram</div>
                 <div style={{ fontSize: 11, color: 'var(--text-dim)' }}>coming soon</div>
