@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Github, ExternalLink, ArrowRight, Star } from 'lucide-react';
 
-const ACCENT = '#FF6B35';
+const ACCENT = '#00C9D8';
 const PROJECT_GRADIENTS = [
   'linear-gradient(135deg, #0a0020 0%, #2d0060 50%, #7c1fa8 100%)',
   'linear-gradient(135deg, #001018 0%, #003d4d 50%, #007a94 100%)',
@@ -40,7 +40,7 @@ const PCard = ({ project, onClick }: { project: Project; onClick?: () => void })
       </div>
     )}
     <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginTop:'auto' }}>
-      {project.techStack.map(t => <span key={t} style={{ display:'inline-flex', padding:'3px 10px', borderRadius:40, fontSize:11, fontWeight:500, background:'rgba(255,107,53,0.1)', color:ACCENT, border:'1px solid rgba(255,107,53,0.2)' }}>{t}</span>)}
+      {project.techStack.map(t => <span key={t} style={{ display:'inline-flex', padding:'3px 10px', borderRadius:40, fontSize:11, fontWeight:500, background:'rgba(0,201,216,0.1)', color:ACCENT, border:'1px solid rgba(0,201,216,0.2)' }}>{t}</span>)}
     </div>
     {onClick && <div style={{ fontSize:12, color:ACCENT, display:'flex', alignItems:'center', gap:4, marginTop:4, opacity:0.8 }}>View details <ArrowRight size={12}/></div>}
   </div>
@@ -120,7 +120,7 @@ const Projects = () => {
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:24, flexWrap:'wrap', gap:12 }}>
             <p style={{ fontSize:13, color:'rgba(240,240,245,0.45)' }}>{PROJECTS.length} projects total</p>
             <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-              {tags.map(t=><button key={t} onClick={()=>setFilter(t)} style={{ padding:'5px 14px', borderRadius:40, fontSize:12, cursor:'pointer', fontWeight:500, fontFamily:'Inter,sans-serif', border:`1px solid ${filter===t?ACCENT:'rgba(255,255,255,0.07)'}`, background:filter===t?'rgba(255,107,53,0.12)':'transparent', color:filter===t?ACCENT:'rgba(240,240,245,0.45)', transition:'all 0.2s' }}>{t}</button>)}
+              {tags.map(t=><button key={t} onClick={()=>setFilter(t)} style={{ padding:'5px 14px', borderRadius:40, fontSize:12, cursor:'pointer', fontWeight:500, fontFamily:'Inter,sans-serif', border:`1px solid ${filter===t?ACCENT:'rgba(255,255,255,0.07)'}`, background:filter===t?'rgba(0,201,216,0.12)':'transparent', color:filter===t?ACCENT:'rgba(240,240,245,0.45)', transition:'all 0.2s' }}>{t}</button>)}
             </div>
           </div>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(290px,1fr))', gap:16 }}>
