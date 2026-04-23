@@ -1,10 +1,22 @@
 import { useNavigate } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Github, ExternalLink, Star } from 'lucide-react';
 import { BlackHoleCanvas } from '@/components/BlackHoleCanvas';
 import { RollingText } from '@/components/RollingText';
 
 const ACCENT = '#00C9D8';
 const ACCENT_RGB = '0,201,216';
+
+const FEATURED = [
+  { id:'recall',   title:'Recall',            link:'/projects/recall',   github:'https://github.com/andreay99/recall', live:'https://recall-app.vercel.app',
+    description:'Assistive memory system with facial recognition using OpenCV and MongoDB. Helps users remember people through real-time face detection.',
+    awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], stack:['Flask','MongoDB','OpenCV','Python'] },
+  { id:'offscript',title:'OffScript',          link:'/projects/offscript', github:'https://github.com/andreay99/offscript', live:'https://offscript.codestacx.com',
+    description:'Real-time AI-powered technical interview simulator with dynamic feedback and comprehensive question generation.',
+    awards:['HackHarvard 2025'], stack:['Next.js','TypeScript','FastAPI','Gemini AI'] },
+  { id:'osehs',    title:'OSEHS Digital Twin', link:'/projects/osehs',    github:'https://github.com/andreay99/OSEHS-simulation', live:undefined,
+    description:'Orbital Solar Energy Harvesting Swarm digital twin for NASA ORBIT Challenge Phase 2. Real-time 3D swarm simulation.',
+    awards:['NASA ORBIT Challenge Phase 2'], stack:['Python','NumPy','Matplotlib','Swarm AI'] },
+];
 
 const STACK = [
   { name:'Python',     cat:'Language',   slug:'python',     color:'3776AB' },
@@ -71,6 +83,46 @@ const Home = () => {
               <div style={{ fontSize:11, color:'rgba(240,240,245,0.45)', letterSpacing:'0.08em', textTransform:'uppercase', marginTop:5 }}>{l}</div>
             </div>
           ))}
+        </div>
+      </section>
+
+      <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(0,201,216,0.15),transparent)', margin:'0 32px' }}/>
+
+      {/* FEATURED WORK */}
+      <section style={{ padding:'100px 0', position:'relative', zIndex:2 }}>
+        <div style={{ maxWidth:1100, margin:'0 auto', padding:'0 32px' }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:36, flexWrap:'wrap', gap:12 }}>
+            <h2>Featured Work</h2>
+            <button onClick={() => navigate('/projects')} className="btn-ghost" style={{ fontSize:13, padding:'8px 18px' }}>
+              All projects <ArrowRight size={14}/>
+            </button>
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(290px,1fr))', gap:12 }}>
+            {FEATURED.map(p => (
+              <div key={p.id} className="card" onClick={() => navigate(p.link)}
+                style={{ padding:24, display:'flex', flexDirection:'column', gap:12, height:'100%', cursor:'pointer' }}>
+                <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:12 }}>
+                  <h3 style={{ fontSize:'1rem' }}>{p.title}</h3>
+                  <div style={{ display:'flex', gap:8, flexShrink:0 }}>
+                    {p.github && <a href={p.github} target="_blank" rel="noopener" onClick={e=>e.stopPropagation()} style={{ color:'var(--text-muted)' }}><Github size={18}/></a>}
+                    {p.live   && <a href={p.live}   target="_blank" rel="noopener" onClick={e=>e.stopPropagation()} style={{ color:'var(--text-muted)' }}><ExternalLink size={14}/></a>}
+                  </div>
+                </div>
+                <p style={{ fontSize:13.5, color:'var(--text-muted)', lineHeight:1.65, flex:1 }}>{p.description}</p>
+                {p.awards.length > 0 && (
+                  <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                    {p.awards.map(a => <span key={a} className="award"><Star size={10} fill="#ffd232"/>{a}</span>)}
+                  </div>
+                )}
+                <div style={{ display:'flex', flexWrap:'wrap', gap:6, marginTop:'auto' }}>
+                  {p.stack.map(t => <span key={t} className="tag">{t}</span>)}
+                </div>
+                <div style={{ fontSize:12, color:ACCENT, display:'flex', alignItems:'center', gap:4, marginTop:4, opacity:0.8 }}>
+                  View details <ArrowRight size={12}/>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
