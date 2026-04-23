@@ -1,3 +1,4 @@
+import archImg from '@/assets/romcom-architecture.svg';
 import ProjectDetail from './ProjectDetail';
 
 const ROMCom = () => (
@@ -13,6 +14,7 @@ const ROMCom = () => (
       { label: 'Joint tracking', val: 'Real-time' },
     ]}
     techStack={['Python', 'MediaPipe', 'FastAPI', 'scikit-learn', 'React', 'TypeScript', 'Arduino']}
+    arch={archImg}
     githubLink="https://github.com/tomiwaaluko/ROM-com"
   />
 );

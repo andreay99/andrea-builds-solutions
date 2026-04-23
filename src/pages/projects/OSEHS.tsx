@@ -1,3 +1,4 @@
+import archImg from '@/assets/osehs-architecture.svg';
 import ProjectDetail from './ProjectDetail';
 
 const OSEHS = () => (
@@ -13,6 +14,7 @@ const OSEHS = () => (
       { label: 'Team', val: 'Star Maker' },
     ]}
     techStack={['Python', 'NumPy', 'Matplotlib', 'Orbital Mechanics', 'Swarm AI']}
+    arch={archImg}
     githubLink="https://github.com/andreay99/OSEHS-simulation"
   />
 );
