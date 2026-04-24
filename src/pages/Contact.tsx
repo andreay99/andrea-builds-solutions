@@ -32,7 +32,7 @@ const Contact = () => {
     e.preventDefault();
     setStatus('sending');
     try {
-      const r = await fetch('https://formspree.io/f/xzzbyrqk', {
+      const r = await fetch('https://formspree.io/f/xjgjjjdj', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
         body: JSON.stringify(form),
