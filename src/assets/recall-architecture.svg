@@ -1,0 +1,138 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="720" viewBox="0 0 1344 720">
+  <rect width="1344" height="720" fill="#f8f9fa"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-blue" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#0284c7"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="672" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#1a1a2e">Recall — Assistive Memory System Architecture</text>
+
+  <!-- ── ROW 1: Input pipeline ───────────────────────────────── -->
+
+  <!-- Webcam Input -->
+  <rect x="40" y="90" width="155" height="86" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="118" y="126" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">Webcam</text>
+  <text x="118" y="143" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">Input</text>
+  <text x="118" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Live video stream</text>
+
+  <!-- Arrow -->
+  <line x1="195" y1="133" x2="231" y2="133" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- OpenCV Face Detection -->
+  <rect x="233" y="90" width="165" height="86" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="316" y="126" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">OpenCV Face</text>
+  <text x="316" y="143" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">Detection</text>
+  <text x="316" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Haar cascade · bounding box</text>
+
+  <!-- Arrow -->
+  <line x1="398" y1="133" x2="434" y2="133" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- DeepFace Encoder -->
+  <rect x="436" y="90" width="165" height="86" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="1.5"/>
+  <text x="519" y="126" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">Face Encoder</text>
+  <text x="519" y="143" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#92400e">(DeepFace)</text>
+  <text x="519" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">128-dim embedding vector</text>
+
+  <!-- Arrow right to MongoDB -->
+  <line x1="601" y1="133" x2="637" y2="133" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- MongoDB Face DB -->
+  <rect x="639" y="90" width="165" height="86" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="722" y="126" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#166534">MongoDB</text>
+  <text x="722" y="143" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#166534">Face Database</text>
+  <text x="722" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Stored profiles · embeddings</text>
+
+  <!-- Arrow right to Match Engine -->
+  <line x1="804" y1="133" x2="840" y2="133" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Face Match Engine -->
+  <rect x="842" y="90" width="165" height="86" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="925" y="126" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Face Match</text>
+  <text x="925" y="143" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Engine</text>
+  <text x="925" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Cosine similarity · threshold</text>
+
+  <!-- Arrow right to Person Context -->
+  <line x1="1007" y1="133" x2="1043" y2="133" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Person Context -->
+  <rect x="1045" y="90" width="165" height="86" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="1.5"/>
+  <text x="1128" y="126" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#166534">Person Context</text>
+  <text x="1128" y="143" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#166534">Retrieval</text>
+  <text x="1128" y="164" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Name · notes · history</text>
+
+  <!-- ── ROW 2: AI Reasoning ─────────────────────────────────── -->
+
+  <!-- Arrow down from Face Match Engine to Grok -->
+  <line x1="925" y1="176" x2="925" y2="250" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Arrow down from Person Context to Grok (diagonal) -->
+  <line x1="1128" y1="176" x2="1000" y2="250" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Grok LLM Reasoning — wide box centered on row 2 -->
+  <rect x="740" y="252" width="370" height="86" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="925" y="287" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#991b1b">Grok (xAI) — LLM Reasoning</text>
+  <text x="925" y="307" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Generates natural-language memory recall · context-aware prompting</text>
+  <text x="925" y="323" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Best Use of Grok · xAI API</text>
+
+  <!-- Arrow down from Grok to ElevenLabs -->
+  <line x1="925" y1="338" x2="925" y2="412" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ElevenLabs TTS -->
+  <rect x="740" y="414" width="370" height="86" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="925" y="452" text-anchor="middle" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#5b21b6">ElevenLabs TTS</text>
+  <text x="925" y="472" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Converts memory recall to natural voice · personalised speaker</text>
+  <text x="925" y="488" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Best Use of Arm (MLH) · low-latency synthesis</text>
+
+  <!-- Arrow down from ElevenLabs to Audio Output -->
+  <line x1="925" y1="500" x2="925" y2="554" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Audio Output -->
+  <rect x="820" y="556" width="210" height="66" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="1.5"/>
+  <text x="925" y="584" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#0369a1">🔊 Audio Output</text>
+  <text x="925" y="604" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">"That's Sarah — you met her at…"</text>
+
+  <!-- ── LEFT: Flask Backend ─────────────────────────────────── -->
+
+  <!-- Flask Backend box -->
+  <rect x="40" y="252" width="230" height="200" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="155" y="282" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#334155">Flask Backend</text>
+  <text x="155" y="305" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">REST API · orchestration layer</text>
+  <line x1="60" y1="318" x2="250" y2="318" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="155" y="340" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">/api/recognize</text>
+  <text x="155" y="358" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">/api/enroll</text>
+  <text x="155" y="376" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">/api/history</text>
+  <text x="155" y="394" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">Python · Gunicorn · CORS</text>
+  <text x="155" y="412" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">ARM-optimised deployment</text>
+  <text x="155" y="432" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">Vercel serverless</text>
+
+  <!-- Dashed connector Flask → Face Encoder area -->
+  <line x1="270" y1="330" x2="433" y2="215" stroke="#94a3b8" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+
+  <!-- ── LEGEND ───────────────────────────────────────────────── -->
+  <rect x="40" y="560" width="640" height="108" rx="10" fill="#f8f9fa" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="360" y="585" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#374151">Stack</text>
+
+  <rect x="60" y="598" width="10" height="10" rx="2" fill="#fef3c7" stroke="#d97706"/>
+  <text x="78" y="609" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">OpenCV · DeepFace (face detection &amp; encoding)</text>
+
+  <rect x="60" y="622" width="10" height="10" rx="2" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="78" y="633" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">MongoDB (face profiles &amp; memory store)</text>
+
+  <rect x="60" y="646" width="10" height="10" rx="2" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="78" y="657" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Grok xAI API (LLM reasoning &amp; recall generation)</text>
+
+  <rect x="340" y="598" width="10" height="10" rx="2" fill="#f3e8ff" stroke="#7c3aed"/>
+  <text x="358" y="609" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">ElevenLabs TTS (voice synthesis)</text>
+
+  <rect x="340" y="622" width="10" height="10" rx="2" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="358" y="633" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Flask + Python backend (REST API)</text>
+
+  <rect x="340" y="646" width="10" height="10" rx="2" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="358" y="657" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">ARM-optimised · Vercel · Best Use of Arm (MLH)</text>
+</svg>
