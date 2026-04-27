@@ -34,26 +34,31 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
   }, [onClose]);
 
   return (
+    // Outer: explicit 100vw/100vh so centering is always relative to the full viewport
     <div
       onClick={onClose}
       style={{
-        position: 'fixed', inset: 0, zIndex: 9999,
+        position: 'fixed', top: 0, left: 0,
+        width: '100vw', height: '100vh',
+        zIndex: 9999,
         background: 'rgba(0,0,0,0.88)',
         backdropFilter: 'blur(12px)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center',
-        padding: '32px',
+        display: 'grid', placeItems: 'center',
+        padding: '72px 32px 48px',   // extra top so close btn doesn't overlap
+        boxSizing: 'border-box',
         animation: 'fadeIn 0.18s ease both',
+        overflowY: 'auto',
       }}
     >
       {/* Close button */}
       <button
         onClick={onClose}
         style={{
-          position: 'absolute', top: 20, right: 20,
+          position: 'fixed', top: 20, right: 20,
           width: 40, height: 40, borderRadius: '50%',
           background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
           color: '#f0f0f5', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 1, transition: 'background 0.2s',
+          zIndex: 10000, transition: 'background 0.2s',
         }}
         onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.16)')}
         onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
@@ -68,7 +73,7 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
           borderRadius: 16, overflow: 'hidden',
           border: `1px solid rgba(${ACCENT_RGB},0.25)`,
           boxShadow: `0 40px 120px rgba(0,0,0,0.8), 0 0 0 1px rgba(${ACCENT_RGB},0.1)`,
-          maxWidth: '90vw', maxHeight: '85vh',
+          width: 'min(92vw, 1200px)',
           animation: 'scaleIn 0.22s cubic-bezier(0.22,1,0.36,1) both',
         }}
       >
@@ -86,7 +91,7 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
         <img
           src={src}
           alt={`${title} architecture`}
-          style={{ display: 'block', maxWidth: '90vw', maxHeight: 'calc(85vh - 42px)', objectFit: 'contain', filter: 'brightness(0.96) contrast(1.04)' }}
+          style={{ display: 'block', width: '100%', height: 'auto', filter: 'brightness(0.96) contrast(1.04)' }}
         />
       </div>
 
