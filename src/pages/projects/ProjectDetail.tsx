@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Github, ExternalLink, Star, Maximize2, X } from 'lucide-react';
 import { PageTransition } from '@/components/PageTransition';
@@ -22,13 +22,12 @@ interface ProjectDetailProps {
   liveLink?: string;
 }
 
-const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onClose: () => void }) => {
+const ArchLightbox = ({ src, title, onClose, scrollY }: { src: string; title: string; onClose: () => void; scrollY: number }) => {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
     document.addEventListener('keydown', onKey);
 
-    // Freeze body at current scroll position so fixed overlay doesn't jump
-    const scrollY = window.scrollY;
+    // Use scroll position captured at click time — before any React re-render or layout shift
     document.body.style.position = 'fixed';
     document.body.style.top = `-${scrollY}px`;
     document.body.style.width = '100%';
@@ -40,7 +39,7 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
       document.body.style.width = '';
       window.scrollTo(0, scrollY);
     };
-  }, [onClose]);
+  }, [onClose, scrollY]);
 
   return (
     <div
@@ -122,7 +121,8 @@ const ProjectDetail = ({
 }: ProjectDetailProps) => {
   const navigate = useNavigate();
   const [lightbox, setLightbox] = useState(false);
-  const openLightbox  = useCallback(() => setLightbox(true),  []);
+  const scrollRef = useRef(0);
+  const openLightbox  = useCallback(() => { scrollRef.current = window.scrollY; setLightbox(true); }, []);
   const closeLightbox = useCallback(() => setLightbox(false), []);
 
   return (
@@ -235,7 +235,7 @@ const ProjectDetail = ({
                 </div>
 
                 {/* Lightbox portal */}
-                {lightbox && <ArchLightbox src={arch} title={title} onClose={closeLightbox} />}
+                {lightbox && <ArchLightbox src={arch} title={title} onClose={closeLightbox} scrollY={scrollRef.current} />}
               </>
             ) : !simComponent && (
               <div style={{ height: 220, borderRadius: 14, marginBottom: 40, border: '1px solid var(--border)', background: 'repeating-linear-gradient(45deg,rgba(255,255,255,0.015) 0px,rgba(255,255,255,0.015) 1px,transparent 1px,transparent 14px)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column', gap: 8 }}>
