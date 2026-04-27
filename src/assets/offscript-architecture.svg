@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1344" height="720" viewBox="0 0 1344 720">
+  <rect width="1344" height="720" fill="#f8f9fa"/>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#6b7280"/>
+    </marker>
+    <marker id="arrow-rev" markerWidth="10" markerHeight="7" refX="1" refY="3.5" orient="auto">
+      <polygon points="10 0, 0 3.5, 10 7" fill="#6b7280"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="672" y="48" text-anchor="middle" font-family="Inter, sans-serif" font-size="17" font-weight="600" fill="#1a1a2e">OffScript — AI Technical Interview Simulator Architecture</text>
+
+  <!-- ── ROW 1: Frontend → Backend ───────────────────────────── -->
+
+  <!-- Next.js Frontend -->
+  <rect x="40" y="90" width="190" height="160" rx="12" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/>
+  <text x="135" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#0369a1">Next.js Frontend</text>
+  <text x="135" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">TypeScript · Tailwind</text>
+  <line x1="60" y1="152" x2="210" y2="152" stroke="#bae6fd" stroke-width="1"/>
+  <text x="135" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Split-screen interview UI</text>
+  <text x="135" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Live code editor (Monaco)</text>
+  <text x="135" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Streaming response display</text>
+  <text x="135" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#0369a1">Session timer · scoring panel</text>
+
+  <!-- Arrow right: Frontend → FastAPI -->
+  <line x1="230" y1="155" x2="296" y2="155" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="263" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#9ca3af">REST / SSE</text>
+
+  <!-- FastAPI Backend -->
+  <rect x="298" y="90" width="200" height="160" rx="12" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <text x="398" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#92400e">FastAPI Backend</text>
+  <text x="398" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Python · Uvicorn</text>
+  <line x1="318" y1="152" x2="478" y2="152" stroke="#fde68a" stroke-width="1"/>
+  <text x="398" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Server-Sent Events (SSE)</text>
+  <text x="398" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Session state management</text>
+  <text x="398" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Prompt engineering layer</text>
+  <text x="398" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#92400e">Answer evaluation pipeline</text>
+
+  <!-- Arrow right: FastAPI → Gemini -->
+  <line x1="498" y1="155" x2="574" y2="155" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="536" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#9ca3af">API call</text>
+
+  <!-- Gemini AI -->
+  <rect x="576" y="90" width="200" height="160" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="2"/>
+  <text x="676" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#991b1b">Gemini AI (Google)</text>
+  <text x="676" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">gemini-1.5-flash</text>
+  <line x1="596" y1="152" x2="756" y2="152" stroke="#fecaca" stroke-width="1"/>
+  <text x="676" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Adaptive question generation</text>
+  <text x="676" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Behavioral + coding questions</text>
+  <text x="676" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Dynamic follow-up prompting</text>
+  <text x="676" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">92% response accuracy</text>
+
+  <!-- Arrow right: Gemini → Evaluation -->
+  <line x1="776" y1="155" x2="852" y2="155" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <text x="814" y="147" text-anchor="middle" font-family="Inter, sans-serif" font-size="10" fill="#9ca3af">streamed</text>
+
+  <!-- Evaluation Engine -->
+  <rect x="854" y="90" width="200" height="160" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="2"/>
+  <text x="954" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#5b21b6">Evaluation Engine</text>
+  <text x="954" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">LLM-as-judge scoring</text>
+  <line x1="874" y1="152" x2="1034" y2="152" stroke="#ddd6fe" stroke-width="1"/>
+  <text x="954" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Technical correctness score</text>
+  <text x="954" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Communication clarity score</text>
+  <text x="954" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Structured feedback rubric</text>
+  <text x="954" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Confidence &amp; depth rating</text>
+
+  <!-- Arrow right: Evaluation → Report -->
+  <line x1="1054" y1="155" x2="1120" y2="155" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Session Report -->
+  <rect x="1122" y="90" width="190" height="160" rx="12" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+  <text x="1217" y="120" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="700" fill="#166534">Session Report</text>
+  <text x="1217" y="140" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Real-time + post-session</text>
+  <line x1="1142" y1="152" x2="1292" y2="152" stroke="#bbf7d0" stroke-width="1"/>
+  <text x="1217" y="172" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Per-question breakdown</text>
+  <text x="1217" y="190" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Overall performance score</text>
+  <text x="1217" y="208" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Improvement suggestions</text>
+  <text x="1217" y="228" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#166534">Exportable transcript</text>
+
+  <!-- ── ROW 2: Question flow + Session State ────────────────── -->
+
+  <!-- Arrow down from FastAPI -->
+  <line x1="398" y1="250" x2="398" y2="314" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Question Bank -->
+  <rect x="298" y="316" width="200" height="86" rx="12" fill="#f1f5f9" stroke="#64748b" stroke-width="1.5"/>
+  <text x="398" y="348" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#334155">Question Bank</text>
+  <text x="398" y="366" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">Seeded DS&amp;A · system design</text>
+  <text x="398" y="384" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#475569">Behavioural · role-specific sets</text>
+
+  <!-- Arrow down from Gemini -->
+  <line x1="676" y1="250" x2="676" y2="314" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Streaming Response -->
+  <rect x="576" y="316" width="200" height="86" rx="12" fill="#fee2e2" stroke="#dc2626" stroke-width="1.5"/>
+  <text x="676" y="348" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#991b1b">Streaming Response</text>
+  <text x="676" y="366" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Token-by-token SSE stream</text>
+  <text x="676" y="384" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#991b1b">Sub-200ms time-to-first-token</text>
+
+  <!-- Arrow down from Evaluation -->
+  <line x1="954" y1="250" x2="954" y2="314" stroke="#6b7280" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- Scoring -->
+  <rect x="854" y="316" width="200" height="86" rx="12" fill="#f3e8ff" stroke="#7c3aed" stroke-width="1.5"/>
+  <text x="954" y="348" text-anchor="middle" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#5b21b6">Scoring &amp; Feedback</text>
+  <text x="954" y="366" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">0–10 per dimension</text>
+  <text x="954" y="384" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#5b21b6">Displayed inline · no page reload</text>
+
+  <!-- ── ROW 3: Full pipeline bottom bar ─────────────────────── -->
+
+  <!-- Full pipeline -->
+  <rect x="40" y="440" width="1272" height="70" rx="12" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="672" y="467" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#334155">End-to-End Interview Pipeline</text>
+  <text x="672" y="489" text-anchor="middle" font-family="Inter, sans-serif" font-size="11" fill="#64748b">Candidate answers question → FastAPI evaluates with Gemini → score streamed live → Gemini generates adaptive follow-up → repeat until session ends → full report generated</text>
+
+  <!-- ── LEGEND ─────────────────────────────────────────────── -->
+  <rect x="40" y="542" width="1272" height="130" rx="10" fill="#f8f9fa" stroke="#e2e8f0" stroke-width="1"/>
+  <text x="672" y="568" text-anchor="middle" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#374151">Stack</text>
+
+  <rect x="70" y="582" width="10" height="10" rx="2" fill="#e0f2fe" stroke="#0284c7"/>
+  <text x="88" y="593" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Next.js · TypeScript · Tailwind (interview UI)</text>
+
+  <rect x="70" y="606" width="10" height="10" rx="2" fill="#fef3c7" stroke="#d97706"/>
+  <text x="88" y="617" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">FastAPI · Python · Uvicorn (backend + SSE streaming)</text>
+
+  <rect x="70" y="630" width="10" height="10" rx="2" fill="#fee2e2" stroke="#dc2626"/>
+  <text x="88" y="641" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Google Gemini 1.5 Flash (question generation + evaluation)</text>
+
+  <rect x="450" y="582" width="10" height="10" rx="2" fill="#f3e8ff" stroke="#7c3aed"/>
+  <text x="468" y="593" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">LLM-as-judge evaluation engine (scoring rubric)</text>
+
+  <rect x="450" y="606" width="10" height="10" rx="2" fill="#dcfce7" stroke="#16a34a"/>
+  <text x="468" y="617" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">Session reports with per-question breakdown + improvement tips</text>
+
+  <rect x="450" y="630" width="10" height="10" rx="2" fill="#f1f5f9" stroke="#64748b"/>
+  <text x="468" y="641" font-family="Inter, sans-serif" font-size="11" fill="#6b7280">HackHarvard 2025 · Built in under 24 hours · 92% response accuracy</text>
+</svg>
