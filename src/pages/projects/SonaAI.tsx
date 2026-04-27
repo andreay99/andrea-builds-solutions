@@ -1,4 +1,4 @@
-import archImg from '@/assets/sona-architecture.png';
+import archImg from '@/assets/sona-architecture.svg';
 import ProjectDetail from './ProjectDetail';
 
 const SonaAI = () => (
