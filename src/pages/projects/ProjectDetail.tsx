@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Github, ExternalLink, Star, Maximize2, X } from 'lucide-react';
 import { PageTransition } from '@/components/PageTransition';
@@ -41,7 +42,11 @@ const ArchLightbox = ({ src, title, onClose, scrollY }: { src: string; title: st
     };
   }, [onClose, scrollY]);
 
-  return (
+  // Portal to document.body — escapes the Framer Motion wrapper which leaves a
+  // CSS transform on the page div. Any non-none transform on an ancestor makes
+  // position:fixed children position relative to THAT element, not the viewport.
+  // Portaling to body bypasses the entire component tree.
+  return createPortal(
     <div
       onClick={onClose}
       style={{
@@ -74,7 +79,7 @@ const ArchLightbox = ({ src, title, onClose, scrollY }: { src: string; title: st
         <X size={18} />
       </button>
 
-      {/* Image container — constrained to remaining viewport height */}
+      {/* Image container */}
       <div
         onClick={e => e.stopPropagation()}
         style={{
@@ -98,7 +103,6 @@ const ArchLightbox = ({ src, title, onClose, scrollY }: { src: string; title: st
             {title.toLowerCase().replace(/ /g,'_')}_architecture — fullscreen
           </span>
         </div>
-        {/* Image shrinks to fit, never overflows */}
         <img
           src={src}
           alt={`${title} architecture`}
@@ -106,11 +110,11 @@ const ArchLightbox = ({ src, title, onClose, scrollY }: { src: string; title: st
         />
       </div>
 
-      {/* Hint */}
       <p style={{ position: 'absolute', bottom: 20, left: '50%', transform: 'translateX(-50%)', fontSize: 12, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.06em' }}>
         Press ESC or click outside to close
       </p>
-    </div>
+    </div>,
+    document.body
   );
 };
 
