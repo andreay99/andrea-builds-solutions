@@ -1,4 +1,4 @@
-import archImg from '@/assets/bikeshare-architecture.png';
+import archImg from '@/assets/bikeshare-architecture.svg';
 import ProjectDetail from './ProjectDetail';
 
 const Bikeshare = () => (
