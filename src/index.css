@@ -83,6 +83,17 @@ body::before {
   pointer-events: none;
 }
 #bg-canvas.hero-active { opacity: 1; pointer-events: auto; }
+
+#aurora-canvas {
+  position: fixed; top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: 0;
+  opacity: 0;
+  transition: opacity 1.2s ease;
+  pointer-events: none;
+}
+#aurora-canvas.aurora-active { opacity: 1; pointer-events: auto; }
+
 #root { position: relative; z-index: 1; background: transparent; }
 
 /* ── SCROLLBAR ───────────────────────────────────────────── */
