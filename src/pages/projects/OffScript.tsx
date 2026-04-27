@@ -1,4 +1,4 @@
-import archImg from '@/assets/offscript-architecture.png';
+import archImg from '@/assets/offscript-architecture.svg';
 import ProjectDetail from './ProjectDetail';
 
 const OffScript = () => (
