@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Mail, Github, Linkedin, Send } from "lucide-react";
 import { PageTransition } from "@/components/PageTransition";
+import { AuroraBackground } from "@/components/AuroraBackground";
 
 const ACCENT = '#00C9D8';
 
@@ -50,6 +51,7 @@ const Contact = () => {
 
   return (
     <PageTransition>
+      <AuroraBackground />
       <div style={{ background: '#08090e', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
         <div className="page-enter" style={{ paddingTop: 120, paddingBottom: 100 }}>
           <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 32px' }}>
