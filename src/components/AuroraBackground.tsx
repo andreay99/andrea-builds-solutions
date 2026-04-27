@@ -86,11 +86,19 @@ void main(){
   float vig = 1.0 - smoothstep(0.4, 1.2, length(uv - vec2(0.5, 0.4)) * 1.3);
   col *= 0.55 + 0.45 * vig;
 
-  // Subtle star field
-  float s = hash(floor(uv * 320.0));
+  // Subtle star field — round dots with smooth falloff
+  vec2 starGrid = uv * 320.0;
+  vec2 starCell = floor(starGrid);
+  vec2 starOffset = fract(starGrid) - 0.5; // -0.5..0.5 within cell
+  float s = hash(starCell);
   if(s > 0.987){
+    // Jitter center within cell so stars aren't grid-aligned
+    vec2 jitter = vec2(hash(starCell + 7.3), hash(starCell + 13.7)) - 0.5;
+    vec2 d = starOffset - jitter * 0.35;
+    float dist = length(d);
+    float glow = smoothstep(0.18, 0.0, dist); // round, soft edge
     float twinkle = 0.4 + 0.6 * sin(u_time * 2.0 + s * 6.28);
-    col += vec3(0.6, 0.7, 0.9) * twinkle * (1.0 - band * 2.0);
+    col += vec3(0.6, 0.7, 0.9) * twinkle * glow * (1.0 - band * 2.0);
   }
 
   col = pow(clamp(col, 0.0, 1.0), vec3(0.88));

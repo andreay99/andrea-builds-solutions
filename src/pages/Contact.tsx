@@ -12,8 +12,10 @@ const LINKS = [
 ];
 
 const fieldStyle: React.CSSProperties = {
-  background: 'rgba(255,255,255,0.04)',
-  border: '1px solid rgba(255,255,255,0.1)',
+  background: 'rgba(8,9,14,0.35)',
+  backdropFilter: 'blur(12px)',
+  WebkitBackdropFilter: 'blur(12px)',
+  border: '1px solid rgba(255,255,255,0.12)',
   borderRadius: 10,
   color: '#f0f0f5',
   padding: '14px 16px',
@@ -52,7 +54,7 @@ const Contact = () => {
   return (
     <PageTransition>
       <AuroraBackground />
-      <div style={{ background: '#08090e', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
+      <div style={{ background: 'transparent', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
         <div className="page-enter" style={{ paddingTop: 120, paddingBottom: 100 }}>
           <div style={{ maxWidth: 860, margin: '0 auto', padding: '0 32px' }}>
 
@@ -103,7 +105,10 @@ const Contact = () => {
                     style={{
                       padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14,
                       textDecoration: 'none', color: 'inherit',
-                      background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)',
+                      background: 'rgba(8,9,14,0.3)',
+                      backdropFilter: 'blur(14px)',
+                      WebkitBackdropFilter: 'blur(14px)',
+                      border: '1px solid rgba(255,255,255,0.09)',
                       borderRadius: 14, transition: 'border-color 0.25s, transform 0.25s',
                     }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = `${ACCENT}50`; e.currentTarget.style.transform = 'translateY(-2px)'; }}
