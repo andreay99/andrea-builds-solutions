@@ -34,7 +34,6 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
   }, [onClose]);
 
   return (
-    // Outer: explicit 100vw/100vh so centering is always relative to the full viewport
     <div
       onClick={onClose}
       style={{
@@ -43,22 +42,23 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
         zIndex: 9999,
         background: 'rgba(0,0,0,0.88)',
         backdropFilter: 'blur(12px)',
-        display: 'grid', placeItems: 'center',
-        padding: '72px 32px 48px',   // extra top so close btn doesn't overlap
+        display: 'flex', flexDirection: 'column',
+        alignItems: 'center', justifyContent: 'center',
+        padding: '64px 32px 32px',
         boxSizing: 'border-box',
+        overflow: 'hidden',
         animation: 'fadeIn 0.18s ease both',
-        overflowY: 'auto',
       }}
     >
       {/* Close button */}
       <button
         onClick={onClose}
         style={{
-          position: 'fixed', top: 20, right: 20,
+          position: 'absolute', top: 16, right: 16,
           width: 40, height: 40, borderRadius: '50%',
           background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.15)',
           color: '#f0f0f5', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-          zIndex: 10000, transition: 'background 0.2s',
+          transition: 'background 0.2s', flexShrink: 0,
         }}
         onMouseEnter={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.16)')}
         onMouseLeave={e => (e.currentTarget.style.background = 'rgba(255,255,255,0.08)')}
@@ -66,19 +66,21 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
         <X size={18} />
       </button>
 
-      {/* Image container — stop propagation so clicking image doesn't close */}
+      {/* Image container — constrained to remaining viewport height */}
       <div
         onClick={e => e.stopPropagation()}
         style={{
           borderRadius: 16, overflow: 'hidden',
           border: `1px solid rgba(${ACCENT_RGB},0.25)`,
-          boxShadow: `0 40px 120px rgba(0,0,0,0.8), 0 0 0 1px rgba(${ACCENT_RGB},0.1)`,
-          width: 'min(92vw, 1200px)',
+          boxShadow: `0 32px 100px rgba(0,0,0,0.8), 0 0 0 1px rgba(${ACCENT_RGB},0.1)`,
+          maxWidth: 'min(92vw, 1200px)',
+          maxHeight: 'calc(100vh - 96px)',
+          display: 'flex', flexDirection: 'column',
           animation: 'scaleIn 0.22s cubic-bezier(0.22,1,0.36,1) both',
         }}
       >
         {/* Terminal bar */}
-        <div style={{ background: 'rgba(255,255,255,0.05)', borderBottom: `1px solid rgba(${ACCENT_RGB},0.15)`, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12 }}>
+        <div style={{ background: 'rgba(255,255,255,0.05)', borderBottom: `1px solid rgba(${ACCENT_RGB},0.15)`, padding: '10px 16px', display: 'flex', alignItems: 'center', gap: 12, flexShrink: 0 }}>
           <div style={{ display: 'flex', gap: 6 }}>
             {['#ff5f57','#ffbd2e','#28c840'].map(c => (
               <div key={c} style={{ width: 10, height: 10, borderRadius: '50%', background: c, opacity: 0.7 }}/>
@@ -88,10 +90,11 @@ const ArchLightbox = ({ src, title, onClose }: { src: string; title: string; onC
             {title.toLowerCase().replace(/ /g,'_')}_architecture — fullscreen
           </span>
         </div>
+        {/* Image shrinks to fit, never overflows */}
         <img
           src={src}
           alt={`${title} architecture`}
-          style={{ display: 'block', width: '100%', height: 'auto', filter: 'brightness(0.96) contrast(1.04)' }}
+          style={{ display: 'block', width: '100%', height: 'auto', minHeight: 0, objectFit: 'contain', filter: 'brightness(0.96) contrast(1.04)' }}
         />
       </div>
 
