@@ -1,4 +1,4 @@
-import archImg from '@/assets/recall-architecture.png';
+import archImg from '@/assets/recall-architecture.svg';
 import ProjectDetail from './ProjectDetail';
 
 const Recall = () => (
