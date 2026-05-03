@@ -15,7 +15,7 @@ const OffScript = () => (
     ]}
     techStack={['Next.js', 'TypeScript', 'FastAPI', 'Gemini AI']}
     arch={archImg}
-    githubLink="https://github.com/andreay99/offscript"
+    githubLink="https://github.com/Smit2553/Offscript"
     liveLink="https://offscript.codestacx.com"
   />
 );

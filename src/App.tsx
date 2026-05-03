@@ -22,7 +22,7 @@ import Analytics from "./pages/Analytics"; // Import directly - don't lazy load
 const Recall = lazy(() => import("./pages/projects/Recall"));
 const OffScript = lazy(() => import("./pages/projects/OffScript"));
 const SonaAI = lazy(() => import("./pages/projects/SonaAI"));
-const Bikeshare = lazy(() => import("./pages/projects/Bikeshare"));
+const CudaFlashAttention = lazy(() => import("./pages/projects/CudaFlashAttention"));
 const OSEHS = lazy(() => import("./pages/projects/OSEHS"));
 const ROMCom = lazy(() => import("./pages/projects/ROMCom"));
 const NotFound = lazy(() => import("./pages/NotFound"));
@@ -66,7 +66,7 @@ const AnimatedRoutes = () => {
       <Route path="/projects/recall" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Recall /></PageTransition></Suspense>} />
       <Route path="/projects/offscript" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OffScript /></PageTransition></Suspense>} />
       <Route path="/projects/sona-ai" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><SonaAI /></PageTransition></Suspense>} />
-      <Route path="/projects/bikeshare" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Bikeshare /></PageTransition></Suspense>} />
+      <Route path="/projects/cuda-flash-attention" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><CudaFlashAttention /></PageTransition></Suspense>} />
       <Route path="/projects/osehs" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OSEHS /></PageTransition></Suspense>} />
       <Route path="/projects/rom-com" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><ROMCom /></PageTransition></Suspense>} />
       <Route path="/experience" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Experience /></PageTransition></Suspense>} />
