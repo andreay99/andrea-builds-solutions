@@ -15,7 +15,7 @@ const Recall = () => (
     ]}
     techStack={['Flask', 'MongoDB', 'OpenCV', 'ElevenLabs TTS', 'Python']}
     arch={archImg}
-    githubLink="https://github.com/andreay99/recall"
+    githubLink="https://github.com/Christinetrr/recall"
     liveLink="https://devpost.com/software/recall-cf0dp9"
   />
 );

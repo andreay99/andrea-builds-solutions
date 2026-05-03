@@ -36,11 +36,11 @@ const HERO_SCENES: Record<string, { bg: string; glow: string; accent: string; st
          linear-gradient(148deg, #040010 0%, #080018 60%, #030010 100%)`,
     glow: 'rgba(160,0,240,0.40)', accent: '#a000f0', starColor: [200,100,255],
   },
-  bikeshare: {
-    bg: `radial-gradient(ellipse 56% 50% at 66% 30%, rgba(0,100,230,0.22) 0%, transparent 68%),
-         radial-gradient(ellipse 36% 30% at 22% 70%, rgba(0,70,180,0.12) 0%, transparent 58%),
-         linear-gradient(152deg, #000508 0%, #000c14 60%, #000508 100%)`,
-    glow: 'rgba(0,110,230,0.36)', accent: '#0070e0', starColor: [100,170,255],
+  cuda: {
+    bg: `radial-gradient(ellipse 56% 50% at 66% 30%, rgba(0,184,255,0.24) 0%, transparent 68%),
+         radial-gradient(ellipse 36% 30% at 22% 70%, rgba(0,100,220,0.14) 0%, transparent 58%),
+         linear-gradient(152deg, #000610 0%, #001020 60%, #000610 100%)`,
+    glow: 'rgba(0,184,255,0.40)', accent: '#00b8ff', starColor: [80,210,255],
   },
 };
 
@@ -81,12 +81,12 @@ const GRID_SCENES: Record<string, { bg: string; glow: string; tint: [number,numb
          linear-gradient(148deg, #0a0012 0%, #120018 55%, #080010 100%)`,
     glow: 'rgba(180,0,255,0.50)', tint: [200,80,255], accent: '#b820e0',
   },
-  bikeshare: {
-    bg: `radial-gradient(ellipse at 55% 45%, rgba(0,120,255,0.30) 0%, transparent 55%),
-         radial-gradient(ellipse at 22% 30%, rgba(0,160,220,0.22) 0%, transparent 40%),
-         radial-gradient(ellipse at 75% 65%, rgba(0,90,200,0.25) 0%, transparent 44%),
-         linear-gradient(150deg, #000810 0%, #001020 55%, #000610 100%)`,
-    glow: 'rgba(0,140,255,0.38)', tint: [80,180,255], accent: '#0090ff',
+  cuda: {
+    bg: `radial-gradient(ellipse at 55% 45%, rgba(0,184,255,0.32) 0%, transparent 55%),
+         radial-gradient(ellipse at 22% 30%, rgba(0,220,255,0.20) 0%, transparent 40%),
+         radial-gradient(ellipse at 75% 65%, rgba(0,120,230,0.22) 0%, transparent 44%),
+         linear-gradient(150deg, #000814 0%, #001428 55%, #000814 100%)`,
+    glow: 'rgba(0,184,255,0.42)', tint: [80,210,255], accent: '#00b8ff',
   },
 };
 
@@ -147,20 +147,27 @@ const SceneOverlay = ({ id }: { id: string }) => {
       <circle cx="290" cy="78" r="2"  fill="#f0b0ff"/>
     </svg>
   );
-  if (id === 'bikeshare') return (
-    <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} viewBox="0 0 400 280" preserveAspectRatio="none">
+  if (id === 'cuda') return (
+    <svg style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} viewBox="0 0 400 280">
       <defs>
-        <linearGradient id="gp" x1="0%" y1="100%" x2="100%" y2="0%">
-          <stop offset="0%"   stopColor="rgba(0,100,200,0)"/>
-          <stop offset="35%"  stopColor="rgba(20,140,255,0.18)"/>
-          <stop offset="50%"  stopColor="rgba(60,180,255,0.28)"/>
-          <stop offset="65%"  stopColor="rgba(20,140,255,0.18)"/>
-          <stop offset="100%" stopColor="rgba(0,100,200,0)"/>
-        </linearGradient>
-        <radialGradient id="gc"><stop offset="0%" stopColor="#90d0ff" stopOpacity="0.7"/><stop offset="100%" stopColor="transparent" stopOpacity="0"/></radialGradient>
+        <radialGradient id="cg"><stop offset="0%" stopColor="#00b8ff" stopOpacity="0.7"/><stop offset="100%" stopColor="transparent" stopOpacity="0"/></radialGradient>
       </defs>
-      <rect x="-20" y="-20" width="440" height="320" fill="url(#gp)" transform="rotate(-18, 200, 140)"/>
-      <ellipse cx="265" cy="85" rx="40" ry="22" fill="url(#gc)"/>
+      {/* CUDA tile grid — represents tiled attention blocks */}
+      {[0,1,2,3,4].map(row => [0,1,2,3,4,5].map(col => (
+        <rect key={`${row}-${col}`}
+          x={220 + col*22} y={20 + row*22}
+          width={18} height={18} rx={2}
+          fill="none"
+          stroke={`rgba(0,184,255,${0.08 + (row+col)*0.025})`}
+          strokeWidth={0.8}
+        />
+      )))}
+      {/* Highlight active tile */}
+      <rect x={264} y={64} width={18} height={18} rx={2} fill="rgba(0,184,255,0.18)" stroke="rgba(0,184,255,0.7)" strokeWidth={1.2}/>
+      <rect x={286} y={64} width={18} height={18} rx={2} fill="rgba(0,184,255,0.10)" stroke="rgba(0,184,255,0.45)" strokeWidth={1}/>
+      <rect x={264} y={86} width={18} height={18} rx={2} fill="rgba(0,184,255,0.10)" stroke="rgba(0,184,255,0.45)" strokeWidth={1}/>
+      {/* Glow center */}
+      <ellipse cx="285" cy="75" rx="38" ry="22" fill="url(#cg)"/>
     </svg>
   );
   return null;
@@ -189,12 +196,12 @@ const StarField = ({ seed, count=120, tint }: { seed:number; count?:number; tint
 
 /* ── Data ──────────────────────────────────────────────────── */
 const PROJECTS = [
-  { id:'recall',    title:'Recall',                  description:'Assistive memory system with real-time facial recognition. Identifies people and surfaces context through voice.',                                    techStack:['Python','OpenCV','MongoDB','ElevenLabs','Grok'],    awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], githubLink:'https://github.com/andreay99/recall',            liveLink:'https://devpost.com/software/recall-cf0dp9',  link:'/projects/recall',    categories:['ai-ml'] },
-  { id:'offscript', title:'OffScript',               description:'Real-time AI-powered interview simulator with dynamic question generation, live evaluation, and session reports.',                                    techStack:['Next.js','FastAPI','Gemini AI','TypeScript'],        awards:['HackHarvard 2025'],                               githubLink:'https://github.com/andreay99/offscript',         liveLink:'https://offscript.codestacx.com',     link:'/projects/offscript', categories:['ai-ml','full-stack'] },
+  { id:'recall',    title:'Recall',                  description:'Assistive memory system with real-time facial recognition. Identifies people and surfaces context through voice.',                                    techStack:['Python','OpenCV','MongoDB','ElevenLabs','Grok'],    awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], githubLink:'https://github.com/Christinetrr/recall',            liveLink:'https://devpost.com/software/recall-cf0dp9',  link:'/projects/recall',    categories:['ai-ml'] },
+  { id:'offscript', title:'OffScript',               description:'Real-time AI-powered interview simulator with dynamic question generation, live evaluation, and session reports.',                                    techStack:['Next.js','FastAPI','Gemini AI','TypeScript'],        awards:['HackHarvard 2025'],                               githubLink:'https://github.com/Smit2553/Offscript',         liveLink:'https://offscript.codestacx.com',     link:'/projects/offscript', categories:['ai-ml','full-stack'] },
   { id:'rom-com',   title:'ROM-COM',                 description:'Webcam-only stroke & TBI rehabilitation with adaptive ROM calibration and automated FMA-UE clinical scoring.',                                       techStack:['React','TypeScript','FastAPI','MediaPipe','Python'], awards:['HackPrinceton SP2026'],                           githubLink:'https://github.com/tomiwaaluko/ROM-com',                                                          link:'/projects/rom-com',   categories:['ai-ml','full-stack'] },
   { id:'osehs',     title:'OSEHS Digital Twin',      description:'NASA ORBIT Challenge Phase 2 — real-time 3D orbital swarm simulation with KPP tracking and formation control.',                                     techStack:['Python','NumPy','Matplotlib','Orbital Mechanics'],   awards:['NASA ORBIT Challenge Phase 2'],                   githubLink:'https://github.com/andreay99/OSEHS-simulation',                                                   link:'/projects/osehs',     categories:['ai-ml'] },
   { id:'sona',      title:'SONA AI',                 description:'Real-time emotion detection from voice via CNN trained on RAVDESS, with agentic cross-validation across 8 emotion classes.',                        techStack:['Python','TensorFlow','Librosa','FastAPI'],           awards:[],                                                 githubLink:'https://github.com/andreay99/sona-ai',                                                            link:'/projects/sona-ai',   categories:['ai-ml'] },
-  { id:'bikeshare', title:'Bikeshare Trip Analysis', description:'End-to-end SQL analytics pipeline across 50K+ real trips. 12+ operational insights via automated Matplotlib dashboards.',                            techStack:['SQL','SQLite','Python','Matplotlib'],                awards:[],                                                 githubLink:'https://github.com/andreay99/bikeshare-analysis',                                                 link:'/projects/bikeshare', categories:['full-stack','cloud'] },
+  { id:'cuda',      title:'CUDA Flash Attention',      description:'Ground-up CUDA kernels for softmax and Flash Attention — 22.9× bandwidth gain on softmax, 22.67× HBM traffic reduction, full backward pass without materializing N×N.',  techStack:['CUDA','C++','Python','PyTorch'],                     awards:[],                                                 githubLink:'https://github.com/andreay99/cuda-flash-attention',                                                    link:'/projects/cuda-flash-attention', categories:['ai-ml'] },
 ];
 
 const FILTER_TAGS = ['all','AI/ML','Full Stack','Data','Awards'];

@@ -14,7 +14,7 @@ const Bikeshare = () => (
     ]}
     techStack={['SQL', 'SQLite', 'Python', 'Data Analysis', 'Matplotlib']}
     arch={archImg}
-    githubLink="https://github.com/andreay99/bikeshare-analysis"
+    githubLink="https://github.com/andreay99/bikeshare-trip-analysis"
   />
 );
 

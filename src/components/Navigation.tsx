@@ -20,14 +20,7 @@ export const Navigation = () => {
       style={{
         position: 'fixed', top: 24, left: '50%', transform: 'translateX(-50%)',
         zIndex: 100,
-        display: 'inline-flex', alignItems: 'center', gap: 2,
-        background: 'rgba(8,9,14,0.72)',
-        backdropFilter: 'blur(24px)', WebkitBackdropFilter: 'blur(24px)',
-        border: '1px solid rgba(255,255,255,0.08)',
-        borderRadius: 999,
-        padding: '6px 8px',
-        boxShadow: '0 8px 32px rgba(0,0,0,0.5)',
-        transition: 'box-shadow 0.3s ease',
+        display: 'inline-flex', alignItems: 'center', gap: 8,
       }}
     >
       {NAV_ITEMS.map(({ id, Icon, label, color, glow }) => {
@@ -42,14 +35,17 @@ export const Navigation = () => {
             onMouseEnter={() => setHov(id)}
             onMouseLeave={() => setHov(null)}
             style={{
-              display: 'inline-flex', alignItems: 'center', gap: 7,
-              padding: show ? '8px 16px' : '8px 11px',
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+              width: show ? 'auto' : 36,
+              height: 36,
+              padding: show ? '0 14px' : '0',
               borderRadius: 999, border: 'none', cursor: 'pointer',
-              background: show ? `${color}18` : 'transparent',
-              boxShadow: show ? `0 0 16px ${glow}` : 'none',
-              transition: 'all 0.32s cubic-bezier(0.34,1.56,0.64,1)',
+              background: show ? `${color}20` : 'rgba(255,255,255,0.06)',
+              boxShadow: show ? `0 0 18px ${glow}` : 'none',
+              transition: 'all 0.35s cubic-bezier(0.34,1.56,0.64,1)',
               outline: 'none',
-              minWidth: 0,
+              overflow: 'hidden',
+              flexShrink: 0,
             }}
           >
             {/* Icon */}
