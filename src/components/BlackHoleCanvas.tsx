@@ -136,6 +136,8 @@ export const BlackHoleCanvas = () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('click', onClick);
+      const ext = gl!.getExtension('WEBGL_lose_context');
+      if (ext) ext.loseContext();
     };
   }, []);
 
