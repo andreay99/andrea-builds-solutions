@@ -1,69 +1,74 @@
 import { PageTransition } from "@/components/PageTransition";
 import { AuroraBackground } from "@/components/AuroraBackground";
-import { Briefcase, GraduationCap, Trophy, ExternalLink } from "lucide-react";
+import { Briefcase, GraduationCap, Trophy, Atom } from "lucide-react";
+import { Reveal } from "@/components/Reveal";
 
 const ACCENT   = '#00C9D8';
 const EDU      = '#a78bfa';
+const EXTRA    = '#34d399';
 const GOLD     = '#ffd232';
 
 /* ── Data ─────────────────────────────────────────────────── */
 const EXPERIENCE = [
   {
     type: 'work',
-    title: 'NASA-Funded AI Solar Eruption Research',
-    org: 'NASA MIRO Program · NJIT',
-    period: 'Nov 2025 – Present',
-    description: 'Selected for prestigious NASA-funded research conducting AI-powered solar eruption analysis using satellite data.',
+    title: 'Undergraduate Researcher',
+    org: 'NJIT Center for Solar-Terrestrial Research (NASA MIRO-funded)',
+    period: 'Dec 2025 – Present',
+    description: 'Training multimodal transformers on decades of NASA SDO and SOHO observational data to improve solar eruption forecast accuracy.',
     highlights: [
-      'Applying ML to analyze solar flare activity from NASA satellite data',
-      'Developing prediction models for solar eruptions',
-      'Working under Dr. Qin Li on cutting-edge space weather research',
+      'Improved solar eruption forecast accuracy by 20% through systematic experiment tracking',
+      'Engineering Python preprocessing pipelines for 3D magnetic field data — computing current density and magnetic twist maps for Physics-Informed Neural Network reconstruction',
+      'Creating ParaView visualizations of 3D field structures and flare eruption dynamics for research presentations',
     ],
-    tags: ['Python', 'ML', 'NASA', 'Space Weather'],
-  },
-  {
-    type: 'work',
-    title: 'Training Lead',
-    org: 'Apple · Edison, NJ',
-    period: 'Jul 2025 – Dec 2025',
-    description: 'Led technical training programs and mentored team members on Apple products and services.',
-    highlights: [
-      'Led training program that improved launch sales performance',
-      'Delivered performance metrics to leadership, accelerating tool adoption',
-      'Structured mentorship pipeline for new technicians',
-    ],
-    tags: ['Leadership', 'Training', 'Mentorship'],
+    tags: ['Python', 'PyTorch', 'NASA', 'Space Weather', 'ParaView'],
+    metrics: [{ val: '20%', label: 'forecast accuracy' }],
   },
   {
     type: 'work',
     title: 'Technical Specialist',
     org: 'Apple · Edison, NJ',
     period: 'Aug 2024 – Mar 2026',
-    description: "Expert technical support across Apple's full ecosystem — troubleshooting, mentoring, and improving team KPIs.",
+    description: 'Collaborated with Cupertino engineering to troubleshoot and resolve escalated macOS and iOS issues using Xcode debugging tools and log analysis.',
     highlights: [
-      'Raised customer satisfaction 15% through effective problem resolution',
-      'Mentored peers in structured problem-solving, increasing team efficiency 40%',
+      'Recognized in the top 5% of technicians for quality and efficiency against performance targets',
+      'Reduced resolution time for critical escalated tickets through Xcode debugging and log analysis',
     ],
-    tags: ['Technical Support', 'Mentorship', 'Apple Ecosystem'],
-    metrics: [{ val: '15%', label: 'CSAT lift' }, { val: '40%', label: 'team efficiency' }],
+    tags: ['Xcode', 'macOS', 'iOS', 'Debugging'],
+    metrics: [{ val: 'Top 5%', label: 'quality ranking' }],
+  },
+  {
+    type: 'work',
+    title: 'Training Lead',
+    org: 'Apple · Edison, NJ',
+    period: 'Jul 2025 – Dec 2025',
+    description: 'Designed and delivered a hands-on technical troubleshooting curriculum that accelerated tool adoption and reduced launch-day support escalations.',
+    highlights: [
+      'Led training program that reduced launch problems and increased initial sales by 15%',
+      'Trained and mentored 30+ new technicians per cycle, shortening onboarding time to floor readiness',
+    ],
+    tags: ['Leadership', 'Training', 'Mentorship'],
+    metrics: [{ val: '15%', label: 'sales increase' }, { val: '30+', label: 'technicians trained' }],
   },
   {
     type: 'education',
     title: 'B.S. in Computer Science',
-    org: 'New Jersey Institute of Technology',
-    period: 'Expected Aug 2027',
-    description: 'Specializing in AI/ML and full-stack development. Transfer student from Middlesex County College.',
+    org: 'New Jersey Institute of Technology — Transfer Student (Junior)',
+    period: 'Expected May 2027',
+    description: 'GPA: 3.6 — Coursework in Data Structures, Algorithms, Database Systems, Linear Algebra, Computer Architecture, and Discrete Math.',
     highlights: [],
-    tags: ['AI / ML', 'Full-Stack', 'Data Structures'],
+    tags: ['AI / ML', 'Full-Stack', 'Data Structures', 'Algorithms'],
   },
   {
-    type: 'education',
-    title: 'Associate of Computer Science',
-    org: 'Middlesex County College',
-    period: 'Graduated Aug 2025',
-    description: 'Foundational coursework in Data Structures and Database Systems.',
-    highlights: [],
-    tags: ['Data Structures', 'Databases', 'Algorithms'],
+    type: 'extracurricular',
+    title: 'ACMI Quantum Computing Club',
+    org: 'Member',
+    period: 'Jan 2026',
+    description: 'Completed coursework in quantum computing fundamentals including qubits, quantum gates, entanglement, and query algorithms.',
+    highlights: [
+      'Implemented Deutsch\'s Algorithm and Deutsch-Jozsa Algorithm in Qiskit (Python)',
+    ],
+    tags: ['Quantum Computing', 'Qiskit', 'Python'],
   },
 ];
 
@@ -81,8 +86,8 @@ const HACKATHONS = [
     event: 'HackPrinceton 2025',
     location: 'Princeton, NJ',
     project: 'Recall',
-    subtitle: 'Assistive Memory System',
-    description: 'AI-powered face recognition and contextual memory system designed to help users with memory challenges identify people and recall context in real time.',
+    subtitle: 'Real-time Facial Recognition Memory Aid',
+    description: 'Built an edge-deployable face recognition pipeline on Raspberry Pi with <200ms inference latency. Threshold-tuned embedding matching with data augmentation for 94% precision and <2% false positives.',
     tags: ['Python', 'OpenCV', 'DeepFace', 'MongoDB', 'Grok', 'ElevenLabs'],
     awards: ['Best Use of Grok (xAI)', 'Best Use of Arm (MLH)'],
   },
@@ -124,7 +129,7 @@ const AwardBadge = ({ text }: { text: string }) => (
     background: 'rgba(255,210,50,0.1)', color: GOLD,
     border: '1px solid rgba(255,210,50,0.25)',
     fontFamily: 'Inter, sans-serif',
-  }}>🏆 {text}</span>
+  }}><Trophy size={11} /> {text}</span>
 );
 
 /* ── TimelineCard ───────────────────────────────────────────── */
@@ -135,9 +140,8 @@ interface ExpItem {
 }
 
 const TimelineCard = ({ item, last }: { item: ExpItem; last: boolean }) => {
-  const isWork = item.type === 'work';
-  const dotColor = isWork ? ACCENT : EDU;
-  const Icon = isWork ? Briefcase : GraduationCap;
+  const dotColor = item.type === 'work' ? ACCENT : item.type === 'education' ? EDU : EXTRA;
+  const Icon = item.type === 'work' ? Briefcase : item.type === 'education' ? GraduationCap : Atom;
 
   return (
     <div style={{ display: 'flex', gap: 20, paddingBottom: last ? 0 : 36 }}>
@@ -160,7 +164,7 @@ const TimelineCard = ({ item, last }: { item: ExpItem; last: boolean }) => {
       </div>
 
       {/* Card */}
-      <div style={{ ...glass, flex: 1, padding: '20px 22px', marginTop: 1 }}>
+      <div className="spot" style={{ ...glass, flex: 1, padding: '20px 22px', marginTop: 1 }}>
         {/* Header */}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
           <div>
@@ -218,7 +222,7 @@ interface HackItem {
 }
 
 const HackCard = ({ h }: { h: HackItem }) => (
-  <div style={{ ...glass, padding: '24px 26px', position: 'relative', overflow: 'hidden' }}>
+  <div className="spot" style={{ ...glass, padding: '24px 26px', position: 'relative', overflow: 'hidden' }}>
     {/* Glow accent */}
     {h.awards.length > 0 && (
       <div style={{
@@ -283,11 +287,15 @@ const Experience = () => (
               <div style={{ width: 8, height: 8, borderRadius: '50%', background: EDU, boxShadow: `0 0 8px ${EDU}` }}/>
               <span style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)' }}>Education</span>
             </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <div style={{ width: 8, height: 8, borderRadius: '50%', background: EXTRA, boxShadow: `0 0 8px ${EXTRA}` }}/>
+              <span style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)' }}>Extracurricular</span>
+            </div>
           </div>
 
           {/* Timeline */}
           {EXPERIENCE.map((item, i) => (
-            <TimelineCard key={item.title} item={item} last={i === EXPERIENCE.length - 1} />
+            <Reveal key={item.title} delay={i < 2 ? i * 90 : 0}><TimelineCard item={item} last={i === EXPERIENCE.length - 1} /></Reveal>
           ))}
 
           {/* ── Hackathons ─────────────────────────────────── */}
@@ -297,7 +305,7 @@ const Experience = () => (
             <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 700, color: '#f0f0f5', marginBottom: 8, lineHeight: 1.1 }}>Hackathons</h2>
             <p style={{ color: 'rgba(240,240,245,0.4)', fontSize: 14, marginBottom: 36 }}>3 events · 2 awards</p>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {HACKATHONS.map(h => <HackCard key={h.event} h={h} />)}
+              {HACKATHONS.map(h => <Reveal key={h.event}><HackCard h={h} /></Reveal>)}
             </div>
           </div>
 

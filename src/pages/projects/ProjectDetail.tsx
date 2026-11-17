@@ -171,10 +171,10 @@ const ProjectDetail = ({
             </div>
 
             {/* Metrics */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: 16, marginBottom: 40 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(88px,1fr))', gap: 'clamp(8px,2.5vw,16px)', marginBottom: 40 }}>
               {metrics.map(m => (
-                <div key={m.label} className="card" style={{ padding: '20px 16px', textAlign: 'center' }}>
-                  <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 700, color: ACCENT, marginBottom: 6 }}>{m.val}</div>
+                <div key={m.label} className="card" style={{ padding: '20px 8px', textAlign: 'center' }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 'clamp(1.1rem,4.6vw,1.6rem)', fontWeight: 700, color: ACCENT, marginBottom: 6 }}>{m.val}</div>
                   <div style={{ fontSize: 11, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>{m.label}</div>
                 </div>
               ))}

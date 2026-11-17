@@ -5,15 +5,15 @@ const OSEHS = () => (
   <ProjectDetail
     title="OSEHS Digital Twin"
     techLabel="Python · NumPy · Swarm AI"
-    description="OSEHS (Orbital Solar Energy Harvesting Swarm) is a full 3D digital twin simulating a fleet of satellites in a heliocentric orbit over a 3-year mission. Built for NASA's ORBIT Challenge Phase 2, the simulation models swarm coordination, fault tolerance, and continuous KPP tracking using orbital mechanics libraries and NumPy."
-    highlight="Selected for NASA ORBIT Challenge Phase 2 — real orbital mechanics simulation with 94% accuracy and zero collision violations across a 3-year run."
+    description="Built a Python orbital simulation and digital twin for a 20-unit satellite swarm, modeling relative formation dynamics with Clohessy-Wiltshire equations and measuring end-to-end pipeline efficiency at 65.3%. Designed a decentralized gossip protocol for inter-satellite state sharing, holding formation and reaching consensus with no central ground-control bottleneck. Presented the system architecture at the NASA Orbit poster review."
+    highlight="Selected for NASA ORBIT Challenge Phase 2 — decentralized swarm coordination with gossip protocol consensus, no single point of failure."
     awards={['NASA ORBIT Challenge Phase 2']}
     metrics={[
-      { label: 'Simulation accuracy', val: '94%' },
-      { label: 'Mission duration', val: '3 Years' },
+      { label: 'Pipeline efficiency', val: '65.3%' },
+      { label: 'Swarm units', val: '20' },
       { label: 'Team', val: 'Star Maker' },
     ]}
-    techStack={['Python', 'NumPy', 'Matplotlib', 'Orbital Mechanics', 'Swarm AI']}
+    techStack={['Python', 'NumPy', 'Matplotlib', 'CW Equations', 'Gossip Protocol']}
     simComponent={<OSEHSSim />}
     githubLink="https://github.com/andreay99/OSEHS-simulation"
   />

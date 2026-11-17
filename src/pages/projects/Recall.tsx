@@ -4,16 +4,16 @@ import ProjectDetail from './ProjectDetail';
 const Recall = () => (
   <ProjectDetail
     title="Recall"
-    techLabel="Flask · OpenCV · MongoDB"
-    description="Recall is an AI-powered assistive memory system designed to help users remember the people they meet. Using OpenCV for real-time facial detection and recognition, combined with MongoDB for persistent storage, the system identifies faces through a webcam feed and surfaces contextual information via ElevenLabs TTS voice output."
+    techLabel="Python · OpenCV · DeepFace"
+    description="Built an edge-deployable face recognition pipeline on Raspberry Pi with <200ms inference latency. Designed threshold-tuned embedding matching with data augmentation for 94% precision and <2% false positives. Shipped streaming endpoints with full OpenAPI documentation and unit tests."
     highlight="Awarded two categories at HackPrinceton 2025 — Best Use of Grok (xAI) and Best Use of Arm (MLH)."
     awards={['Best Use of Grok (xAI)', 'Best Use of Arm (MLH)']}
     metrics={[
-      { label: 'Face recognition accuracy', val: '94%' },
-      { label: 'Status', val: 'Active Dev' },
-      { label: 'Awards', val: '2' },
+      { label: 'Precision', val: '94%' },
+      { label: 'Inference latency', val: '<200ms' },
+      { label: 'False positive rate', val: '<2%' },
     ]}
-    techStack={['Flask', 'MongoDB', 'OpenCV', 'ElevenLabs TTS', 'Python']}
+    techStack={['Python', 'OpenCV', 'DeepFace', 'MongoDB', 'Grok', 'ElevenLabs']}
     arch={archImg}
     githubLink="https://github.com/Christinetrr/recall"
     liveLink="https://devpost.com/software/recall-cf0dp9"
