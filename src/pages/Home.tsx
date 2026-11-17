@@ -3,6 +3,7 @@ import { ArrowRight, Github, ExternalLink, Star } from 'lucide-react';
 import { BlackHoleCanvas } from '@/components/BlackHoleCanvas';
 import { RollingText } from '@/components/RollingText';
 import { Reveal } from '@/components/Reveal';
+import { Constellation } from '@/components/Constellation';
 
 const ACCENT = '#00C9D8';
 const ACCENT_RGB = '0,201,216';
@@ -46,50 +47,53 @@ const Home = () => {
       <BlackHoleCanvas />
 
       {/* Hero */}
-      <section style={{
-        minHeight:'100vh', display:'flex', flexDirection:'column',
-        justifyContent:'center', alignItems:'center', textAlign:'center',
-        padding:'120px 32px 80px', position:'relative', zIndex:2,
-      }}>
-        <div style={{ position:'fixed', inset:0, zIndex:0, background:'rgba(8,9,14,0.55)', pointerEvents:'none' }}/>
+      <section className="hero-stellar"
+        onMouseMove={e => {
+          const el = e.currentTarget;
+          el.style.setProperty('--px', ((e.clientX / window.innerWidth) - 0.5).toFixed(3));
+          el.style.setProperty('--py', ((e.clientY / window.innerHeight) - 0.5).toFixed(3));
+        }}>
+        <div style={{ position:'fixed', inset:0, zIndex:0, background:'rgba(8,9,14,0.45)', pointerEvents:'none' }}/>
 
-        <p className="hero-sub" style={{ fontSize:12, letterSpacing:'0.15em', textTransform:'uppercase', color:ACCENT, marginBottom:24, fontWeight:600, animationDelay:'0ms' }}>
-          Available for opportunities
-        </p>
+        {/* planet limb */}
+        <div className="horizon-clip"><div className="horizon"/></div>
 
-        <h1 style={{ fontFamily:'Space Grotesk, sans-serif', fontSize:'clamp(3.5rem,8vw,7.5rem)', fontWeight:700, lineHeight:0.92, letterSpacing:'-0.03em', marginBottom:24 }}>
-          <RollingText text="ANDREA" duration={0.55} stagger={0.05} blur={8} pattern="sequential" />
-          <br/>
-          <RollingText text="YANEZ " duration={0.55} stagger={0.05} blur={8} pattern="sequential" />
-          <RollingText text="SOTO" color={ACCENT} duration={0.6} stagger={0.06} blur={8} pattern="alternating" />
-        </h1>
+        {/* AY constellation */}
+        <div className="hero-constellation"><Constellation /></div>
 
-        <p className="hero-sub" style={{ fontSize:'clamp(0.95rem,1.8vw,1.2rem)', color:'rgba(240,240,245,0.45)', fontFamily:'Space Grotesk, sans-serif', fontWeight:400, marginBottom:20, lineHeight:1.4, animationDelay:'350ms' }}>
-          Full Stack Developer &amp; AI/ML Engineer
-        </p>
-
-        <p className="hero-sub" style={{ fontSize:14, color:'rgba(240,240,245,0.45)', lineHeight:1.7, maxWidth:440, marginBottom:36, animationDelay:'450ms' }}>
-          NJIT student building AI-powered tools — from NASA solar research to hackathon-winning apps.
-        </p>
-
-        <div className="hero-cta" style={{ display:'flex', gap:12, flexWrap:'wrap', justifyContent:'center', marginBottom:52, animationDelay:'550ms' }}>
-          <button onClick={() => navigate('/projects')} style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'12px 24px', borderRadius:40, background:ACCENT, color:'#fff', fontWeight:600, fontSize:14, fontFamily:'Space Grotesk, sans-serif', border:'none', cursor:'pointer', transition:'all 0.25s' }}>
-            View Projects <ArrowRight size={16} />
-          </button>
-          <button onClick={() => navigate('/contact')} style={{ display:'inline-flex', alignItems:'center', gap:8, padding:'12px 24px', borderRadius:40, background:'transparent', color:'#f0f0f5', fontWeight:500, fontSize:14, fontFamily:'Space Grotesk, sans-serif', border:'1px solid rgba(255,255,255,0.07)', cursor:'pointer', transition:'all 0.25s' }}>
-            Get in Touch
-          </button>
+        <div className="hero-top">
+          <p className="hero-tag hero-sub" style={{ animationDelay:'0ms' }}>Available for opportunities</p>
+          <h1 className="hero-title">
+            <RollingText text="ANDREA" duration={0.6} stagger={0.05} blur={8} pattern="sequential" />
+            <br/>
+            <RollingText text="YANEZ " duration={0.6} stagger={0.05} blur={8} pattern="sequential" />
+            <RollingText text="SOTO" color={ACCENT} duration={0.65} stagger={0.06} blur={8} pattern="alternating" />
+          </h1>
         </div>
 
-        <div className="hero-stats" style={{ animationDelay:'650ms' }}>
+        <div className="hero-bottom hero-sub" style={{ animationDelay:'700ms' }}>
+          <h2 className="hero-title">From solar data<br/>to shipped code</h2>
+          <p className="hero-caption">Full-stack &amp; AI/ML engineer · NJIT · NASA-funded researcher</p>
+        </div>
+
+        <div className="hero-cta" style={{ display:'flex', gap:8, flexWrap:'wrap', justifyContent:'center', position:'relative', zIndex:2, animationDelay:'900ms' }}>
+          <button className="btn-stellar" onClick={() => navigate('/projects')}>
+            View projects <ArrowRight size={15} />
+          </button>
+          <button className="link-stellar" onClick={() => navigate('/contact')}>Get in touch</button>
+        </div>
+      </section>
+
+      <Reveal>
+        <div className="stats-strip">
           {[['6','Projects'],['3','Awards'],['NASA','Research'],['Apple','Industry']].map(([v,l]) => (
             <div key={l}>
-              <div style={{ fontFamily:'Space Grotesk, sans-serif', fontSize:'clamp(1.8rem,3vw,2.4rem)', fontWeight:700, lineHeight:1, color:'#f0f0f5' }}>{v}</div>
-              <div style={{ fontSize:11, color:'rgba(240,240,245,0.45)', letterSpacing:'0.08em', textTransform:'uppercase', marginTop:5 }}>{l}</div>
+              <div style={{ fontFamily:'Space Grotesk, sans-serif', fontSize:'clamp(1.8rem,3vw,2.4rem)', fontWeight:300, lineHeight:1, color:'#f0f0f5' }}>{v}</div>
+              <div style={{ fontSize:11, color:'rgba(240,240,245,0.45)', letterSpacing:'0.12em', textTransform:'uppercase', marginTop:8 }}>{l}</div>
             </div>
           ))}
         </div>
-      </section>
+      </Reveal>
 
       <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(0,201,216,0.15),transparent)', margin:'0 32px' }}/>
 
