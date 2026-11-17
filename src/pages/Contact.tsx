@@ -8,7 +8,7 @@ const ACCENT = '#00C9D8';
 const LINKS = [
   { Icon: Mail,     label: 'Email',    value: 'andreayanez11@outlook.com',                         href: 'mailto:andreayanez11@outlook.com' },
   { Icon: Github,   label: 'GitHub',   value: 'github.com/andreay99',                              href: 'https://github.com/andreay99' },
-  { Icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/andrea-yanez-soto',                 href: 'https://www.linkedin.com/in/andrea-yanez-soto-8b4653218' },
+  { Icon: Linkedin, label: 'LinkedIn', value: 'linkedin.com/in/andreayanezsoto',                   href: 'https://www.linkedin.com/in/andreayanezsoto' },
 ];
 
 const fieldStyle: React.CSSProperties = {
@@ -64,7 +64,7 @@ const Contact = () => {
               Open to full-time roles, research collaborations, and interesting projects.
             </p>
 
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 40 }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))', gap: 40 }}>
 
               {/* Form */}
               <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
@@ -74,7 +74,7 @@ const Contact = () => {
                       onChange={e => setForm(f => ({ ...f, [field]: e.target.value }))} required
                       rows={5} style={{ ...fieldStyle, resize: 'vertical', minHeight: 120, lineHeight: 1.6 }}
                       onFocus={e => (e.target.style.borderColor = ACCENT)}
-                      onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.1)')} />
+                      onBlur={e => (e.target.style.borderColor = 'rgba(255,255,255,0.12)')} />
                   ) : (
                     <input key={field} type={field === 'email' ? 'email' : 'text'}
                       placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
@@ -101,7 +101,7 @@ const Contact = () => {
               {/* Link cards */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
                 {LINKS.map(({ Icon, label, value, href }) => (
-                  <a key={label} href={href} target="_blank" rel="noopener noreferrer"
+                  <a key={label} href={href} target="_blank" rel="noopener noreferrer" className="spot"
                     style={{
                       padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 14,
                       textDecoration: 'none', color: 'inherit',
@@ -112,7 +112,7 @@ const Contact = () => {
                       borderRadius: 14, transition: 'border-color 0.25s, transform 0.25s',
                     }}
                     onMouseEnter={e => { e.currentTarget.style.borderColor = `${ACCENT}50`; e.currentTarget.style.transform = 'translateY(-2px)'; }}
-                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.07)'; e.currentTarget.style.transform = ''; }}>
+                    onMouseLeave={e => { e.currentTarget.style.borderColor = 'rgba(255,255,255,0.09)'; e.currentTarget.style.transform = ''; }}>
                     <Icon size={20} color={ACCENT} />
                     <div>
                       <div style={{ fontSize: 11, color: 'rgba(240,240,245,0.45)', letterSpacing: '0.06em', textTransform: 'uppercase', marginBottom: 2 }}>{label}</div>

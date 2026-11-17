@@ -78,7 +78,24 @@ const AnimatedRoutes = () => {
   );
 };
 
-const App = () => (
+// Feeds the pointer position to whichever .card / .spot is under it (see index.css).
+const useCardSpotlight = () => {
+  useEffect(() => {
+    const onMove = (e: PointerEvent) => {
+      const el = (e.target as HTMLElement | null)?.closest?.<HTMLElement>('.card, .spot');
+      if (!el) return;
+      const r = el.getBoundingClientRect();
+      el.style.setProperty('--mx', `${e.clientX - r.left}px`);
+      el.style.setProperty('--my', `${e.clientY - r.top}px`);
+    };
+    window.addEventListener('pointermove', onMove, { passive: true });
+    return () => window.removeEventListener('pointermove', onMove);
+  }, []);
+};
+
+const App = () => {
+  useCardSpotlight();
+  return (
   <ThemeProvider>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -91,13 +108,14 @@ const App = () => (
         <BrowserRouter>
           <Navigation />
           <AnimatedRoutes />
-          <footer style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '32px', textAlign: 'center', color: 'rgba(240,240,245,0.22)', fontSize: 13, fontFamily: 'Inter, sans-serif', position: 'relative', zIndex: 2 }}>
+          <footer style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '32px', textAlign: 'center', color: 'rgba(240,240,245,0.4)', fontSize: 13, fontFamily: 'Inter, sans-serif', position: 'relative', zIndex: 2, background: 'rgba(8,9,14,0.7)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
             Andrea Yanez Soto · andreasoto.dev · Built with intention
           </footer>
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>
-);
+  );
+};
 
 export default App;

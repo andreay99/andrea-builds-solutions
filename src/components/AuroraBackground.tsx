@@ -167,6 +167,7 @@ export const AuroraBackground = () => {
 
     function frame(now: number) {
       animId = requestAnimationFrame(frame);
+      if (document.hidden || gl!.isContextLost()) return;
       const t = (now - start) / 1000;
 
       gl!.useProgram(prog);
@@ -201,8 +202,7 @@ export const AuroraBackground = () => {
       window.removeEventListener('resize', resize);
       window.removeEventListener('mousemove', onMove);
       window.removeEventListener('click', onClick);
-      const ext = gl!.getExtension('WEBGL_lose_context');
-      if (ext) ext.loseContext();
+      gl!.clear(gl!.COLOR_BUFFER_BIT);
     };
   }, []);
 

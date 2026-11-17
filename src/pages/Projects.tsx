@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Github, ExternalLink, ArrowRight, Star } from 'lucide-react';
 
@@ -196,12 +196,12 @@ const StarField = ({ seed, count=120, tint }: { seed:number; count?:number; tint
 
 /* ── Data ──────────────────────────────────────────────────── */
 const PROJECTS = [
-  { id:'recall',    title:'Recall',                  description:'Assistive memory system with real-time facial recognition. Identifies people and surfaces context through voice.',                                    techStack:['Python','OpenCV','MongoDB','ElevenLabs','Grok'],    awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], githubLink:'https://github.com/Christinetrr/recall',            liveLink:'https://devpost.com/software/recall-cf0dp9',  link:'/projects/recall',    categories:['ai-ml'] },
+  { id:'recall',    title:'Recall',                  description:'Edge-deployable face recognition on Raspberry Pi with <200ms inference, 94% precision, and <2% false positives.',                                       techStack:['Python','OpenCV','DeepFace','MongoDB','Grok'],      awards:['Best Use of Grok (xAI)','Best Use of Arm (MLH)'], githubLink:'https://github.com/Christinetrr/recall',            liveLink:'https://devpost.com/software/recall-cf0dp9',  link:'/projects/recall',    categories:['ai-ml'] },
   { id:'offscript', title:'OffScript',               description:'Real-time AI-powered interview simulator with dynamic question generation, live evaluation, and session reports.',                                    techStack:['Next.js','FastAPI','Gemini AI','TypeScript'],        awards:['HackHarvard 2025'],                               githubLink:'https://github.com/Smit2553/Offscript',         liveLink:'https://offscript.codestacx.com',     link:'/projects/offscript', categories:['ai-ml','full-stack'] },
   { id:'rom-com',   title:'ROM-COM',                 description:'Webcam-only stroke & TBI rehabilitation with adaptive ROM calibration and automated FMA-UE clinical scoring.',                                       techStack:['React','TypeScript','FastAPI','MediaPipe','Python'], awards:['HackPrinceton SP2026'],                           githubLink:'https://github.com/tomiwaaluko/ROM-com',                                                          link:'/projects/rom-com',   categories:['ai-ml','full-stack'] },
-  { id:'osehs',     title:'OSEHS Digital Twin',      description:'NASA ORBIT Challenge Phase 2 — real-time 3D orbital swarm simulation with KPP tracking and formation control.',                                     techStack:['Python','NumPy','Matplotlib','Orbital Mechanics'],   awards:['NASA ORBIT Challenge Phase 2'],                   githubLink:'https://github.com/andreay99/OSEHS-simulation',                                                   link:'/projects/osehs',     categories:['ai-ml'] },
+  { id:'osehs',     title:'OSEHS Digital Twin',      description:'20-unit satellite swarm simulation with CW dynamics, decentralized gossip protocol, and 65.3% pipeline efficiency.',                                  techStack:['Python','NumPy','Matplotlib','CW Equations'],        awards:['NASA ORBIT Challenge Phase 2'],                   githubLink:'https://github.com/andreay99/OSEHS-simulation',                                                   link:'/projects/osehs',     categories:['ai-ml'] },
   { id:'sona',      title:'SONA AI',                 description:'Real-time emotion detection from voice via CNN trained on RAVDESS, with agentic cross-validation across 8 emotion classes.',                        techStack:['Python','TensorFlow','Librosa','FastAPI'],           awards:[],                                                 githubLink:'https://github.com/andreay99/sona-ai',                                                            link:'/projects/sona-ai',   categories:['ai-ml'] },
-  { id:'cuda',      title:'CUDA Flash Attention',      description:'Ground-up CUDA kernels for softmax and Flash Attention — 22.9× bandwidth gain on softmax, 22.67× HBM traffic reduction, full backward pass without materializing N×N.',  techStack:['CUDA','C++','Python','PyTorch'],                     awards:[],                                                 githubLink:'https://github.com/andreay99/cuda-flash-attention',                                                    link:'/projects/cuda-flash-attention', categories:['ai-ml'] },
+  { id:'cuda',      title:'CUDA Flash Attention',      description:'Flash Attention forward & backward in raw CUDA C++ — 22.9× softmax speedup, 86× HBM reduction at seq_len=4096. Contributed to Hugging Face Transformers.',  techStack:['CUDA','C++','Python','PyTorch'],                     awards:[],                                                 githubLink:'https://github.com/andreay99/cuda-flash-attention',                                                    link:'/projects/cuda-flash-attention', categories:['ai-ml'] },
 ];
 
 const FILTER_TAGS = ['all','AI/ML','Full Stack','Data','Awards'];
@@ -210,19 +210,42 @@ interface Project { id:string; title:string; description:string; techStack:strin
 /* ── Grid card (CSS gradient + SVG scene) ──────────────────── */
 const PCard = ({ project, seed, onClick }: { project:Project; seed:number; onClick?:()=>void }) => {
   const [hov, setHov] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
   const scene = GRID_SCENES[project.id] ?? GRID_SCENES['recall'];
+
+  // Tilt toward the pointer. Written straight to CSS vars so the star field doesn't re-render per move.
+  const onMove = (e: React.MouseEvent) => {
+    const el = ref.current; if (!el) return;
+    const r = el.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width, py = (e.clientY - r.top) / r.height;
+    el.style.setProperty('--ry', `${(px - 0.5) * 9}deg`);
+    el.style.setProperty('--rx', `${(0.5 - py) * 7}deg`);
+    el.style.setProperty('--gx', `${px * 100}%`);
+    el.style.setProperty('--gy', `${py * 100}%`);
+  };
+  const onLeave = () => {
+    setHov(false);
+    ref.current?.style.setProperty('--rx', '0deg');
+    ref.current?.style.setProperty('--ry', '0deg');
+  };
+
   return (
-    <div onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseLeave={()=>setHov(false)}
+    <div ref={ref} onClick={onClick} onMouseEnter={()=>setHov(true)} onMouseMove={onMove} onMouseLeave={onLeave}
       style={{
         position:'relative', height:285, borderRadius:16, overflow:'hidden',
         cursor:onClick?'pointer':'default', background:scene.bg,
         border:`1px solid ${hov?scene.accent+'55':'rgba(255,255,255,0.06)'}`,
-        transform:hov?'translateY(-5px) scale(1.01)':'none',
+        transform:`perspective(900px) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) translateY(${hov?-5:0}px) scale(${hov?1.01:1})`,
         boxShadow:hov?`0 28px 64px rgba(0,0,0,0.75),0 0 0 1px ${scene.accent}30`:'0 6px 24px rgba(0,0,0,0.55)',
-        transition:'all 0.35s cubic-bezier(0.22,1,0.36,1)',
+        transition:`transform ${hov?'0.16s ease-out':'0.5s cubic-bezier(0.22,1,0.36,1)'}, box-shadow 0.35s, border-color 0.35s`,
+        willChange:'transform',
       }}>
       <StarField seed={seed} count={130} tint={scene.tint}/>
       <SceneOverlay id={project.id}/>
+      {/* glare that follows the pointer */}
+      <div style={{ position:'absolute', inset:0, zIndex:3, pointerEvents:'none',
+        background:'radial-gradient(circle at var(--gx,50%) var(--gy,50%), rgba(255,255,255,0.11), transparent 42%)',
+        opacity:hov?1:0, transition:'opacity 0.3s' }}/>
       <div style={{ position:'absolute', top:'10%', left:'42%', width:300, height:220, borderRadius:'50%',
         background:`radial-gradient(ellipse, ${scene.glow} 0%, transparent 70%)`,
         filter:'blur(50px)', pointerEvents:'none' }}/>
@@ -278,7 +301,11 @@ const PCard = ({ project, seed, onClick }: { project:Project; seed:number; onCli
 const Projects = () => {
   const [phase, setPhase] = useState(0);
   const [hero, setHero] = useState(0);
+  const [prevHero, setPrevHero] = useState(0);
+  const [paused, setPaused] = useState(false);
   const [filter, setFilter] = useState('all');
+  const reduceMotion = useMemo(() => window.matchMedia('(prefers-reduced-motion: reduce)').matches, []);
+  const showHero = (i: number) => { if (i !== hero) { setPrevHero(hero); setHero(i); } };
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -381,8 +408,13 @@ const Projects = () => {
 
         {/* ── Full hero banner (phase 3) ── */}
         {phase >= 3 && (
-          <div style={{ position:'relative', width:'100%', height:520, overflow:'hidden',
-            background: heroScene.bg, animation:'fadeUp 0.5s ease both' }}>
+          <div className={paused ? 'hero-paused' : undefined}
+            onMouseEnter={()=>setPaused(true)} onMouseLeave={()=>setPaused(false)}
+            style={{ position:'relative', width:'100%', height:520, overflow:'hidden',
+            background: HERO_SCENES[PROJECTS[prevHero].id].bg, animation:'fadeUp 0.5s ease both' }}>
+            {/* incoming scene fades in over the previous one */}
+            <div key={hero} style={{ position:'absolute', inset:0, animation:'fadeIn 0.9s ease both' }}>
+            <div style={{ position:'absolute', inset:0, background:heroScene.bg }}/>
             {/* star field */}
             <StarField seed={hero+1} count={220} tint={heroScene.starColor}/>
             {/* nebula bloom */}
@@ -398,6 +430,7 @@ const Projects = () => {
               borderRadius:'50%', background:'#fff',
               boxShadow:`0 0 10px 5px ${heroScene.glow},0 0 32px 14px ${heroScene.glow}`,
               pointerEvents:'none' }}/>
+            </div>
             <div style={{ position:'absolute', inset:0,
               background:'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.2) 55%, transparent 100%)' }}/>
 
@@ -405,7 +438,7 @@ const Projects = () => {
             <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'0 40px 40px', zIndex:2 }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end',
                 maxWidth:1100, margin:'0 auto', flexWrap:'wrap', gap:20 }}>
-                <div style={{ maxWidth:580 }}>
+                <div key={hero} style={{ maxWidth:580, animation:'fadeUp 0.55s ease both' }}>
                   {heroProject.awards.length > 0 && (
                     <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginBottom:14 }}>
                       {heroProject.awards.map(a=>(
@@ -445,7 +478,7 @@ const Projects = () => {
                   {PROJECTS.map((p,i)=>{
                     const s = HERO_SCENES[p.id];
                     return (
-                      <div key={p.id} onClick={()=>setHero(i)} style={{
+                      <div key={p.id} onClick={()=>showHero(i)} style={{
                         width:80, height:52, borderRadius:10, cursor:'pointer', flexShrink:0,
                         background: s.bg,
                         border:`2px solid ${hero===i?s.accent:'rgba(255,255,255,0.08)'}`,
@@ -463,6 +496,14 @@ const Projects = () => {
                           color:'rgba(255,255,255,0.9)', zIndex:1, lineHeight:1.2 }}>
                           {p.title}
                         </span>
+                        {/* autoplay timer — when it fills, the next project takes over */}
+                        {hero===i && !reduceMotion && (
+                          <div key={hero} className="hero-progress"
+                            onAnimationEnd={()=>showHero((i+1)%PROJECTS.length)}
+                            style={{ position:'absolute', left:0, right:0, bottom:0, height:2, zIndex:2,
+                              background:s.accent, transformOrigin:'left',
+                              animation:'heroProgress 7s linear both' }}/>
+                        )}
                       </div>
                     );
                   })}
