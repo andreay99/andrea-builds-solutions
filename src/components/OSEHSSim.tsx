@@ -3,7 +3,10 @@ import { useEffect, useRef, useState, useCallback } from 'react';
 // ── CONSTANTS ──────────────────────────────────────────────────────────
 const MU_SUN = 1.32712440018e20;
 const AU     = 1.495978707e11;
-const ACCENT = '#00C9D8';
+// site palette: starlight white for healthy units, warm gold while dodging a shadow, muted red when lost
+const UNIT = '#f4f5fa';
+const WARN = '#ffcf8a';
+const LOST = 'rgba(236,140,130,0.6)';
 
 // ── ORBITAL MECHANICS (ported from Python sim) ─────────────────────────
 function trueToMean(nu: number, e: number): number {
@@ -64,19 +67,20 @@ interface Unit {
   energy:  number;
   shadowed: boolean;
   trail:   [number, number][];
+  target?: number;   // where rebalancing is steering this unit's RAAN
 }
 
-const N_UNITS        = 12;
+const N_DEFAULT      = 20;   // the 20-unit swarm from the NASA ORBIT design
 const MIN_SAFE_DIST  = 0.005 * AU;
 const MIN_ANG_SEP    = 10 * Math.PI / 180;
 const NU_NUDGE       = 0.001;
 const RAAN_NUDGE     = 0.05 * Math.PI / 180;
 const SOLAR_W        = 1361;
 
-function initUnits(): Unit[] {
+function initUnits(n = N_DEFAULT): Unit[] {
   const units: Unit[] = [];
-  const step = (2 * Math.PI) / N_UNITS;
-  for (let id = 0; id < N_UNITS; id++) {
+  const step = (2 * Math.PI) / n;
+  for (let id = 0; id < n; id++) {
     units.push({
       id, a: AU, e: 0, i: 5 * Math.PI / 180,
       omega: 0, raan: id * step, nu: 0,
@@ -126,13 +130,17 @@ function stepUnits(units: Unit[], dt: number) {
 function rebalanceRaan(units: Unit[]) {
   const alive = units.filter(u => u.alive);
   const step = (2 * Math.PI) / alive.length;
-  alive.forEach((u, idx) => { u.raan = idx * step; u.trail = []; });
+  // keep each survivor's order, then glide it to the nearest free slot
+  const order = [...alive].sort((a, b) => a.raan - b.raan);
+  const offset = order[0]?.raan ?? 0;
+  order.forEach((u, idx) => { u.target = (offset + idx * step) % (2 * Math.PI); });
 }
 
 // ── COMPONENT ──────────────────────────────────────────────────────────
 export const OSEHSSim = () => {
   const canvasRef  = useRef<HTMLCanvasElement>(null);
   const stateRef   = useRef<Unit[]>(initUnits());
+  const victimRef  = useRef<{ id: number; x: number; y: number; t: number } | null>(null);
   const rafRef     = useRef<number>(0);
   const tRef       = useRef(0);
   const lastRef    = useRef(0);
@@ -140,7 +148,11 @@ export const OSEHSSim = () => {
   const [running,  setRunning]  = useState(true);
   const [speed,    setSpeed]    = useState(5);
   const [dayCount, setDayCount] = useState(0);
-  const [kpps,     setKpps]     = useState({ alive: N_UNITS, pct: 100, collisions: 0, shadows: 0 });
+  const [count,    setCount]    = useState(N_DEFAULT);
+  const [kpps,     setKpps]     = useState({ alive: N_DEFAULT, pct: 100, collisions: 0, shadows: 0 });
+  const [selected, setSelected] = useState<number | null>(null);
+  const [step,     setStep]     = useState(0);
+  const [healing,  setHealing]  = useState(false);
   const [droplog,  setDroplog]  = useState<string[]>([]);
 
   const draw = useCallback(() => {
@@ -149,12 +161,12 @@ export const OSEHSSim = () => {
     const ctx = canvas.getContext('2d')!;
     const W = canvas.width, H = canvas.height;
     const cx = W / 2, cy = H / 2;
-    const scale = (W * 0.42) / AU;
+    const scale = (Math.min(W, H) * 0.44) / AU;
 
     ctx.clearRect(0, 0, W, H);
 
     // Background
-    ctx.fillStyle = '#08090e';
+    ctx.fillStyle = '#030409';
     ctx.fillRect(0, 0, W, H);
 
     // Stars
@@ -172,7 +184,7 @@ export const OSEHSSim = () => {
     // Orbital ring
     ctx.beginPath();
     ctx.arc(cx, cy, AU * scale, 0, 2 * Math.PI);
-    ctx.strokeStyle = 'rgba(0,201,216,0.12)';
+    ctx.strokeStyle = 'rgba(255,255,255,0.12)';
     ctx.lineWidth = 1;
     ctx.setLineDash([4, 8]);
     ctx.stroke();
@@ -198,6 +210,23 @@ export const OSEHSSim = () => {
 
     const units = stateRef.current;
 
+    // while healing, show the free slots the survivors are gliding into
+    for (const u of units) {
+      if (!u.alive || u.target === undefined) continue;
+      const [gx, gy] = coeToXY(u.a, u.e, u.i, u.omega, u.target, u.nu);
+      ctx.beginPath(); ctx.arc(cx + gx * scale, cy - gy * scale, 7, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(255,217,160,0.35)'; ctx.setLineDash([2, 3]); ctx.lineWidth = 1; ctx.stroke(); ctx.setLineDash([]);
+    }
+    // a ring pulses where the last satellite was lost
+    const vic = victimRef.current;
+    if (vic) {
+      const age = (performance.now() - vic.t) / 1000;
+      if (age < 3) {
+        ctx.beginPath(); ctx.arc(vic.x, vic.y, 8 + age * 14, 0, 2 * Math.PI);
+        ctx.strokeStyle = `rgba(236,140,130,${0.7 * (1 - age / 3)})`; ctx.lineWidth = 1; ctx.stroke();
+      }
+    }
+
     // Trails
     for (const u of units) {
       if (!u.alive || u.trail.length < 2) continue;
@@ -208,7 +237,7 @@ export const OSEHSSim = () => {
         ctx.beginPath();
         ctx.moveTo(cx + x0 * scale, cy - y0 * scale);
         ctx.lineTo(cx + x1 * scale, cy - y1 * scale);
-        ctx.strokeStyle = `rgba(0,201,216,${alpha})`;
+        ctx.strokeStyle = `rgba(255,225,180,${alpha})`;
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -222,14 +251,14 @@ export const OSEHSSim = () => {
 
       if (!u.alive) {
         // Dead — faint red X
-        ctx.strokeStyle = 'rgba(239,68,68,0.5)';
+        ctx.strokeStyle = LOST;
         ctx.lineWidth = 1.5;
         ctx.beginPath(); ctx.moveTo(px - 5, py - 5); ctx.lineTo(px + 5, py + 5); ctx.stroke();
         ctx.beginPath(); ctx.moveTo(px + 5, py - 5); ctx.lineTo(px - 5, py + 5); ctx.stroke();
         continue;
       }
 
-      const color = u.shadowed ? '#f59e0b' : ACCENT;
+      const color = u.shadowed ? WARN : UNIT;
       // Glow
       const g = ctx.createRadialGradient(px, py, 0, px, py, 10);
       g.addColorStop(0, color + '80');
@@ -239,19 +268,31 @@ export const OSEHSSim = () => {
       // Dot
       ctx.beginPath(); ctx.arc(px, py, 4, 0, 2 * Math.PI);
       ctx.fillStyle = color; ctx.fill();
+      if (u.id === selected) {
+        ctx.beginPath(); ctx.arc(px, py, 11, 0, 2 * Math.PI);
+        ctx.strokeStyle = 'rgba(255,217,160,0.9)'; ctx.lineWidth = 1; ctx.stroke();
+      }
       // ID
-      ctx.fillStyle = 'rgba(255,255,255,0.5)';
-      ctx.font = '9px Inter, sans-serif';
+      ctx.fillStyle = 'rgba(255,255,255,0.4)';
+      ctx.font = '9px "JetBrains Mono", monospace';
       ctx.textAlign = 'center';
       ctx.fillText(String(u.id), px, py - 9);
     }
 
     // Day counter
-    ctx.fillStyle = 'rgba(0,201,216,0.7)';
-    ctx.font = '600 12px Inter, sans-serif';
+    ctx.fillStyle = 'rgba(240,240,245,0.55)';
+    ctx.font = '11px "JetBrains Mono", monospace';
     ctx.textAlign = 'left';
-    ctx.fillText(`Day ${dayCount}`, 12, H - 12);
-  }, [dayCount]);
+    ctx.fillText(`DAY ${String(dayCount).padStart(4, '0')}`, 14, H - 14);
+
+    // mission-control readouts in the corners
+    const aliveN = units.filter(u => u.alive).length;
+    ctx.fillStyle = 'rgba(240,240,245,0.4)';
+    ctx.fillText('OSEHS · HELIOCENTRIC · 1 AU', 14, 22);
+    ctx.textAlign = 'right';
+    ctx.fillText(`a 1.000 AU   i 5.0°   T 365.25 d`, W - 14, 22);
+    ctx.fillText(`SPACING ${aliveN ? (360 / aliveN).toFixed(1) : '—'}°   ${healing ? 'REBALANCING' : 'NOMINAL'}`, W - 14, H - 14);
+  }, [dayCount, selected, healing]);
 
   // Animation loop
   useEffect(() => {
@@ -263,6 +304,15 @@ export const OSEHSSim = () => {
       lastRef.current = now;
 
       if (running) {
+        // survivors glide toward their new slots instead of teleporting
+        let moving = false;
+        for (const u of stateRef.current) {
+          if (!u.alive || u.target === undefined) continue;
+          const d = ((u.target - u.raan + 3 * Math.PI) % (2 * Math.PI)) - Math.PI;
+          if (Math.abs(d) < 0.002) { u.raan = u.target; u.target = undefined; continue; }
+          u.raan = (u.raan + d * 0.04 + 2 * Math.PI) % (2 * Math.PI); moving = true;
+        }
+        setHealing(moving);
         for (let s = 0; s < speed; s++) {
           stepUnits(stateRef.current, DT_SIM);
           tRef.current += DT_SIM;
@@ -280,7 +330,7 @@ export const OSEHSSim = () => {
             if (Math.hypot(ax - bx, ay - by) < MIN_SAFE_DIST) collisions++;
           }
         }
-        setKpps({ alive: alive.length, pct: Math.round(100 * alive.length / N_UNITS), collisions, shadows });
+        setKpps({ alive: alive.length, pct: Math.round(100 * alive.length / stateRef.current.length), collisions, shadows });
       }
 
       draw();
@@ -295,94 +345,140 @@ export const OSEHSSim = () => {
     const alive = stateRef.current.filter(u => u.alive);
     if (alive.length === 0) return;
     const victim = alive[Math.floor(Math.random() * alive.length)];
+    const canvas = canvasRef.current;
+    if (canvas) {
+      const [x, y] = coeToXY(victim.a, victim.e, victim.i, victim.omega, victim.raan, victim.nu);
+      const scale = (Math.min(canvas.width, canvas.height) * 0.44) / AU;
+      victimRef.current = { id: victim.id, x: canvas.width / 2 + x * scale, y: canvas.height / 2 - y * scale, t: performance.now() };
+    }
     victim.alive = false;
     victim.trail = [];
+    if (selected === victim.id) setSelected(null);
     rebalanceRaan(stateRef.current);
     setDroplog(l => [`Day ${dayCount}: Unit ${victim.id} failed → swarm rebalanced`, ...l].slice(0, 4));
   };
 
-  const reset = () => {
-    stateRef.current = initUnits();
+  const reset = (n = count) => {
+    stateRef.current = initUnits(n);
+    victimRef.current = null;
     tRef.current = 0;
     setDayCount(0);
     setDroplog([]);
-    setKpps({ alive: N_UNITS, pct: 100, collisions: 0, shadows: 0 });
+    setSelected(null);
+    setKpps({ alive: n, pct: 100, collisions: 0, shadows: 0 });
+  };
+
+  const metrics = [
+    { val: `${kpps.alive}/${count}`, label: 'Units alive', ok: kpps.alive === count },
+    { val: `${kpps.pct}%`, label: 'Functional', ok: kpps.pct >= 80 },
+    { val: String(kpps.collisions), label: 'Collisions', ok: kpps.collisions === 0 },
+    { val: String(kpps.shadows), label: 'Dodging shadows', ok: true },
+  ];
+
+  // explorable steps: each one puts the simulation into the state it describes
+  const STEPS = [
+    { title: 'Hold formation', body: 'Every satellite sits in its own slot around the Sun. Nobody talks to the ground; each one only gossips with its neighbours.',
+      run: () => { reset(); setRunning(true); } },
+    { title: 'Lose one', body: 'A satellite fails. The red ring marks where it was, and for a moment there is a gap in the necklace.',
+      run: () => { setRunning(true); triggerDropout(); } },
+    { title: 'Heal itself', body: 'The survivors agree on new slots and glide into them, dashed rings show where each is heading. No central controller involved.',
+      run: () => { setRunning(true); if (kpps.alive === count) triggerDropout(); } },
+    { title: 'Your turn', body: 'Drag the numbers below, knock out as many as you like, and click any satellite to read its orbit.',
+      run: () => setRunning(true) },
+  ];
+
+  const sel = selected !== null ? stateRef.current.find(u => u.id === selected) : null;
+  const deg = (r: number) => ((r * 180 / Math.PI + 360) % 360).toFixed(1);
+
+  const pick = (e: React.MouseEvent<HTMLCanvasElement>) => {
+    const c = canvasRef.current; if (!c) return;
+    const r = c.getBoundingClientRect();
+    const mx = (e.clientX - r.left) * (c.width / r.width), my = (e.clientY - r.top) * (c.height / r.height);
+    const scale = (Math.min(c.width, c.height) * 0.44) / AU;
+    let best: number | null = null, bd = 18 * 18;
+    for (const u of stateRef.current) {
+      if (!u.alive) continue;
+      const [x, y] = coeToXY(u.a, u.e, u.i, u.omega, u.raan, u.nu);
+      const d = (c.width / 2 + x * scale - mx) ** 2 + (c.height / 2 - y * scale - my) ** 2;
+      if (d < bd) { bd = d; best = u.id; }
+    }
+    setSelected(best);
   };
 
   return (
-    <div style={{ marginBottom: 40 }}>
-      {/* Header */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 12, flexWrap: 'wrap', gap: 8 }}>
+    <div className="sim">
+      <div className="sim-head">
         <div>
-          <p style={{ fontSize: 11, color: 'rgba(240,240,245,0.45)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 2 }}>Live Simulation</p>
-          <h3 style={{ fontSize: '1rem', color: '#f0f0f5', fontFamily: 'Space Grotesk, sans-serif', fontWeight: 600 }}>OSEHS Swarm — Heliocentric Orbit</h3>
+          <p className="sim-kicker">Live simulation</p>
+          <h3 className="sim-title">The swarm, in orbit around the Sun</h3>
         </div>
-        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-          {/* Speed */}
-          {[1, 5, 10, 30].map(s => (
-            <button key={s} onClick={() => setSpeed(s)} style={{
-              padding: '5px 12px', borderRadius: 20, fontSize: 11, cursor: 'pointer', fontWeight: 600,
-              border: `1px solid ${speed === s ? ACCENT : 'rgba(255,255,255,0.1)'}`,
-              background: speed === s ? `rgba(0,201,216,0.15)` : 'transparent',
-              color: speed === s ? ACCENT : 'rgba(240,240,245,0.45)',
-              transition: 'all 0.2s',
-            }}>{s}×</button>
-          ))}
-          {/* Play/Pause */}
-          <button onClick={() => setRunning(r => !r)} style={{
-            padding: '5px 14px', borderRadius: 20, fontSize: 11, cursor: 'pointer', fontWeight: 600,
-            border: `1px solid ${ACCENT}`, background: `rgba(0,201,216,0.15)`, color: ACCENT,
-          }}>{running ? '⏸ Pause' : '▶ Play'}</button>
-        </div>
+        <button className="sim-toggle" onClick={() => setRunning(r => !r)}>{running ? '[ Pause ]' : '[ Play ]'}</button>
       </div>
 
-      {/* Canvas */}
-      <div style={{ position: 'relative', borderRadius: 14, overflow: 'hidden', border: '1px solid rgba(0,201,216,0.2)' }}>
-        <canvas ref={canvasRef} width={780} height={420} style={{ display: 'block', width: '100%' }}/>
+      <ol className="sim-steps">
+        {STEPS.map((st, i) => (
+          <li key={st.title}>
+            <button className={step === i ? 'on' : undefined} onClick={() => { setStep(i); st.run(); }}>
+              <span>{String(i + 1).padStart(2, '0')}</span>{st.title}
+            </button>
+          </li>
+        ))}
+      </ol>
+      <p className="sim-story">{STEPS[step].body}</p>
+
+      <div className="sim-canvas">
+        <canvas ref={canvasRef} width={780} height={420} onClick={pick} />
       </div>
 
-      {/* KPP Metrics */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4,1fr)', gap: 10, marginTop: 12 }}>
-        {[
-          { label: 'Units Alive', val: `${kpps.alive} / ${N_UNITS}`, ok: kpps.pct >= 90 },
-          { label: '% Functional', val: `${kpps.pct}%`,              ok: kpps.pct >= 90 },
-          { label: 'Collisions',   val: String(kpps.collisions),      ok: kpps.collisions === 0 },
-          { label: 'Shadowed',     val: String(kpps.shadows),         ok: kpps.shadows === 0 },
-        ].map(m => (
-          <div key={m.label} style={{ background: 'rgba(255,255,255,0.02)', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 10, padding: '10px 14px', textAlign: 'center' }}>
-            <div style={{ fontSize: '1.2rem', fontWeight: 700, fontFamily: 'Space Grotesk, sans-serif', color: m.ok ? ACCENT : '#f87171', marginBottom: 4 }}>{m.val}</div>
-            <div style={{ fontSize: 10, color: 'rgba(240,240,245,0.45)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{m.label}</div>
+      <div className="sim-metrics">
+        {metrics.map(m => (
+          <div key={m.label}>
+            <b className={m.ok ? undefined : 'bad'}>{m.val}</b>
+            <span>{m.label}</span>
           </div>
         ))}
       </div>
 
-      {/* Controls */}
-      <div style={{ display: 'flex', gap: 10, marginTop: 12, flexWrap: 'wrap' }}>
-        <button onClick={triggerDropout} disabled={kpps.alive === 0} style={{
-          padding: '8px 18px', borderRadius: 20, fontSize: 12, cursor: 'pointer', fontWeight: 600,
-          border: '1px solid rgba(239,68,68,0.4)', background: 'rgba(239,68,68,0.08)', color: '#f87171',
-          transition: 'all 0.2s', opacity: kpps.alive === 0 ? 0.4 : 1,
-        }}>⚡ Trigger Dropout</button>
-        <button onClick={reset} style={{
-          padding: '8px 18px', borderRadius: 20, fontSize: 12, cursor: 'pointer', fontWeight: 600,
-          border: '1px solid rgba(255,255,255,0.1)', background: 'transparent', color: 'rgba(240,240,245,0.55)',
-        }}>↺ Reset</button>
+      <p className="sim-sentence">
+        Space <Scrub value={count} min={6} max={30} onChange={n => { setCount(n); reset(n); }} /> satellites evenly around the Sun
+        and run time at <Scrub value={speed} min={1} max={30} onChange={setSpeed} suffix="×" /> speed.
+      </p>
 
-        {/* Dropout log */}
-        {droplog.length > 0 && (
-          <div style={{ flex: 1, padding: '8px 14px', borderRadius: 10, background: 'rgba(239,68,68,0.06)', border: '1px solid rgba(239,68,68,0.2)', fontSize: 11, color: 'rgba(240,240,245,0.55)', lineHeight: 1.7 }}>
-            {droplog.map((l, i) => <div key={i}>{l}</div>)}
-          </div>
-        )}
+      <div className="sim-actions">
+        <button onClick={() => { setStep(3); triggerDropout(); }} disabled={kpps.alive === 0}>Knock out a satellite</button>
+        <button onClick={() => reset()}>Reset</button>
+        <span className="sim-legend">
+          <i style={{ background: UNIT }} /> healthy
+          <i style={{ background: WARN }} /> dodging a shadow
+          <i className="x" /> lost
+        </span>
       </div>
 
-      {/* Legend */}
-      <div style={{ display: 'flex', gap: 20, marginTop: 10, fontSize: 11, color: 'rgba(240,240,245,0.35)', flexWrap: 'wrap' }}>
-        <span><span style={{ color: ACCENT }}>●</span> Active unit</span>
-        <span><span style={{ color: '#f59e0b' }}>●</span> Shadow-correcting</span>
-        <span><span style={{ color: '#f87171' }}>✕</span> Failed (rebalanced)</span>
-        <span style={{ marginLeft: 'auto', color: 'rgba(240,240,245,0.2)' }}>1 tick = 1 simulated day</span>
-      </div>
+      {sel && (
+        <p className="sim-readout">
+          SAT {String(sel.id).padStart(2, '0')} · RAAN {deg(sel.raan)}° · TRUE ANOMALY {deg(sel.nu)}° · INCLINATION {deg(sel.i)}° · ENERGY {(sel.energy / 1e9).toFixed(2)} GJ/m²
+          <button onClick={() => setSelected(null)}>clear</button>
+        </p>
+      )}
+      {droplog.length > 0 && (
+        <div className="sim-log">{droplog.map((l, i) => <div key={i}>{l}</div>)}</div>
+      )}
     </div>
   );
 };
+
+/** A number you change by dragging left or right (or with the arrow keys), Bret Victor style. */
+function Scrub({ value, min, max, onChange, suffix = '' }: { value: number; min: number; max: number; onChange: (n: number) => void; suffix?: string }) {
+  const start = useRef<{ x: number; v: number } | null>(null);
+  const set = (n: number) => onChange(Math.max(min, Math.min(max, Math.round(n))));
+  return (
+    <span className="scrub" role="slider" tabIndex={0} aria-valuemin={min} aria-valuemax={max} aria-valuenow={value}
+      title="Drag left or right"
+      onPointerDown={e => { (e.target as HTMLElement).setPointerCapture(e.pointerId); start.current = { x: e.clientX, v: value }; }}
+      onPointerMove={e => { if (start.current) { const n = start.current.v + (e.clientX - start.current.x) / 8; if (Math.round(n) !== value) set(n); } }}
+      onPointerUp={() => { start.current = null; }}
+      onKeyDown={e => { if (e.key === 'ArrowRight' || e.key === 'ArrowUp') set(value + 1); if (e.key === 'ArrowLeft' || e.key === 'ArrowDown') set(value - 1); }}>
+      {value}{suffix}
+    </span>
+  );
+}

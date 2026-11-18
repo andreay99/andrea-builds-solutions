@@ -2,39 +2,29 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { Suspense, lazy, useEffect } from "react";
 import { Analytics as VercelAnalytics } from "@vercel/analytics/react";
 import { Navigation } from "./components/Navigation";
 import { CustomCursor } from "./components/CustomCursor";
 import { PageTransition } from "./components/PageTransition";
 import { ScrollProgressBar } from "./components/ScrollProgressBar";
-import { BackToTop } from "./components/BackToTop";
+import { SiteFooter } from "./components/SiteFooter";
+import { Preloader } from "./components/Preloader";
 import { ThemeProvider } from "./context/ThemeContext";
+import { TypeLab } from "./components/TypeLab";
 
 // Lazy load route components for code-splitting
 const Home = lazy(() => import("./pages/Home"));
-const Projects = lazy(() => import("./pages/Projects"));
 const Experience = lazy(() => import("./pages/Experience"));
 const Contact = lazy(() => import("./pages/Contact"));
 const Blog = lazy(() => import("./pages/Blog"));
 import Analytics from "./pages/Analytics"; // Import directly - don't lazy load
-const Recall = lazy(() => import("./pages/projects/Recall"));
-const OffScript = lazy(() => import("./pages/projects/OffScript"));
-const SonaAI = lazy(() => import("./pages/projects/SonaAI"));
-const CudaFlashAttention = lazy(() => import("./pages/projects/CudaFlashAttention"));
-const OSEHS = lazy(() => import("./pages/projects/OSEHS"));
-const ROMCom = lazy(() => import("./pages/projects/ROMCom"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 
 // Loading fallback component
 const RouteLoadingFallback = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-pulse">
-      <div className="h-2 bg-foreground/20 rounded w-48 mb-4" />
-      <div className="h-2 bg-foreground/20 rounded w-32" />
-    </div>
-  </div>
+  <div className="route-loading">Loading</div>
 );
 
 const queryClient = new QueryClient();
@@ -43,6 +33,9 @@ const AnimatedRoutes = () => {
   const location = useLocation();
 
   // Scroll to top on route change with smooth behavior
+  // Home and an open project are the same page, so they share one key and never remount
+  const routeKey = location.pathname.startsWith('/projects/') ? '/' : location.pathname;
+
   useEffect(() => {
     // Use requestAnimationFrame to ensure scroll happens after layout
     const scrollTimer = requestAnimationFrame(() => {
@@ -57,18 +50,14 @@ const AnimatedRoutes = () => {
     });
     
     return () => cancelAnimationFrame(scrollTimer);
-  }, [location.pathname]);
+  }, [routeKey]);
 
   return (
-    <Routes location={location} key={location.pathname}>
+    <Routes location={location} key={routeKey}>
       <Route path="/" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Home /></PageTransition></Suspense>} />
-      <Route path="/projects" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Projects /></PageTransition></Suspense>} />
-      <Route path="/projects/recall" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Recall /></PageTransition></Suspense>} />
-      <Route path="/projects/offscript" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OffScript /></PageTransition></Suspense>} />
-      <Route path="/projects/sona-ai" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><SonaAI /></PageTransition></Suspense>} />
-      <Route path="/projects/cuda-flash-attention" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><CudaFlashAttention /></PageTransition></Suspense>} />
-      <Route path="/projects/osehs" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><OSEHS /></PageTransition></Suspense>} />
-      <Route path="/projects/rom-com" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><ROMCom /></PageTransition></Suspense>} />
+      <Route path="/projects" element={<Navigate to="/#work" replace />} />
+      <Route path="/projects/:slug" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Home /></PageTransition></Suspense>} />
+      <Route path="/universe" element={<Navigate to="/" replace />} />
       <Route path="/experience" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Experience /></PageTransition></Suspense>} />
       <Route path="/contact" element={<Suspense fallback={<RouteLoadingFallback />}><PageTransition><Contact /></PageTransition></Suspense>} />
       <Route path="/analytics" element={<Analytics />} />
@@ -103,14 +92,13 @@ const App = () => {
         <Sonner />
         <CustomCursor />
         <ScrollProgressBar />
-        <BackToTop />
+        <Preloader />
         <VercelAnalytics />
         <BrowserRouter>
           <Navigation />
+          <TypeLab />
           <AnimatedRoutes />
-          <footer style={{ borderTop: '1px solid rgba(255,255,255,0.07)', padding: '32px', textAlign: 'center', color: 'rgba(240,240,245,0.4)', fontSize: 13, fontFamily: 'Inter, sans-serif', position: 'relative', zIndex: 2, background: 'rgba(8,9,14,0.7)', backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)' }}>
-            Andrea Yanez Soto · andreasoto.dev · Built with intention
-          </footer>
+          <SiteFooter />
         </BrowserRouter>
       </TooltipProvider>
     </QueryClientProvider>

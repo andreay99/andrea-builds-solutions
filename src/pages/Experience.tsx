@@ -1,318 +1,220 @@
-import { PageTransition } from "@/components/PageTransition";
-import { AuroraBackground } from "@/components/AuroraBackground";
-import { Briefcase, GraduationCap, Trophy, Atom } from "lucide-react";
-import { Reveal } from "@/components/Reveal";
+import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { Reveal } from '@/components/Reveal';
+import { ProjectReveal } from '@/components/ProjectReveal';
+import { projectBySlug, type Project } from '@/data/projects';
 
-const ACCENT   = '#00C9D8';
-const EDU      = '#a78bfa';
-const EXTRA    = '#34d399';
-const GOLD     = '#ffd232';
-
-/* ── Data ─────────────────────────────────────────────────── */
-const EXPERIENCE = [
-  {
-    type: 'work',
-    title: 'Undergraduate Researcher',
-    org: 'NJIT Center for Solar-Terrestrial Research (NASA MIRO-funded)',
-    period: 'Dec 2025 – Present',
-    description: 'Training multimodal transformers on decades of NASA SDO and SOHO observational data to improve solar eruption forecast accuracy.',
-    highlights: [
-      'Improved solar eruption forecast accuracy by 20% through systematic experiment tracking',
-      'Engineering Python preprocessing pipelines for 3D magnetic field data — computing current density and magnetic twist maps for Physics-Informed Neural Network reconstruction',
-      'Creating ParaView visualizations of 3D field structures and flare eruption dynamics for research presentations',
-    ],
-    tags: ['Python', 'PyTorch', 'NASA', 'Space Weather', 'ParaView'],
-    metrics: [{ val: '20%', label: 'forecast accuracy' }],
-  },
-  {
-    type: 'work',
-    title: 'Technical Specialist',
-    org: 'Apple · Edison, NJ',
-    period: 'Aug 2024 – Mar 2026',
-    description: 'Collaborated with Cupertino engineering to troubleshoot and resolve escalated macOS and iOS issues using Xcode debugging tools and log analysis.',
-    highlights: [
-      'Recognized in the top 5% of technicians for quality and efficiency against performance targets',
-      'Reduced resolution time for critical escalated tickets through Xcode debugging and log analysis',
-    ],
-    tags: ['Xcode', 'macOS', 'iOS', 'Debugging'],
-    metrics: [{ val: 'Top 5%', label: 'quality ranking' }],
-  },
-  {
-    type: 'work',
-    title: 'Training Lead',
-    org: 'Apple · Edison, NJ',
-    period: 'Jul 2025 – Dec 2025',
-    description: 'Designed and delivered a hands-on technical troubleshooting curriculum that accelerated tool adoption and reduced launch-day support escalations.',
-    highlights: [
-      'Led training program that reduced launch problems and increased initial sales by 15%',
-      'Trained and mentored 30+ new technicians per cycle, shortening onboarding time to floor readiness',
-    ],
-    tags: ['Leadership', 'Training', 'Mentorship'],
-    metrics: [{ val: '15%', label: 'sales increase' }, { val: '30+', label: 'technicians trained' }],
-  },
-  {
-    type: 'education',
-    title: 'B.S. in Computer Science',
-    org: 'New Jersey Institute of Technology — Transfer Student (Junior)',
-    period: 'Expected May 2027',
-    description: 'GPA: 3.6 — Coursework in Data Structures, Algorithms, Database Systems, Linear Algebra, Computer Architecture, and Discrete Math.',
-    highlights: [],
-    tags: ['AI / ML', 'Full-Stack', 'Data Structures', 'Algorithms'],
-  },
-  {
-    type: 'extracurricular',
-    title: 'ACMI Quantum Computing Club',
-    org: 'Member',
-    period: 'Jan 2026',
-    description: 'Completed coursework in quantum computing fundamentals including qubits, quantum gates, entanglement, and query algorithms.',
-    highlights: [
-      'Implemented Deutsch\'s Algorithm and Deutsch-Jozsa Algorithm in Qiskit (Python)',
-    ],
-    tags: ['Quantum Computing', 'Qiskit', 'Python'],
-  },
-];
-
-const HACKATHONS = [
-  {
-    event: 'HackPrinceton SP2026',
-    location: 'Princeton, NJ',
-    project: 'ROM-COM',
-    subtitle: 'Stroke & TBI Rehabilitation System',
-    description: 'Gesture classification pipeline (Random Forest), feature extractor, and FMA-UE scoring engine. MediaPipe-based motion tracking and adaptive ROM calibration with FastAPI WebSocket endpoints for real-time rehab feedback.',
-    tags: ['Python', 'MediaPipe', 'FastAPI', 'scikit-learn', 'React', 'TypeScript'],
-    awards: [],
-  },
-  {
-    event: 'HackPrinceton 2025',
-    location: 'Princeton, NJ',
-    project: 'Recall',
-    subtitle: 'Real-time Facial Recognition Memory Aid',
-    description: 'Built an edge-deployable face recognition pipeline on Raspberry Pi with <200ms inference latency. Threshold-tuned embedding matching with data augmentation for 94% precision and <2% false positives.',
-    tags: ['Python', 'OpenCV', 'DeepFace', 'MongoDB', 'Grok', 'ElevenLabs'],
-    awards: ['Best Use of Grok (xAI)', 'Best Use of Arm (MLH)'],
-  },
-  {
-    event: 'HackHarvard 2025',
-    location: 'Cambridge, MA',
-    project: 'OffScript',
-    subtitle: 'AI Interview Simulator',
-    description: 'Led a team of 3 engineers to build a full-stack AI-powered interview simulator with real-time evaluation and personalized feedback in 36 hours.',
-    tags: ['Next.js', 'FastAPI', 'Gemini AI', 'TypeScript'],
-    awards: [],
-  },
-];
-
-/* ── Helpers ───────────────────────────────────────────────── */
-const glass: React.CSSProperties = {
-  background: 'rgba(8,9,14,0.45)',
-  backdropFilter: 'blur(14px)',
-  WebkitBackdropFilter: 'blur(14px)',
-  border: '1px solid rgba(255,255,255,0.08)',
-  borderRadius: 16,
-};
-
-const Tag = ({ label, color = ACCENT }: { label: string; color?: string }) => (
-  <span style={{
-    display: 'inline-flex', alignItems: 'center',
-    padding: '3px 10px', borderRadius: 40,
-    fontSize: 11, fontWeight: 500, letterSpacing: '0.04em',
-    background: `${color}14`, color, border: `1px solid ${color}28`,
-    fontFamily: 'Inter, sans-serif',
-  }}>{label}</span>
-);
-
-const AwardBadge = ({ text }: { text: string }) => (
-  <span style={{
-    display: 'inline-flex', alignItems: 'center', gap: 5,
-    padding: '4px 10px', borderRadius: 40,
-    fontSize: 11, fontWeight: 600, letterSpacing: '0.03em',
-    background: 'rgba(255,210,50,0.1)', color: GOLD,
-    border: '1px solid rgba(255,210,50,0.25)',
-    fontFamily: 'Inter, sans-serif',
-  }}><Trophy size={11} /> {text}</span>
-);
-
-/* ── TimelineCard ───────────────────────────────────────────── */
-interface ExpItem {
-  type: string; title: string; org: string; period: string;
-  description: string; highlights: string[]; tags: string[];
-  metrics?: { val: string; label: string }[];
+/* ── The log ─────────────────────────────────────────────── */
+interface Entry {
+  year: string;          // shown big in the side column
+  period: string;
+  title: string;
+  org: string;
+  summary: string;
+  notes: string[];
+  numbers?: { val: string; label: string }[];
+  stack?: string;
 }
 
-const TimelineCard = ({ item, last }: { item: ExpItem; last: boolean }) => {
-  const dotColor = item.type === 'work' ? ACCENT : item.type === 'education' ? EDU : EXTRA;
-  const Icon = item.type === 'work' ? Briefcase : item.type === 'education' ? GraduationCap : Atom;
+const LOG: Entry[] = [
+  {
+    year: '2025', period: 'Dec 2025 – now',
+    title: 'Undergraduate Researcher',
+    org: 'NJIT Center for Solar-Terrestrial Research · NASA MIRO',
+    summary: 'I train multimodal transformers on decades of NASA SDO and SOHO observations to forecast solar eruptions.',
+    notes: [
+      'Systematic experiment tracking that improved eruption forecast accuracy by 20%.',
+      'Python pipelines over 3D magnetic field data, computing current density and magnetic twist maps for physics-informed neural network reconstruction of the corona.',
+      'ParaView visualizations of 3D field structures and flare dynamics for analysis and research talks.',
+    ],
+    numbers: [{ val: '+20%', label: 'forecast accuracy' }],
+    stack: 'Python · PyTorch · ParaView',
+  },
+  {
+    year: '2025', period: 'Jul 2025 – Dec 2025',
+    title: 'Training Lead',
+    org: 'Apple · Edison, NJ',
+    summary: 'I designed and ran the hands-on troubleshooting curriculum for new technicians.',
+    notes: [
+      'Fewer launch-day escalations, faster tool adoption, and launch sales up 15%.',
+      'Trained and mentored 30+ technicians per cycle and shortened the time to floor readiness.',
+    ],
+    numbers: [{ val: '15%', label: 'launch sales lift' }, { val: '30+', label: 'technicians per cycle' }],
+  },
+  {
+    year: '2024', period: 'Aug 2024 – Mar 2026',
+    title: 'Technical Specialist',
+    org: 'Apple · Edison, NJ',
+    summary: 'I worked escalated macOS and iOS issues with Cupertino engineering, using Xcode debugging tools and log analysis.',
+    notes: [
+      'Cut resolution time on critical escalated tickets.',
+      'Ranked in the top 5% of technicians for quality and efficiency.',
+    ],
+    numbers: [{ val: 'Top 5%', label: 'quality & efficiency' }],
+    stack: 'Xcode · macOS · iOS',
+  },
+];
+
+const LAUNCHES: { event: string; place: string; project: string; slug: string; note: string; award?: string }[] = [
+  { event: 'HackPrinceton SP2026', place: 'Princeton, NJ', project: 'ROM-COM', slug: 'rom-com',
+    note: 'Gesture classifier, feature extractor and FMA-UE scoring engine for webcam-only stroke rehab.' },
+  { event: 'NASA ORBIT Challenge', place: 'Phase 2', project: 'OSEHS Digital Twin', slug: 'osehs',
+    note: 'A 20-satellite swarm with decentralized consensus, presented at the NASA ORBIT poster review.' },
+  { event: 'HackPrinceton 2025', place: 'Princeton, NJ', project: 'Recall', slug: 'recall',
+    note: 'Face recognition memory aid on a Raspberry Pi.', award: 'Best Use of Grok (xAI) · Best Use of Arm (MLH)' },
+  { event: 'HackHarvard 2025', place: 'Cambridge, MA', project: 'OffScript', slug: 'offscript',
+    note: 'Led a team of three to ship an AI interview simulator in 36 hours.' },
+];
+
+const SCHOOL = [
+  { title: 'B.S. Computer Science', org: 'New Jersey Institute of Technology', when: 'May 2027',
+    note: 'GPA 3.6. Data Structures, Algorithms, Database Systems, Computer Architecture, Linear Algebra, Discrete Math.' },
+  { title: 'Quantum Computing Club', org: 'ACMI', when: 'Jan 2026',
+    note: "Qubits, gates, entanglement and query algorithms. Implemented Deutsch's and Deutsch-Jozsa in Qiskit." },
+];
+
+/* ── Page ─────────────────────────────────────────────────── */
+const Experience = () => {
+  const logRef = useRef<HTMLDivElement>(null);
+  const pathRef = useRef<SVGPathElement>(null);
+  const [path, setPath] = useState({ d: '', w: 0, h: 0 });
+  const [len, setLen] = useState(0);
+  const [progress, setProgress] = useState(0);
+  const [sat, setSat] = useState({ x: 0, y: 0 });
+  const [active, setActive] = useState(0);
+  const [open, setOpen] = useState<{ p: Project; x: number; y: number } | null>(null);
+
+  // a curving flight path that threads through each role's marker
+  useLayoutEffect(() => {
+    const build = () => {
+      const box = logRef.current; if (!box) return;
+      const b = box.getBoundingClientRect();
+      const pts = [...box.querySelectorAll<HTMLElement>('[data-node]')].map(n => {
+        const r = n.getBoundingClientRect();
+        return { x: r.left + r.width / 2 - b.left, y: r.top + r.height / 2 - b.top };
+      });
+      if (pts.length < 2) return;
+      const start = { x: pts[0].x, y: 0 }, end = { x: pts[pts.length - 1].x, y: b.height };
+      const all = [start, ...pts, end];
+      let d = `M ${all[0].x} ${all[0].y}`;
+      for (let i = 1; i < all.length; i++) {
+        const p0 = all[i - 1], p1 = all[i], my = (p1.y - p0.y) * 0.55;
+        d += ` C ${p0.x} ${p0.y + my}, ${p1.x} ${p1.y - my}, ${p1.x} ${p1.y}`;
+      }
+      setPath({ d, w: b.width, h: b.height });
+    };
+    build();
+    const ro = new ResizeObserver(build);
+    if (logRef.current) ro.observe(logRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  useEffect(() => { if (pathRef.current) setLen(pathRef.current.getTotalLength()); }, [path.d]);
+
+  // the path draws itself as you scroll, and a satellite rides its tip
+  useEffect(() => {
+    const onScroll = () => {
+      const el = logRef.current, pe = pathRef.current; if (!el || !pe || !len) return;
+      const r = el.getBoundingClientRect(), mid = window.innerHeight * 0.55;
+      const p = Math.max(0, Math.min(1, (mid - r.top) / r.height));
+      setProgress(p);
+      const pt = pe.getPointAtLength(p * len);
+      setSat({ x: pt.x, y: pt.y });
+      let idx = 0;
+      el.querySelectorAll<HTMLElement>('[data-entry]').forEach((it, i) => { if (it.getBoundingClientRect().top < mid) idx = i; });
+      setActive(idx);
+    };
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [len]);
+
+  const launch = (slug: string, e: React.MouseEvent) => {
+    const p = projectBySlug(slug); if (p) setOpen({ p, x: e.clientX, y: e.clientY });
+  };
 
   return (
-    <div style={{ display: 'flex', gap: 20, paddingBottom: last ? 0 : 36 }}>
-      {/* Spine */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flexShrink: 0, width: 24 }}>
-        <div style={{
-          width: 24, height: 24, borderRadius: '50%', flexShrink: 0,
-          background: `${dotColor}18`, border: `1.5px solid ${dotColor}`,
-          boxShadow: `0 0 14px ${dotColor}60`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <Icon size={12} color={dotColor} />
+    <div className="log-page">
+      <div className="log-stars" aria-hidden />
+
+      <header className="log-head">
+        <h1 className="serif-title">Experience</h1>
+        <p>Solar physics research, two roles at Apple, and the hackathons in between.</p>
+      </header>
+
+      {/* ── Flight log: roles scattered across the page, joined by one path ── */}
+      <section className="orbit-log" ref={logRef}>
+        <svg className="orbit-path" width={path.w} height={path.h} aria-hidden>
+          <path d={path.d} className="orbit-path-bg" />
+          <path ref={pathRef} d={path.d} className="orbit-path-fg"
+            style={{ strokeDasharray: len, strokeDashoffset: len * (1 - progress) }} />
+          {len > 0 && <circle cx={sat.x} cy={sat.y} r="4.5" className="orbit-sat" />}
+        </svg>
+
+        {LOG.map((e, i) => (
+          <article key={e.title} data-entry className={`orbit-entry pos-${i % 3}${i === active ? ' on' : ''}`}>
+            <span className="orbit-year" aria-hidden>{e.year}</span>
+            <span className="orbit-node" data-node />
+            <Reveal>
+              <p className="log-meta">{String(i + 1).padStart(2, '0')} · {e.period}</p>
+              <h2 className="log-title">{e.title}</h2>
+              <p className="orbit-org">{e.org}</p>
+              <p className="log-summary">{e.summary}</p>
+              {e.numbers && (
+                <div className="log-numbers">
+                  {e.numbers.map(n => <div key={n.label}><b>{n.val}</b><span>{n.label}</span></div>)}
+                </div>
+              )}
+              <ul className="log-notes">{e.notes.map(n => <li key={n}>{n}</li>)}</ul>
+              {e.stack && <p className="log-stack">{e.stack}</p>}
+            </Reveal>
+          </article>
+        ))}
+      </section>
+
+      {/* ── Hackathons: a staggered field ── */}
+      <section className="log-section">
+        <Reveal><h2 className="section-title">Hackathons</h2></Reveal>
+        <div className="launch-field">
+          {LAUNCHES.map((l, i) => (
+            <Reveal key={l.event} delay={(i % 2) * 120}>
+              <button className="launch" onClick={e => launch(l.slug, e)}>
+                <span className="launch-num">{String(i + 1).padStart(2, '0')} · {l.place}</span>
+                <span className="launch-event">{l.event}</span>
+                {l.award && <span className="launch-award">{l.award}</span>}
+                <span className="launch-note"><b>{l.project}.</b> {l.note}</span>
+                <span className="launch-open">[ Open project ]</span>
+              </button>
+            </Reveal>
+          ))}
         </div>
-        {!last && (
-          <div style={{
-            width: 1, flex: 1, marginTop: 6,
-            background: `linear-gradient(to bottom, ${dotColor}40, rgba(255,255,255,0.04))`,
-          }}/>
-        )}
-      </div>
+      </section>
 
-      {/* Card */}
-      <div className="spot" style={{ ...glass, flex: 1, padding: '20px 22px', marginTop: 1 }}>
-        {/* Header */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
-          <div>
-            <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '1rem', fontWeight: 700, color: '#f0f0f5', marginBottom: 3 }}>{item.title}</h3>
-            <p style={{ fontSize: 13, color: dotColor, fontWeight: 600 }}>{item.org}</p>
-          </div>
-          <span style={{
-            fontSize: 11, color: 'rgba(240,240,245,0.3)', whiteSpace: 'nowrap',
-            background: 'rgba(255,255,255,0.04)', padding: '4px 10px', borderRadius: 20,
-            border: '1px solid rgba(255,255,255,0.06)', letterSpacing: '0.03em',
-          }}>{item.period}</span>
-        </div>
-
-        {/* Description */}
-        <p style={{ fontSize: 13.5, color: 'rgba(240,240,245,0.5)', lineHeight: 1.65, marginBottom: item.highlights.length || item.metrics ? 12 : 4 }}>
-          {item.description}
-        </p>
-
-        {/* Metrics */}
-        {item.metrics && item.metrics.length > 0 && (
-          <div style={{ display: 'flex', gap: 16, marginBottom: 12 }}>
-            {item.metrics.map(m => (
-              <div key={m.label} style={{ textAlign: 'center' }}>
-                <div style={{ fontSize: 18, fontWeight: 700, color: ACCENT, fontFamily: 'Space Grotesk, sans-serif' }}>{m.val}</div>
-                <div style={{ fontSize: 10, color: 'rgba(240,240,245,0.35)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>{m.label}</div>
+      {/* ── School ── */}
+      <section className="log-section" style={{ paddingBottom: 120 }}>
+        <Reveal><h2 className="section-title">School</h2></Reveal>
+        <div className="log-school">
+          {SCHOOL.map(s => (
+            <Reveal key={s.title}>
+              <div>
+                <p className="log-meta">{s.when} · {s.org}</p>
+                <h3 className="log-title" style={{ fontSize: 'clamp(1.6rem,3vw,2.1rem)' }}>{s.title}</h3>
+                <p className="log-summary" style={{ fontSize: 15 }}>{s.note}</p>
               </div>
-            ))}
-          </div>
-        )}
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
-        {/* Highlights */}
-        {item.highlights.length > 0 && (
-          <ul style={{ paddingLeft: 14, marginBottom: 12, display: 'flex', flexDirection: 'column', gap: 4 }}>
-            {item.highlights.map((h, i) => (
-              <li key={i} style={{ fontSize: 13, color: 'rgba(240,240,245,0.45)', lineHeight: 1.55 }}>{h}</li>
-            ))}
-          </ul>
-        )}
-
-        {/* Tags */}
-        {item.tags.length > 0 && (
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginTop: 4 }}>
-            {item.tags.map(t => <Tag key={t} label={t} color={dotColor} />)}
-          </div>
-        )}
-      </div>
+      {open && (
+        <ProjectReveal
+          project={open.p}
+          origin={{ x: open.x, y: open.y }}
+          onClose={() => setOpen(null)}
+          onNext={p => setOpen(o => (o ? { ...o, p } : o))}
+        />
+      )}
     </div>
   );
 };
-
-/* ── HackathonCard ──────────────────────────────────────────── */
-interface HackItem {
-  event: string; location: string; project: string;
-  subtitle: string; description: string; tags: string[]; awards: string[];
-}
-
-const HackCard = ({ h }: { h: HackItem }) => (
-  <div className="spot" style={{ ...glass, padding: '24px 26px', position: 'relative', overflow: 'hidden' }}>
-    {/* Glow accent */}
-    {h.awards.length > 0 && (
-      <div style={{
-        position: 'absolute', top: 0, right: 0, width: 160, height: 160,
-        background: `radial-gradient(circle, ${GOLD}12 0%, transparent 70%)`,
-        pointerEvents: 'none',
-      }}/>
-    )}
-
-    {/* Event row */}
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <Trophy size={14} color={h.awards.length > 0 ? GOLD : ACCENT} />
-        <span style={{ fontSize: 11, color: h.awards.length > 0 ? GOLD : ACCENT, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>{h.event}</span>
-      </div>
-      <span style={{ fontSize: 11, color: 'rgba(240,240,245,0.25)', letterSpacing: '0.03em' }}>{h.location}</span>
-    </div>
-
-    {/* Project name */}
-    <h3 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: '1.05rem', fontWeight: 700, color: '#f0f0f5', marginBottom: 2 }}>{h.project}</h3>
-    <p style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)', marginBottom: 10, fontStyle: 'italic' }}>{h.subtitle}</p>
-
-    {/* Awards */}
-    {h.awards.length > 0 && (
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 12 }}>
-        {h.awards.map(a => <AwardBadge key={a} text={a} />)}
-      </div>
-    )}
-
-    {/* Description */}
-    <p style={{ fontSize: 13, color: 'rgba(240,240,245,0.45)', lineHeight: 1.65, marginBottom: 14 }}>{h.description}</p>
-
-    {/* Tech tags */}
-    <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-      {h.tags.map(t => <Tag key={t} label={t} color={ACCENT} />)}
-    </div>
-  </div>
-);
-
-/* ── Page ───────────────────────────────────────────────────── */
-const Experience = () => (
-  <PageTransition>
-    <AuroraBackground />
-    <div style={{ background: 'transparent', minHeight: '100vh', position: 'relative', zIndex: 1 }}>
-      <div className="page-enter" style={{ paddingTop: 120, paddingBottom: 100 }}>
-        <div style={{ maxWidth: 820, margin: '0 auto', padding: '0 32px' }}>
-
-          {/* Header */}
-          <p style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: ACCENT, marginBottom: 14, fontWeight: 600 }}>Career</p>
-          <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(1.8rem,4vw,3rem)', fontWeight: 700, color: '#f0f0f5', marginBottom: 14, lineHeight: 1.1 }}>Experience</h2>
-          <p style={{ color: 'rgba(240,240,245,0.45)', fontSize: 15, marginBottom: 56, maxWidth: 480 }}>
-            From NASA research to Apple — building and shipping across the stack.
-          </p>
-
-          {/* Legend */}
-          <div style={{ display: 'flex', gap: 20, marginBottom: 40 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: ACCENT, boxShadow: `0 0 8px ${ACCENT}` }}/>
-              <span style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)' }}>Work</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: EDU, boxShadow: `0 0 8px ${EDU}` }}/>
-              <span style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)' }}>Education</span>
-            </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
-              <div style={{ width: 8, height: 8, borderRadius: '50%', background: EXTRA, boxShadow: `0 0 8px ${EXTRA}` }}/>
-              <span style={{ fontSize: 12, color: 'rgba(240,240,245,0.4)' }}>Extracurricular</span>
-            </div>
-          </div>
-
-          {/* Timeline */}
-          {EXPERIENCE.map((item, i) => (
-            <Reveal key={item.title} delay={i < 2 ? i * 90 : 0}><TimelineCard item={item} last={i === EXPERIENCE.length - 1} /></Reveal>
-          ))}
-
-          {/* ── Hackathons ─────────────────────────────────── */}
-          <div style={{ marginTop: 80 }}>
-            <div style={{ height: 1, background: 'linear-gradient(90deg, transparent, rgba(255,210,50,0.2), transparent)', marginBottom: 48 }}/>
-            <p style={{ fontSize: 12, letterSpacing: '0.15em', textTransform: 'uppercase', color: GOLD, marginBottom: 14, fontWeight: 600 }}>Competitions</p>
-            <h2 style={{ fontFamily: 'Space Grotesk, sans-serif', fontSize: 'clamp(1.4rem,3vw,2rem)', fontWeight: 700, color: '#f0f0f5', marginBottom: 8, lineHeight: 1.1 }}>Hackathons</h2>
-            <p style={{ color: 'rgba(240,240,245,0.4)', fontSize: 14, marginBottom: 36 }}>3 events · 2 awards</p>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-              {HACKATHONS.map(h => <Reveal key={h.event}><HackCard h={h} /></Reveal>)}
-            </div>
-          </div>
-
-        </div>
-      </div>
-    </div>
-  </PageTransition>
-);
 
 export default Experience;
