@@ -3,7 +3,6 @@ import { ArrowRight, Github, ExternalLink, Star } from 'lucide-react';
 import { BlackHoleCanvas } from '@/components/BlackHoleCanvas';
 import { RollingText } from '@/components/RollingText';
 import { Reveal } from '@/components/Reveal';
-import { Constellation } from '@/components/Constellation';
 
 const ACCENT = '#00C9D8';
 const ACCENT_RGB = '0,201,216';
@@ -58,9 +57,6 @@ const Home = () => {
         {/* planet limb */}
         <div className="horizon-clip"><div className="horizon"/></div>
 
-        {/* AY constellation */}
-        <div className="hero-constellation"><Constellation /></div>
-
         <div className="hero-top">
           <p className="hero-tag hero-sub" style={{ animationDelay:'0ms' }}>Available for opportunities</p>
           <h1 className="hero-title">
@@ -72,8 +68,8 @@ const Home = () => {
         </div>
 
         <div className="hero-bottom hero-sub" style={{ animationDelay:'700ms' }}>
-          <h2 className="hero-title">From solar data<br/>to shipped code</h2>
-          <p className="hero-caption">Full-stack &amp; AI/ML engineer · NJIT · NASA-funded researcher</p>
+          <h2 className="hero-title">AI/ML engineer<br/>&amp; NASA researcher</h2>
+          <p className="hero-caption">Full-stack developer · Computer Science at NJIT</p>
         </div>
 
         <div className="hero-cta" style={{ display:'flex', gap:8, flexWrap:'wrap', justifyContent:'center', position:'relative', zIndex:2, animationDelay:'900ms' }}>
@@ -84,6 +80,7 @@ const Home = () => {
         </div>
       </section>
 
+      <div className="planet-surface">
       <Reveal>
         <div className="stats-strip">
           {[['6','Projects'],['3','Awards'],['NASA','Research'],['Apple','Industry']].map(([v,l]) => (
@@ -95,13 +92,13 @@ const Home = () => {
         </div>
       </Reveal>
 
-      <div style={{ height:1, background:'linear-gradient(90deg,transparent,rgba(0,201,216,0.15),transparent)', margin:'0 32px' }}/>
+      <div className="hairline"/>
 
       {/* FEATURED WORK */}
       <section style={{ padding:'100px 0', position:'relative', zIndex:2 }}>
         <div style={{ maxWidth:1100, margin:'0 auto', padding:'0 32px' }}>
           <Reveal style={{ display:'flex', justifyContent:'space-between', alignItems:'baseline', marginBottom:36, flexWrap:'wrap', gap:12 }}>
-            <h2>Featured Work</h2>
+            <h2 className="section-title">Featured work</h2>
             <button onClick={() => navigate('/projects')} className="btn-ghost" style={{ fontSize:13, padding:'8px 18px' }}>
               All projects <ArrowRight size={14}/>
             </button>
@@ -144,8 +141,8 @@ const Home = () => {
         <div style={{ maxWidth:1100, margin:'0 auto', padding:'0 32px' }}>
           <Reveal style={{ marginBottom:40 }}>
             <p style={{ fontSize:12, letterSpacing:'0.15em', textTransform:'uppercase', color:ACCENT, marginBottom:10, fontWeight:600 }}>Arsenal</p>
-            <h2 style={{ fontFamily:'Space Grotesk, sans-serif', fontSize:'clamp(1.8rem,4vw,2.8rem)', fontWeight:700, lineHeight:1, color:'#f0f0f5' }}>
-              MY <span style={{ color:'rgba(240,240,245,0.18)' }}>STACK</span>
+            <h2 className="section-title">
+              My <span style={{ color:'rgba(240,240,245,0.3)' }}>stack</span>
             </h2>
           </Reveal>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(210px,1fr))', gap:10 }}>
@@ -170,6 +167,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      </div>
 
     </div>
   );
