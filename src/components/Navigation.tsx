@@ -3,17 +3,17 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Home, Layers, Briefcase, FileText, Mail } from 'lucide-react';
 
 const NAV_ITEMS = [
-  { id: '/',           Icon: Home,      label: 'Home',       color: '#00C9D8', glow: 'rgba(0,201,216,0.35)'   },
-  { id: '/projects',   Icon: Layers,    label: 'Projects',   color: '#a78bfa', glow: 'rgba(167,139,250,0.35)' },
-  { id: '/experience', Icon: Briefcase, label: 'Experience', color: '#fbbf24', glow: 'rgba(251,191,36,0.35)'  },
-  { id: '/blog',       Icon: FileText,  label: 'Blog',       color: '#60a5fa', glow: 'rgba(96,165,250,0.35)'  },
-  { id: '/contact',    Icon: Mail,      label: 'Contact',    color: '#34d399', glow: 'rgba(52,211,153,0.35)'  },
+  { id: '/',           Icon: Home,      label: 'Home'       },
+  { id: '/projects',   Icon: Layers,    label: 'Projects'   },
+  { id: '/experience', Icon: Briefcase, label: 'Experience' },
+  { id: '/blog',       Icon: FileText,  label: 'Blog'       },
+  { id: '/contact',    Icon: Mail,      label: 'Contact'    },
 ];
 
 export const Navigation = () => {
-  const [hov, setHov]     = useState<string | null>(null);
-  const navigate           = useNavigate();
-  const location           = useLocation();
+  const [hov, setHov] = useState<string | null>(null);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <nav
@@ -23,52 +23,47 @@ export const Navigation = () => {
         display: 'inline-flex', alignItems: 'center', gap: 8,
       }}
     >
-      {NAV_ITEMS.map(({ id, Icon, label, color, glow }) => {
-        const active  = location.pathname === id || (id !== '/' && location.pathname.startsWith(id));
-        const isHov   = hov === id;
-        const show    = isHov || active;
+      {NAV_ITEMS.map(({ id, Icon, label }) => {
+        const active = location.pathname === id || (id !== '/' && location.pathname.startsWith(id));
+        const show   = hov === id || active;
 
         return (
           <button
             key={id}
+            aria-label={label}
             onClick={() => navigate(id)}
             onMouseEnter={() => setHov(id)}
             onMouseLeave={() => setHov(null)}
             style={{
-              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 7,
-              width: show ? 'auto' : 36,
+              display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               height: 36,
-              padding: show ? '0 14px' : '0',
-              borderRadius: 999, border: 'none', cursor: 'pointer',
-              background: show ? `${color}20` : 'rgba(255,255,255,0.06)',
-              boxShadow: show ? `0 0 18px ${glow}` : 'none',
-              transition: 'all 0.35s cubic-bezier(0.34,1.56,0.64,1)',
-              outline: 'none',
-              overflow: 'hidden',
-              flexShrink: 0,
+              minWidth: 36,
+              padding: show ? '0 16px 0 12px' : '0',
+              borderRadius: 999, cursor: 'pointer', outline: 'none', overflow: 'hidden', flexShrink: 0,
+              background: active ? 'rgba(244,245,250,0.92)' : 'rgba(8,9,14,0.45)',
+              border: `1px solid ${show ? 'rgba(244,245,250,0.5)' : 'rgba(255,255,255,0.1)'}`,
+              backdropFilter: 'blur(10px)', WebkitBackdropFilter: 'blur(10px)',
+              transition: 'all 0.4s cubic-bezier(0.22,1,0.36,1)',
             }}
           >
-            {/* Icon */}
             <Icon
-              size={18}
+              size={15}
+              strokeWidth={1.6}
               style={{
-                color: show ? color : 'rgba(240,240,245,0.38)',
-                transition: 'color 0.25s ease, transform 0.32s cubic-bezier(0.34,1.56,0.64,1)',
-                transform: show ? 'scale(1.15)' : 'scale(1)',
+                color: active ? '#08090e' : show ? '#f4f5fa' : 'rgba(240,240,245,0.55)',
+                transition: 'color 0.25s ease',
                 flexShrink: 0,
               }}
             />
-
-            {/* Label — slides in/out */}
             <span
               style={{
-                fontSize: 12.5, fontWeight: 600, fontFamily: 'Space Grotesk, sans-serif',
-                letterSpacing: '0.02em', whiteSpace: 'nowrap',
-                color: show ? color : 'transparent',
-                maxWidth: show ? 90 : 0,
-                overflow: 'hidden',
+                fontSize: 10.5, fontWeight: 600, fontFamily: 'Space Grotesk, sans-serif',
+                letterSpacing: '0.16em', textTransform: 'uppercase', whiteSpace: 'nowrap',
+                color: active ? '#08090e' : '#f4f5fa',
+                maxWidth: show ? 110 : 0,
                 opacity: show ? 1 : 0,
-                transition: 'max-width 0.32s cubic-bezier(0.34,1.56,0.64,1), opacity 0.22s ease, color 0.22s ease',
+                overflow: 'hidden',
+                transition: 'max-width 0.4s cubic-bezier(0.22,1,0.36,1), opacity 0.25s ease',
               }}
             >
               {label}
