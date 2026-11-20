@@ -1,22 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PROJECTS, type Project } from '@/data/projects';
+import { WorkThumb } from '@/components/WorkThumbs';
 
 /* Work as an index: big titles in a list. Hovering a row brings out a preview card that trails
    the cursor and leans with its speed, while the other rows dim. Tap or click opens the project. */
-
-const OrbitArt = () => (
-  <svg viewBox="0 0 400 250" style={{ width: '100%', height: '100%', display: 'block' }} aria-hidden>
-    <rect width="400" height="250" fill="#05070f" />
-    <circle cx="200" cy="125" r="14" fill="#ffd9a0" />
-    <circle cx="200" cy="125" r="36" fill="none" stroke="rgba(255,217,160,0.22)" />
-    {[70, 104, 140].map((r, i) => <ellipse key={r} cx="200" cy="125" rx={r * 1.25} ry={r * 0.55} fill="none" stroke="rgba(244,245,250,0.16)" transform={`rotate(${-8 + i * 6} 200 125)`} />)}
-    {Array.from({ length: 20 }, (_, i) => {
-      const a = (i / 20) * Math.PI * 2;
-      return <circle key={i} cx={200 + Math.cos(a) * 130} cy={125 + Math.sin(a) * 57} r="2.4" fill="#f4f5fa" transform="rotate(4 200 125)" />;
-    })}
-  </svg>
-);
 
 const year = (p: Project) => p.kicker.match(/20\d\d/)?.[0] ?? '';
 
@@ -35,8 +23,10 @@ export const WorkIndex = ({ onOpen }: { onOpen: (p: Project, at: { x: number; y:
       const el = cardRef.current; if (!el) return;
       const dx = target.current.x - x, dy = target.current.y - y;
       x += dx * 0.14; y += dy * 0.14;
-      const tilt = Math.max(-14, Math.min(14, dx * 0.12));
-      el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(36px, -62%) rotate(${tilt}deg)`;
+      const tilt = Math.max(-6, Math.min(6, dx * 0.06));
+      // float above the cursor so the hovered title stays readable; drop below it near the top of the screen
+      const above = y - el.offsetHeight - 28 > 72;
+      el.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-30%, ${above ? 'calc(-100% - 28px)' : '28px'}) rotate(${tilt}deg)`;
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -52,13 +42,27 @@ export const WorkIndex = ({ onOpen }: { onOpen: (p: Project, at: { x: number; y:
         <span>{String(PROJECTS.length).padStart(2, '0')} projects · hover to preview</span>
       </header>
 
+      {/* the headline win gets the stage before the list */}
+      {PROJECTS.filter(pr => pr.award?.tier === 1).map(pr => (
+        <button key={pr.slug} className="windex-feature" onClick={e => onOpen(pr, { x: e.clientX, y: e.clientY })}>
+          <span className="windex-feature-art"><WorkThumb slug={pr.slug} /></span>
+          <span className="windex-feature-text">
+            <span className="windex-prize"><b>Winner</b> {pr.award!.title}</span>
+            <span className="windex-prize-detail">{pr.award!.detail}</span>
+            <span className="windex-feature-title">{pr.title}</span>
+            <span className="windex-what">{pr.oneLiner}</span>
+            <span className="windex-feature-open">[ Open project ]</span>
+          </span>
+        </button>
+      ))}
+
       <ol className="windex-list" onMouseLeave={() => setHover(null)}>
-        {PROJECTS.map((proj, i) => (
+        {PROJECTS.map((proj, i) => proj.award?.tier === 1 ? null : (
           <li key={proj.slug} className={hover === i ? 'on' : undefined}>
             <button onMouseEnter={() => setHover(i)} onFocus={() => setHover(i)} onBlur={() => setHover(null)}
               onClick={e => onOpen(proj, { x: e.clientX || window.innerWidth / 2, y: e.clientY || window.innerHeight / 2 })}>
               <span className="windex-num">{String(i + 1).padStart(2, '0')}</span>
-              <span className="windex-title">{proj.title}</span>
+              <span className="windex-title">{proj.title}{proj.award && <small className="windex-prize"><b>{proj.award.tag ?? 'Winner'}</b> {proj.award.title}</small>}</span>
               <span className="windex-what">{proj.oneLiner}</span>
               <span className="windex-year">{year(proj)}</span>
             </button>
@@ -71,7 +75,7 @@ export const WorkIndex = ({ onOpen }: { onOpen: (p: Project, at: { x: number; y:
         <div ref={cardRef} className={`windex-card${p ? ' show' : ''}`} aria-hidden>
           {PROJECTS.map((proj, i) => (
             <div key={proj.slug} className={`windex-card-art${hover === i ? ' on' : ''}`}>
-              {proj.arch ? <img src={proj.arch} alt="" loading="lazy" /> : <OrbitArt />}
+              <WorkThumb slug={proj.slug} />
             </div>
           ))}
           <div className="windex-card-foot">
