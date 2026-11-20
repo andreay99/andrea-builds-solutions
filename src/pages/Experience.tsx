@@ -54,11 +54,15 @@ const LOG: Entry[] = [
   },
 ];
 
-const LAUNCHES: { event: string; place: string; project: string; slug: string; note: string; award?: string }[] = [
+const LAUNCHES: { event: string; place: string; project: string; slug: string; note: string; award?: string; major?: boolean }[] = [
+  { event: 'HackPrinceton Fall 2026', place: 'Princeton, NJ', project: 'Tellavision', slug: 'tellavision',
+    note: 'Backend and data engineer: TimescaleDB time-series answers, the parent Insights queries and the dashboard foundation.',
+    award: 'Won Best Education Hack · one of the top tracks, 1,000+ students', major: true },
   { event: 'HackPrinceton SP2026', place: 'Princeton, NJ', project: 'ROM-COM', slug: 'rom-com',
     note: 'Gesture classifier, feature extractor and FMA-UE scoring engine for webcam-only stroke rehab.' },
-  { event: 'NASA ORBIT Challenge', place: 'Phase 2', project: 'OSEHS Digital Twin', slug: 'osehs',
-    note: 'A 20-satellite swarm with decentralized consensus, presented at the NASA ORBIT poster review.' },
+  { event: 'NASA ORBIT Challenge', place: 'Houston, TX', project: 'OSEHS Digital Twin', slug: 'osehs',
+    note: 'A 20-satellite swarm with decentralized consensus. I modeled the swarm communication; we pitched at NASA Johnson Space Center.',
+    award: 'Space Track finalist · $15,000 prize' },
   { event: 'HackPrinceton 2025', place: 'Princeton, NJ', project: 'Recall', slug: 'recall',
     note: 'Face recognition memory aid on a Raspberry Pi.', award: 'Best Use of Grok (xAI) · Best Use of Arm (MLH)' },
   { event: 'HackHarvard 2025', place: 'Cambridge, MA', project: 'OffScript', slug: 'offscript',
@@ -174,8 +178,19 @@ const Experience = () => {
       {/* ── Hackathons: a staggered field ── */}
       <section className="log-section">
         <Reveal><h2 className="section-title">Hackathons</h2></Reveal>
+        {LAUNCHES.filter(l => l.major).map(l => (
+          <Reveal key={l.event}>
+            <button className="launch major" onClick={e => launch(l.slug, e)}>
+              <span className="launch-num">Winner · {l.place}</span>
+              <span className="launch-event">{l.event}</span>
+              <span className="launch-award">{l.award}</span>
+              <span className="launch-note"><b>{l.project}.</b> {l.note}</span>
+              <span className="launch-open">[ Open project ]</span>
+            </button>
+          </Reveal>
+        ))}
         <div className="launch-field">
-          {LAUNCHES.map((l, i) => (
+          {LAUNCHES.filter(l => !l.major).map((l, i) => (
             <Reveal key={l.event} delay={(i % 2) * 120}>
               <button className="launch" onClick={e => launch(l.slug, e)}>
                 <span className="launch-num">{String(i + 1).padStart(2, '0')} · {l.place}</span>

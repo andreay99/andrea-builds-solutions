@@ -6,7 +6,7 @@ import { Reveal } from '@/components/Reveal';
 import { ProjectReveal } from '@/components/ProjectReveal';
 import { OrbitButton, RollLink } from '@/components/OrbitButton';
 import { WorkIndex } from '@/components/WorkIndex';
-import { projectBySlug, projectByNode, type Project } from '@/data/projects';
+import { PROJECTS, projectBySlug, projectByNode, type Project } from '@/data/projects';
 
 const TOOLS = [
   { group: 'Languages',     items: 'Python, TypeScript, C++, CUDA, Java, SQL' },
@@ -15,7 +15,7 @@ const TOOLS = [
   { group: 'Infra',         items: 'Docker, GitHub Actions, AWS, Azure, Vercel' },
 ];
 
-const STATS: [string, string][] = [['6', 'Projects'], ['3', 'Awards'], ['NASA', 'Research'], ['Apple', 'Industry']];
+const STATS: [string, string][] = [[String(PROJECTS.length), 'Projects'], [String(PROJECTS.reduce((n, p) => n + (p.award ? p.award.title.split(' · ').filter(t => !t.startsWith('$')).length : 0), 0)), 'Prizes'], ['NASA', 'Research'], ['Apple', 'Industry']];
 
 const Home = () => {
   const navigate = useNavigate();

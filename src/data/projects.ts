@@ -1,8 +1,5 @@
-import recallArch from '@/assets/recall-architecture.svg';
-import offscriptArch from '@/assets/offscript-architecture.svg';
-import romcomArch from '@/assets/romcom-architecture.svg';
-import sonaArch from '@/assets/sona-architecture.svg';
-import cudaArch from '@/assets/cuda-architecture.svg';
+import type { ArchSpec } from '@/components/ArchDiagram';
+import { RECALL, OFFSCRIPT, ROMCOM, SONA, CUDA, TELLAVISION } from '@/data/architectures';
 
 export interface Project {
   slug: string;        // /projects/<slug>
@@ -14,14 +11,53 @@ export interface Project {
   highlight: string;
   metrics: { val: string; label: string }[];
   stack: string[];
-  arch?: string;
-  sim?: 'osehs';
+  diagram?: ArchSpec;
+  /** prize won; tier 1 is the headline win */
+  award?: { title: string; detail: string; tier: 1 | 2; tag?: string };
+  sim?: 'osehs' | 'attention' | 'recall' | 'tella';
   github?: string;
   live?: string;
   liveLabel?: string;
 }
 
 export const PROJECTS: Project[] = [
+  {
+    slug: 'tellavision', nodeId: 'p-tella',
+    title: 'Tellavision',
+    kicker: 'HackPrinceton · Fall 2026 · Backend & data engineer',
+    award: { title: 'Best Education Hack', detail: 'HackPrinceton Fall 2026 · one of the top tracks, 1,000+ students', tier: 1 },
+    oneLiner: 'Cartoons that pause to ask your kid a question.',
+    description: 'An interactive learning app that turns kids’ cartoons into practice: Dora pauses to ask a question, listens to the child’s answer, and tells parents what their child is learning. I built the data layer in PostgreSQL on Tiger Cloud (TimescaleDB) with Drizzle ORM, modeled every answer as a time-series event, wrote the queries behind the parent Insights page, and built the foundation of the parent dashboard in Next.js 16. A Zod-validated read contract let three teammates build the AI, the kid experience and the UI in parallel against the same data.',
+    highlight: 'Won Best Education Hack, one of the top tracks at HackPrinceton Fall 2026, with more than 1,000 students competing.',
+    metrics: [
+      { val: '85', label: 'automated tests (Vitest, PGlite)' },
+      { val: '4', label: 'versioned schema migrations' },
+      { val: '3', label: 'teammates building in parallel on one contract' },
+    ],
+    stack: ['TypeScript', 'Next.js 16', 'React 19', 'PostgreSQL', 'TimescaleDB', 'Drizzle ORM', 'Zod', 'Tailwind v4', 'Vitest', 'Turborepo'],
+    sim: 'tella',
+    diagram: TELLAVISION,
+    github: 'https://github.com/luljaj/HackPrincetonFall26',
+  },
+  {
+    slug: 'recall', nodeId: 'p-recall',
+    title: 'Recall',
+    kicker: 'HackPrinceton · Nov 2025',
+    award: { title: 'Best Use of Grok (xAI) · Best Use of Arm (MLH)', detail: 'HackPrinceton 2025 · two sponsor prizes', tier: 2 },
+    oneLiner: 'A memory aid that recognizes the people you meet.',
+    description: 'An edge-deployable face recognition pipeline on a Raspberry Pi. Threshold-tuned embedding matching plus data augmentation keep false positives rare, and the streaming endpoints ship with full OpenAPI documentation and unit tests. When it recognizes someone, it tells you who they are and where you met.',
+    highlight: 'Won two categories at HackPrinceton 2025.',
+    metrics: [
+      { val: '94%', label: 'precision' },
+      { val: '<200ms', label: 'inference on a Raspberry Pi' },
+      { val: '<2%', label: 'false positives' },
+    ],
+    stack: ['Python', 'OpenCV', 'DeepFace', 'MongoDB', 'Grok', 'ElevenLabs'],
+    sim: 'recall',
+    diagram: RECALL,
+    github: 'https://github.com/Christinetrr/recall',
+    live: 'https://devpost.com/software/recall-cf0dp9', liveLabel: 'Devpost',
+  },
   {
     slug: 'cuda-flash-attention', nodeId: 'p-cuda',
     title: 'CUDA Flash Attention',
@@ -35,7 +71,8 @@ export const PROJECTS: Project[] = [
       { val: '<4e-7', label: 'max gradient error' },
     ],
     stack: ['CUDA', 'C++', 'Python', 'PyTorch', 'NVIDIA T4'],
-    arch: cudaArch,
+    sim: 'attention',
+    diagram: CUDA,
     github: 'https://github.com/andreay99/cuda-flash-attention',
     live: 'https://medium.com/@ay387/implementing-flash-attentions-backward-pass-in-raw-cuda-what-i-learned-34514b7c8b5f',
     liveLabel: 'Read the write-up',
@@ -43,10 +80,11 @@ export const PROJECTS: Project[] = [
   {
     slug: 'osehs', nodeId: 'p-osehs',
     title: 'OSEHS Digital Twin',
-    kicker: 'NASA ORBIT Challenge · Phase 2 · Mar 2026',
+    kicker: 'NASA ORBIT Challenge · Space Track finalist · Houston, Jul 2026',
+    award: { title: 'NASA ORBIT finalist · $15,000 prize', detail: 'One of 10 Space Track finalists from hundreds of university entries · pitched at NASA Johnson Space Center', tier: 2, tag: 'Prize' },
     oneLiner: 'A 20-satellite swarm that keeps formation without ground control.',
     description: 'A Python orbital simulation and digital twin for a 20-unit satellite swarm, modeling relative formation dynamics with Clohessy-Wiltshire equations. I designed a decentralized gossip protocol so the satellites share state and reach consensus with no central ground-control bottleneck and no single point of failure, then presented the architecture at the NASA ORBIT poster review.',
-    highlight: 'Selected for Phase 2 of the NASA ORBIT Challenge with team Star Maker.',
+    highlight: 'Team Star Maker was one of 10 finalists in the Space Track of NASA’s first ORBIT Challenge, pitched at Johnson Space Center in Houston, and won a $15,000 prize. I modeled the swarm communication.',
     metrics: [
       { val: '20', label: 'satellites in the swarm' },
       { val: '65.3%', label: 'end-to-end pipeline efficiency' },
@@ -55,23 +93,6 @@ export const PROJECTS: Project[] = [
     stack: ['Python', 'NumPy', 'Matplotlib', 'Clohessy-Wiltshire', 'Gossip protocol'],
     sim: 'osehs',
     github: 'https://github.com/andreay99/OSEHS-simulation',
-  },
-  {
-    slug: 'recall', nodeId: 'p-recall',
-    title: 'Recall',
-    kicker: 'HackPrinceton · Nov 2025 · Best Use of Grok (xAI), Best Use of Arm (MLH)',
-    oneLiner: 'A memory aid that recognizes the people you meet.',
-    description: 'An edge-deployable face recognition pipeline on a Raspberry Pi. Threshold-tuned embedding matching plus data augmentation keep false positives rare, and the streaming endpoints ship with full OpenAPI documentation and unit tests. When it recognizes someone, it tells you who they are and where you met.',
-    highlight: 'Won two categories at HackPrinceton 2025.',
-    metrics: [
-      { val: '94%', label: 'precision' },
-      { val: '<200ms', label: 'inference on a Raspberry Pi' },
-      { val: '<2%', label: 'false positives' },
-    ],
-    stack: ['Python', 'OpenCV', 'DeepFace', 'MongoDB', 'Grok', 'ElevenLabs'],
-    arch: recallArch,
-    github: 'https://github.com/Christinetrr/recall',
-    live: 'https://devpost.com/software/recall-cf0dp9', liveLabel: 'Devpost',
   },
   {
     slug: 'rom-com', nodeId: 'p-romcom',
@@ -86,7 +107,7 @@ export const PROJECTS: Project[] = [
       { val: 'Real-time', label: 'joint tracking' },
     ],
     stack: ['Python', 'MediaPipe', 'FastAPI', 'scikit-learn', 'React', 'TypeScript'],
-    arch: romcomArch,
+    diagram: ROMCOM,
     github: 'https://github.com/tomiwaaluko/ROM-com',
   },
   {
@@ -102,7 +123,7 @@ export const PROJECTS: Project[] = [
       { val: '36 hrs', label: 'to ship' },
     ],
     stack: ['Next.js', 'TypeScript', 'FastAPI', 'Gemini'],
-    arch: offscriptArch,
+    diagram: OFFSCRIPT,
     github: 'https://github.com/Smit2553/Offscript',
     live: 'https://offscript.codestacx.com', liveLabel: 'Try it',
   },
@@ -119,7 +140,7 @@ export const PROJECTS: Project[] = [
       { val: '8', label: 'emotion classes' },
     ],
     stack: ['Python', 'TensorFlow', 'Librosa', 'FastAPI'],
-    arch: sonaArch,
+    diagram: SONA,
     github: 'https://github.com/andreay99/sona-ai',
   },
 ];

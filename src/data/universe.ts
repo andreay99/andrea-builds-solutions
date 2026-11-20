@@ -14,6 +14,7 @@ export interface UNode {
   href?: string;    // external page
   hrefLabel?: string;
   minor?: boolean;  // small star (skills)
+  prize?: 1 | 2;    // won something; 1 = the headline win
 }
 
 export const GROUPS: { id: GroupId; label: string; kind: string }[] = [
@@ -30,7 +31,12 @@ const skill = (id: string, label: string): UNode => ({ id: `s-${id}`, group: 'sk
 
 export const NODES: UNode[] = [
   // ── Projects
-  { id: 'p-recall', group: 'projects', label: 'Recall', sub: 'Face recognition memory aid',
+  { id: 'p-tella', group: 'projects', label: 'Tellavision', sub: 'Best Education Hack · HackPrinceton Fall 2026', prize: 1,
+    desc: 'Dora pauses to ask the child a question, listens to the answer, and tells parents what their child is learning. I built the TimescaleDB data layer, the time_bucket() insights and the parent dashboard.',
+    tags: ['TypeScript', 'Next.js', 'PostgreSQL', 'TimescaleDB'], route: '/projects/tellavision',
+    links: ['s-typescript', 's-nextjs', 's-react', 's-postgres', 'h-hpf26'],
+    href: 'https://github.com/luljaj/HackPrincetonFall26', hrefLabel: 'GitHub' },
+  { id: 'p-recall', group: 'projects', label: 'Recall', sub: 'Face recognition memory aid', prize: 2,
     desc: 'Edge-deployable face recognition on Raspberry Pi with <200ms inference, 94% precision and <2% false positives. Streaming endpoints with OpenAPI docs and unit tests.',
     tags: ['Python', 'OpenCV', 'DeepFace', 'MongoDB'], route: '/projects/recall',
     links: ['s-python', 's-opencv', 's-mongodb', 'h-hp25'] },
@@ -42,7 +48,7 @@ export const NODES: UNode[] = [
     desc: 'Webcam-only rehab system: MediaPipe motion tracking, adaptive range-of-motion calibration, a Random Forest gesture classifier and automated FMA-UE scoring.',
     tags: ['Python', 'MediaPipe', 'FastAPI', 'React'], route: '/projects/rom-com',
     links: ['s-python', 's-react', 's-typescript', 's-fastapi', 'h-hp26'] },
-  { id: 'p-osehs', group: 'projects', label: 'OSEHS Digital Twin', sub: 'Satellite swarm simulation',
+  { id: 'p-osehs', group: 'projects', label: 'OSEHS Digital Twin', sub: 'Satellite swarm simulation', prize: 2,
     desc: 'Digital twin of a 20-unit satellite swarm using Clohessy-Wiltshire dynamics, with a decentralized gossip protocol for consensus and 65.3% pipeline efficiency.',
     tags: ['Python', 'NumPy', 'CW equations'], route: '/projects/osehs',
     links: ['s-python', 'h-orbit'] },
@@ -83,14 +89,16 @@ export const NODES: UNode[] = [
     href: 'https://github.com/huggingface/transformers/pull/45856', hrefLabel: 'View PR' },
 
   // ── Hackathons
-  { id: 'h-hp25', group: 'hackathons', label: 'HackPrinceton 2025', sub: 'Best Use of Grok (xAI) · Best Use of Arm (MLH)',
+  { id: 'h-hpf26', group: 'hackathons', label: 'HackPrinceton Fall 2026', sub: 'Won Best Education Hack · 1,000+ students', prize: 1,
+    desc: 'Backend and data engineer: the time-series data layer, the parent insights and the dashboard foundation.', links: ['p-tella'] },
+  { id: 'h-hp25', group: 'hackathons', label: 'HackPrinceton 2025', prize: 2, sub: 'Best Use of Grok (xAI) · Best Use of Arm (MLH)',
     desc: 'Two category wins with Recall.', links: ['p-recall'] },
   { id: 'h-hp26', group: 'hackathons', label: 'HackPrinceton SP2026', sub: 'ROM-COM',
     desc: 'Built the gesture classifier, feature extractor and FMA-UE scoring engine.', links: ['p-romcom'] },
   { id: 'h-hh25', group: 'hackathons', label: 'HackHarvard 2025', sub: 'OffScript',
     desc: 'Led a team of 3 engineers to ship a full-stack AI interview simulator in 36 hours.', links: ['p-offscript'] },
-  { id: 'h-orbit', group: 'hackathons', label: 'NASA ORBIT Challenge', sub: 'Phase 2 · Team Star Maker',
-    desc: 'Presented the swarm architecture and design tradeoffs at the NASA ORBIT poster review.', links: ['p-osehs'] },
+  { id: 'h-orbit', group: 'hackathons', label: 'NASA ORBIT Challenge', sub: 'Space Track finalist · $15,000 prize', prize: 2,
+    desc: 'One of 10 Space Track finalists from hundreds of university entries. Team Star Maker pitched at NASA Johnson Space Center in Houston; I modeled the swarm communication.', links: ['p-osehs'] },
 
   // ── Writing
   { id: 'w-flash', group: 'writing', label: "Flash Attention's backward pass in raw CUDA", sub: 'Medium · 8 min read',
@@ -108,5 +116,5 @@ export const NODES: UNode[] = [
   skill('python', 'Python'), skill('typescript', 'TypeScript'), skill('cpp', 'C++'), skill('cuda', 'CUDA'),
   skill('pytorch', 'PyTorch'), skill('tensorflow', 'TensorFlow'), skill('opencv', 'OpenCV'),
   skill('fastapi', 'FastAPI'), skill('nextjs', 'Next.js'), skill('react', 'React'),
-  skill('mongodb', 'MongoDB'), skill('docker', 'Docker'), skill('aws', 'AWS'),
+  skill('mongodb', 'MongoDB'), skill('postgres', 'PostgreSQL'), skill('docker', 'Docker'), skill('aws', 'AWS'),
 ];
