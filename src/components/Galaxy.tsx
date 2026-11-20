@@ -364,15 +364,22 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel = 'Andrea', heig
       for (const n of placed) {
         const on = !focus || n.id === focus || rel?.has(n.id);
         const big = n.id === focus;
-        const r0 = (n.minor ? 1.0 : 1.5) * n.vis * (big ? 1.5 : 1);
+        const prize = n.prize ?? 0;
+        const r0 = (n.minor ? 1.0 : 1.5) * n.vis * (big ? 1.5 : 1) * (prize === 1 ? 1.9 : prize === 2 ? 1.35 : 1);
         const glow = r0 * (n.minor ? 4 : 5.5);
         const a = on ? 1 : 0.3;
         const g = ctx.createRadialGradient(n.sx, n.sy, 0, n.sx, n.sy, glow);
         g.addColorStop(0, `rgba(255,255,255,${0.95 * a})`);
         g.addColorStop(0.12, `rgba(255,255,255,${0.85 * a})`);
-        g.addColorStop(0.3, `rgba(220,230,255,${0.18 * a})`);
-        g.addColorStop(1, 'rgba(180,200,255,0)');
+        g.addColorStop(0.3, prize ? `rgba(255,217,160,${0.32 * a})` : `rgba(220,230,255,${0.18 * a})`);
+        g.addColorStop(1, prize ? 'rgba(255,200,130,0)' : 'rgba(180,200,255,0)');
         ctx.fillStyle = g; ctx.fillRect(n.sx - glow, n.sy - glow, glow * 2, glow * 2);
+        // the headline win wears a slow gold ring
+        if (prize === 1) {
+          const ph = (t * 0.5) % 1;
+          ctx.strokeStyle = `rgba(255,217,160,${0.7 * (1 - ph) * a})`; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.arc(n.sx, n.sy, r0 * 3 + ph * r0 * 6, 0, Math.PI * 2); ctx.stroke();
+        }
         if (big) {
           ctx.strokeStyle = 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1;
           ctx.beginPath(); ctx.arc(n.sx, n.sy, r0 * 4 + 2 * Math.sin(t * 3), 0, Math.PI * 2); ctx.stroke();
@@ -430,7 +437,11 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel = 'Andrea', heig
       return best;
     };
     const rect = () => wrap.getBoundingClientRect();
-    const down = (e: PointerEvent) => { dragging = true; moved = 0; lx = e.clientX; ly = e.clientY; };
+    // UI layered on the galaxy (panel, controls, Index) handles its own clicks. This native listener
+    // runs before React's stopPropagation, so without this check a click on "Enter" would also count
+    // as a click on empty sky and close the panel before the button ever fired.
+    const isUi = (t: EventTarget | null) => !!(t as HTMLElement | null)?.closest?.('.galaxy-panel, .galaxy-controls, .galaxy-index-btn');
+    const down = (e: PointerEvent) => { if (isUi(e.target)) return; dragging = true; moved = 0; lx = e.clientX; ly = e.clientY; };
     const move = (e: PointerEvent) => {
       const r = rect();
       if (dragging) {

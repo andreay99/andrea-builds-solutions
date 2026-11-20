@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ArrowUpRight, ArrowRight } from 'lucide-react';
 import { OSEHSSim } from '@/components/OSEHSSim';
+import { AttentionSim } from '@/components/AttentionSim';
+import { RecallSim } from '@/components/RecallSim';
+import { TellaSim } from '@/components/TellaSim';
+import { ArchDiagram } from '@/components/ArchDiagram';
 import { OrbitButton, RollLink } from '@/components/OrbitButton';
 import { PROJECTS, type Project } from '@/data/projects';
 
@@ -44,6 +48,11 @@ export const ProjectReveal = ({ project, origin, onClose, onNext }: Props) => {
         <button className="reveal-close" onClick={close} aria-label="Back to the universe"><X size={18} /></button>
 
         <article key={project.slug} className="reveal-body">
+          {project.award && (
+            <p className={`reveal-award r-in tier-${project.award.tier}`} style={{ '--d': '0ms' } as React.CSSProperties}>
+              <span>{project.award.tag ?? 'Winner'}</span> {project.award.title}<small>{project.award.detail}</small>
+            </p>
+          )}
           <p className="reveal-kicker r-in" style={{ '--d': '0ms' } as React.CSSProperties}>{project.kicker}</p>
           <h1 className="reveal-title r-in" style={{ '--d': '60ms' } as React.CSSProperties}>{project.title}</h1>
           <p className="reveal-oneliner r-in" style={{ '--d': '120ms' } as React.CSSProperties}>{project.oneLiner}</p>
@@ -57,17 +66,21 @@ export const ProjectReveal = ({ project, origin, onClose, onNext }: Props) => {
             ))}
           </div>
 
+          {project.sim && (
+            <button className="reveal-jump r-in" style={{ '--d': '230ms' } as React.CSSProperties}
+              onClick={() => document.getElementById('live-sim')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
+              [ ↓ Try the interactive figure ]
+            </button>
+          )}
           <p className="reveal-text r-in" style={{ '--d': '260ms' } as React.CSSProperties}>{project.description}</p>
           <p className="reveal-highlight r-in" style={{ '--d': '300ms' } as React.CSSProperties}>{project.highlight}</p>
 
-          <div className="r-in" style={{ '--d': '340ms' } as React.CSSProperties}>
-            {project.sim === 'osehs' && <div className="reveal-figure"><OSEHSSim /></div>}
-            {project.arch && (
-              <a className="reveal-figure reveal-arch" href={project.arch} target="_blank" rel="noopener noreferrer" title="Open full size">
-                <img src={project.arch} alt={`${project.title} architecture`} />
-                <span>Architecture · open full size <ArrowUpRight size={12} /></span>
-              </a>
-            )}
+          <div id="live-sim" className="r-in" style={{ '--d': '340ms', scrollMarginTop: 30 } as React.CSSProperties}>
+            {project.sim === 'osehs' && <div className="reveal-figure reveal-sim"><OSEHSSim /></div>}
+            {project.sim === 'attention' && <div className="reveal-figure reveal-sim"><AttentionSim /></div>}
+            {project.sim === 'recall' && <div className="reveal-figure reveal-sim"><RecallSim /></div>}
+            {project.sim === 'tella' && <div className="reveal-figure reveal-sim"><TellaSim /></div>}
+            {project.diagram && <ArchDiagram spec={project.diagram} fig={project.sim ? 2 : 1} />}
           </div>
 
           <p className="reveal-stack r-in" style={{ '--d': '380ms' } as React.CSSProperties}>
