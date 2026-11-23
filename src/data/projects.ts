@@ -97,10 +97,11 @@ export const PROJECTS: Project[] = [
   {
     slug: 'rom-com', nodeId: 'p-romcom',
     title: 'ROM-COM',
-    kicker: 'HackPrinceton SP2026',
+    kicker: 'HackPrinceton · Apr 2026',
+    award: { title: 'AI & Tech for Clinical Trials (Regeneron)', detail: 'HackPrinceton Spring 2026 · sponsor prize', tier: 2 },
     oneLiner: 'Stroke rehab you can do with just a webcam.',
     description: 'A webcam-only upper-extremity rehabilitation system for stroke and TBI patients. MediaPipe tracks joints in real time, an adaptive calibration learns each patient’s range of motion, and I built the Random Forest gesture classifier, the feature extractor and the FMA-UE clinical scoring engine, all streamed back over FastAPI WebSockets.',
-    highlight: 'A full clinical scoring pipeline, built in 36 hours.',
+    highlight: 'Won the Regeneron AI & Tech for Clinical Trials prize with a 4-person team: a full clinical scoring pipeline, built in 36 hours.',
     metrics: [
       { val: '91%', label: 'gesture accuracy' },
       { val: '36 hrs', label: 'from idea to demo' },

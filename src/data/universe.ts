@@ -44,7 +44,7 @@ export const NODES: UNode[] = [
     desc: 'Real-time AI interview simulator with dynamic question generation, live evaluation and session reports. Built by a team of 3 in 36 hours.',
     tags: ['Next.js', 'TypeScript', 'FastAPI', 'Gemini'], route: '/projects/offscript',
     links: ['s-nextjs', 's-typescript', 's-fastapi', 'h-hh25'] },
-  { id: 'p-romcom', group: 'projects', label: 'ROM-COM', sub: 'Stroke & TBI rehabilitation',
+  { id: 'p-romcom', group: 'projects', label: 'ROM-COM', sub: 'Stroke & TBI rehabilitation', prize: 2,
     desc: 'Webcam-only rehab system: MediaPipe motion tracking, adaptive range-of-motion calibration, a Random Forest gesture classifier and automated FMA-UE scoring.',
     tags: ['Python', 'MediaPipe', 'FastAPI', 'React'], route: '/projects/rom-com',
     links: ['s-python', 's-react', 's-typescript', 's-fastapi', 'h-hp26'] },
@@ -62,7 +62,7 @@ export const NODES: UNode[] = [
     links: ['s-cuda', 's-cpp', 's-pytorch', 'w-flash', 'r-hf'] },
 
   // ── Experience
-  { id: 'x-nasa', group: 'experience', label: 'Undergraduate Researcher', sub: 'NJIT CSTR · NASA MIRO · Dec 2025 – now',
+  { id: 'x-nasa', group: 'experience', label: 'Undergraduate Researcher', sub: 'NJIT CSTR · NASA MIRO · Sept 2025 – now',
     desc: 'Training multimodal transformers on decades of NASA SDO and SOHO data to forecast solar eruptions.',
     tags: ['Python', 'PyTorch', 'ParaView'], route: '/experience',
     links: ['r-solar', 'r-pinn', 'r-paraview', 's-python', 's-pytorch', 'e-njit'] },
@@ -93,8 +93,8 @@ export const NODES: UNode[] = [
     desc: 'Backend and data engineer: the time-series data layer, the parent insights and the dashboard foundation.', links: ['p-tella'] },
   { id: 'h-hp25', group: 'hackathons', label: 'HackPrinceton 2025', prize: 2, sub: 'Best Use of Grok (xAI) · Best Use of Arm (MLH)',
     desc: 'Two category wins with Recall.', links: ['p-recall'] },
-  { id: 'h-hp26', group: 'hackathons', label: 'HackPrinceton SP2026', sub: 'ROM-COM',
-    desc: 'Built the gesture classifier, feature extractor and FMA-UE scoring engine.', links: ['p-romcom'] },
+  { id: 'h-hp26', group: 'hackathons', label: 'HackPrinceton Spring 2026', prize: 2, sub: 'AI & Tech for Clinical Trials (Regeneron)',
+    desc: 'Won the Regeneron clinical trials prize with ROM-COM. I built the gesture classifier, feature extractor and FMA-UE scoring engine.', links: ['p-romcom'] },
   { id: 'h-hh25', group: 'hackathons', label: 'HackHarvard 2025', sub: 'OffScript',
     desc: 'Led a team of 3 engineers to ship a full-stack AI interview simulator in 36 hours.', links: ['p-offscript'] },
   { id: 'h-orbit', group: 'hackathons', label: 'NASA ORBIT Challenge', sub: 'Space Track finalist · $15,000 prize', prize: 2,
@@ -107,7 +107,7 @@ export const NODES: UNode[] = [
     href: 'https://medium.com/@ay387/implementing-flash-attentions-backward-pass-in-raw-cuda-what-i-learned-34514b7c8b5f', hrefLabel: 'Read on Medium' },
 
   // ── Education
-  { id: 'e-njit', group: 'education', label: 'B.S. Computer Science', sub: 'NJIT · May 2027 · GPA 3.6',
+  { id: 'e-njit', group: 'education', label: 'B.S. Computer Science', sub: 'NJIT · Expected May 2028',
     desc: 'Data Structures, Algorithms, Database Systems, Computer Architecture, Linear Algebra, Discrete Math.' },
   { id: 'e-quantum', group: 'education', label: 'Quantum Computing Club', sub: 'ACMI · Jan 2026',
     desc: "Implemented Deutsch's and Deutsch-Jozsa algorithms in Qiskit.", links: ['s-python', 'e-njit'] },

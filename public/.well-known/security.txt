@@ -1,0 +1,5 @@
+# If you find a security issue on this site, please let me know privately.
+Contact: https://andreasoto.dev/contact
+Expires: 2027-11-23T00:00:00.000Z
+Preferred-Languages: en, es
+Canonical: https://andreasoto.dev/.well-known/security.txt

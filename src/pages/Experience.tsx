@@ -17,7 +17,7 @@ interface Entry {
 
 const LOG: Entry[] = [
   {
-    year: '2025', period: 'Dec 2025 – now',
+    year: '2025', period: 'Sept 2025 – now',
     title: 'Undergraduate Researcher',
     org: 'NJIT Center for Solar-Terrestrial Research · NASA MIRO',
     summary: 'I train multimodal transformers on decades of NASA SDO and SOHO observations to forecast solar eruptions.',
@@ -58,8 +58,9 @@ const LAUNCHES: { event: string; place: string; project: string; slug: string; n
   { event: 'HackPrinceton Fall 2026', place: 'Princeton, NJ', project: 'Tellavision', slug: 'tellavision',
     note: 'Backend and data engineer: TimescaleDB time-series answers, the parent Insights queries and the dashboard foundation.',
     award: 'Won Best Education Hack · one of the top tracks, 1,000+ students', major: true },
-  { event: 'HackPrinceton SP2026', place: 'Princeton, NJ', project: 'ROM-COM', slug: 'rom-com',
-    note: 'Gesture classifier, feature extractor and FMA-UE scoring engine for webcam-only stroke rehab.' },
+  { event: 'HackPrinceton Spring 2026', place: 'Princeton, NJ', project: 'ROM-COM', slug: 'rom-com',
+    note: 'Gesture classifier, feature extractor and FMA-UE scoring engine for webcam-only stroke rehab, with a 4-person team.',
+    award: 'AI & Tech for Clinical Trials (Regeneron)' },
   { event: 'NASA ORBIT Challenge', place: 'Houston, TX', project: 'OSEHS Digital Twin', slug: 'osehs',
     note: 'A 20-satellite swarm with decentralized consensus. I modeled the swarm communication; we pitched at NASA Johnson Space Center.',
     award: 'Space Track finalist · $15,000 prize' },
@@ -70,8 +71,8 @@ const LAUNCHES: { event: string; place: string; project: string; slug: string; n
 ];
 
 const SCHOOL = [
-  { title: 'B.S. Computer Science', org: 'New Jersey Institute of Technology', when: 'May 2027',
-    note: 'GPA 3.6. Data Structures, Algorithms, Database Systems, Computer Architecture, Linear Algebra, Discrete Math.' },
+  { title: 'B.S. Computer Science', org: 'New Jersey Institute of Technology', when: 'Expected May 2028',
+    note: 'Data Structures, Algorithms, Database Systems, Computer Architecture, Linear Algebra, Discrete Math.' },
   { title: 'Quantum Computing Club', org: 'ACMI', when: 'Jan 2026',
     note: "Qubits, gates, entanglement and query algorithms. Implemented Deutsch's and Deutsch-Jozsa in Qiskit." },
 ];

@@ -20,7 +20,7 @@ const Blog = () => (
 
     <header className="sky-head">
       <h1 className="serif-title">Writing</h1>
-      <p>Notes from things I built and got stuck on, written so the next person gets stuck less.</p>
+      <p>Write-ups of things I built, mostly the parts that took longest to get right.</p>
     </header>
 
     <section className="sky-body">

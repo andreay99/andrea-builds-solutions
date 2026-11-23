@@ -39,7 +39,7 @@ export const WorkIndex = ({ onOpen }: { onOpen: (p: Project, at: { x: number; y:
       onMouseMove={e => { target.current = { x: e.clientX, y: e.clientY }; }}>
       <header className="windex-head">
         <h2 className="section-title">Work</h2>
-        <span>{String(PROJECTS.length).padStart(2, '0')} projects · hover to preview</span>
+        <span>{PROJECTS.length} projects</span>
       </header>
 
       {/* the headline win gets the stage before the list */}

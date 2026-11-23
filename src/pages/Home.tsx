@@ -15,7 +15,9 @@ const TOOLS = [
   { group: 'Infra',         items: 'Docker, GitHub Actions, AWS, Azure, Vercel' },
 ];
 
-const STATS: [string, string][] = [[String(PROJECTS.length), 'Projects'], [String(PROJECTS.reduce((n, p) => n + (p.award ? p.award.title.split(' · ').filter(t => !t.startsWith('$')).length : 0), 0)), 'Prizes'], ['NASA', 'Research'], ['Apple', 'Industry']];
+const PRIZES = PROJECTS.reduce((n, p) => n + (p.award ? p.award.title.split(' · ').filter(t => !t.startsWith('$')).length : 0), 0);
+const WORDS = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve'];
+const say = (n: number) => WORDS[n] ?? String(n);
 
 const Home = () => {
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ const Home = () => {
         <div className="home-intro">
           <h1 className="serif-name">Andrea Yanez Soto</h1>
           <p className="home-lede">
-            Computer science at NJIT. I train models on NASA solar data and build things people actually use.
+            Computer science at NJIT. I forecast solar eruptions from NASA data, write CUDA by hand, and build at hackathons.
           </p>
           <div className="home-links">
             <OrbitButton icon={<ArrowRight size={14} style={{ transform: 'rotate(90deg)' }} />}
@@ -63,14 +65,10 @@ const Home = () => {
 
       <div className="planet-surface">
         <Reveal>
-          <div className="stats-strip">
-            {STATS.map(([v, l]) => (
-              <div key={l}>
-                <div style={{ fontFamily: 'var(--font-serif)', fontSize: 'clamp(2rem,3.4vw,2.8rem)', fontWeight: 400, lineHeight: 1, color: '#f0f0f5' }}>{v}</div>
-                <div style={{ marginTop: 8 }}>{l}</div>
-              </div>
-            ))}
-          </div>
+          <p className="home-summary">
+            {say(PROJECTS.length)[0].toUpperCase() + say(PROJECTS.length).slice(1)} projects and {say(PRIZES)} prizes so far.
+            I do research at NJIT’s Center for Solar-Terrestrial Research with NASA data, and I worked at Apple from 2024 to 2026 as a technical specialist and training lead.
+          </p>
         </Reveal>
 
         <div className="hairline" />
