@@ -650,10 +650,35 @@ html[data-btn="bracket"] .roll-link { font-family: var(--font-mono); font-size: 
 .windex-card { position: fixed; left: 0; top: 0; z-index: 50; width: clamp(260px, 26vw, 380px); pointer-events: none; opacity: 0; scale: 0.85;
   transition: opacity 0.35s, scale 0.5s cubic-bezier(0.22,1,0.36,1); will-change: transform; }
 .windex-card.show { opacity: 1; scale: 1; }
-.windex-card-art { position: absolute; inset: 0 0 auto 0; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 4px; border: 1px solid rgba(255,255,255,0.14);
+.windex-card-art { position: absolute; inset: 0 0 auto 0; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 3px; border: none;
   background: #05070f; opacity: 0; transition: opacity 0.35s; box-shadow: 0 30px 80px rgba(0,0,0,0.6); }
 .windex-card-art.on { opacity: 1; }
-.windex-card-art img { width: 100%; height: 100%; object-fit: cover; object-position: top; filter: invert(0.92) hue-rotate(180deg) saturate(0.9); }
+.windex-card-art img, .windex-feature-art img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+.thumb-chart { width: 100%; height: 100%; display: grid; place-items: center; background: #0b0c10; padding: 3% 3% 1%; }
+.thumb-chart svg { width: 100%; height: 100%; }
+
+/* ── Real media on project pages ── */
+.reveal-media { margin: 44px 0 0; }
+.reveal-media img, .reveal-media video { display: block; width: auto; max-width: 100%; max-height: 72vh; height: auto; border-radius: 3px; background: #0b0c10; }
+.reveal-media video { width: 100%; }
+.reveal-media figcaption { margin-top: 12px; max-width: 620px; font-size: 14px; line-height: 1.6; color: rgba(240,240,245,0.6); }
+.reveal-chart svg { width: 100%; height: auto; display: block; }
+
+/* measured CUDA chart: gray for the baseline, the accent only on the small bars that matter */
+.cuda-chart .cc-grid { stroke: rgba(255,255,255,0.08); stroke-width: 1; }
+.cuda-chart .cc-tick { font-family: var(--font-mono); font-size: 12px; fill: rgba(240,240,245,0.45); }
+.cuda-chart .cc-base { fill: rgba(240,240,245,0.22); }
+.cuda-chart .cc-flash { fill: #ffd9a0; }
+.cuda-chart .cc-val { font-family: var(--font-mono); font-size: 12px; fill: rgba(240,240,245,0.7); }
+.cuda-chart .cc-val.flash, .cuda-chart .cc-label.flash { fill: #ffd9a0; }
+.cuda-chart .cc-x { font-size: 12.5px; fill: rgba(240,240,245,0.55); }
+.cuda-chart .cc-label { font-size: 14px; fill: rgba(240,240,245,0.8); }
+.cuda-chart .cc-title { font-size: 15px; fill: rgba(240,240,245,0.85); }
+.cuda-chart.compact .cc-tick, .cuda-chart.compact .cc-val { font-size: 13px; }
+.cuda-chart.compact .cc-label { font-size: 15px; }
+.cuda-chart.compact .cc-title { font-size: 14px; fill: rgba(240,240,245,0.7); }
+.windex-card-foot span:first-child { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-right: 14px; }
+.windex-card-foot span:last-child { flex: none; }
 .windex-card::before { content: ''; display: block; aspect-ratio: 16 / 10; }
 .windex-card-foot { display: flex; justify-content: space-between; margin-top: 10px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: #f4f5fa; }
 @media (max-width: 760px) {
@@ -876,11 +901,11 @@ html[data-btn="bracket"] .roll-link { font-family: var(--font-mono); font-size: 
 .windex-prize { display: block; font-family: var(--font-mono); font-size: 11.5px; letter-spacing: 0.06em; color: #ffd9a0; margin-top: 10px; }
 .windex-prize b { font-weight: 500; margin-right: 8px; padding: 2px 7px; border: 1px solid rgba(255,217,160,0.55); border-radius: 999px; letter-spacing: 0.1em; text-transform: uppercase; font-size: 10px; }
 .windex-title small.windex-prize { font-family: var(--font-mono); line-height: 1.4; }
-.windex-feature { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; width: 100%;
+.windex-feature { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: center; width: 100%;
   margin: 0 0 44px; padding: 0; background: none; border: none; text-align: left; color: inherit; cursor: pointer; }
-.windex-feature-art { position: relative; display: block; aspect-ratio: 16 / 10; overflow: hidden; border-radius: 4px; border: 1px solid rgba(255,217,160,0.35);
-  box-shadow: 0 0 0 1px rgba(255,217,160,0.08), 0 30px 90px rgba(255,190,120,0.08); transition: transform 0.7s cubic-bezier(0.22,1,0.36,1), box-shadow 0.5s; }
-.windex-feature:hover .windex-feature-art { transform: scale(1.015); box-shadow: 0 0 0 1px rgba(255,217,160,0.25), 0 30px 100px rgba(255,190,120,0.16); }
+.windex-feature-art { position: relative; display: block; width: 100%; max-width: 560px; aspect-ratio: 678 / 286; overflow: hidden; border-radius: 3px; border: none;
+  transition: opacity 0.3s; }
+.windex-feature:hover .windex-feature-art { opacity: 0.88; }
 .windex-feature-text { display: flex; flex-direction: column; gap: 10px; }
 .windex-feature-text .windex-prize { margin: 0; font-size: 13px; }
 .windex-prize-detail { font-size: 13px; color: rgba(240,240,245,0.5); }

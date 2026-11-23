@@ -14,7 +14,12 @@ export interface Project {
   diagram?: ArchSpec;
   /** prize won; tier 1 is the headline win */
   award?: { title: string; detail: string; tier: 1 | 2; tag?: string };
-  sim?: 'osehs' | 'attention' | 'recall' | 'tella';
+  /** picture used in the Work list; real screenshots and photos only */
+  thumb?: { src: string; alt: string; position?: string };
+  /** real screenshots, photos or recordings shown on the project page */
+  media?: { src: string; alt: string; caption: string; video?: boolean; poster?: string }[];
+  /** show the measured CUDA chart on the project page */
+  chart?: boolean;
   github?: string;
   live?: string;
   liveLabel?: string;
@@ -35,7 +40,12 @@ export const PROJECTS: Project[] = [
       { val: '3', label: 'teammates building in parallel on one contract' },
     ],
     stack: ['TypeScript', 'Next.js 16', 'React 19', 'PostgreSQL', 'TimescaleDB', 'Drizzle ORM', 'Zod', 'Tailwind v4', 'Vitest', 'Turborepo'],
-    sim: 'tella',
+    thumb: { src: '/work/tellavision-chart.jpg', alt: 'Tellavision Insights chart: one line per skill showing a child’s first-try accuracy rising over three weeks', position: 'left center' },
+    media: [
+      { src: '/work/tellavision-tv.jpg', alt: 'Kid view: Dora playing on a wooden TV with channel buttons', caption: 'The kid view. The cartoon pauses, Dora asks a question, and the answer is saved as an event.' },
+      { src: '/work/tellavision-insights.jpg', alt: 'Parent Insights page with a line chart of first-try accuracy per skill over time', caption: 'Parent Insights. Each line is one skill’s first-try accuracy over time, built on the time_bucket() queries I wrote.' },
+      { src: '/work/tellavision-parent.jpg', alt: 'Parent home page summarizing the week’s questions and recently watched episodes', caption: 'The parent home page I built the foundation for: this week’s answers and recently watched episodes.' },
+    ],
     diagram: TELLAVISION,
     github: 'https://github.com/luljaj/HackPrincetonFall26',
   },
@@ -53,7 +63,11 @@ export const PROJECTS: Project[] = [
       { val: '<2%', label: 'false positives' },
     ],
     stack: ['Python', 'OpenCV', 'DeepFace', 'MongoDB', 'Grok', 'ElevenLabs'],
-    sim: 'recall',
+    thumb: { src: '/work/recall-device.jpg', alt: 'The Recall prototype: a Raspberry Pi and camera mounted on a cap with a battery pack', position: 'center 40%' },
+    media: [
+      { src: '/work/recall-device.jpg', alt: 'A Raspberry Pi, camera and battery pack mounted on a baseball cap', caption: 'The prototype we demoed: a Raspberry Pi and camera on a cap, running off a battery pack.' },
+      { src: '/work/recall-timeline.jpg', alt: 'Recall timeline listing the day’s conversations and events', caption: 'The daily timeline Recall builds from who you met and what you talked about.' },
+    ],
     diagram: RECALL,
     github: 'https://github.com/Christinetrr/recall',
     live: 'https://devpost.com/software/recall-cf0dp9', liveLabel: 'Devpost',
@@ -71,7 +85,7 @@ export const PROJECTS: Project[] = [
       { val: '<4e-7', label: 'max gradient error' },
     ],
     stack: ['CUDA', 'C++', 'Python', 'PyTorch', 'NVIDIA T4'],
-    sim: 'attention',
+    chart: true,
     diagram: CUDA,
     github: 'https://github.com/andreay99/cuda-flash-attention',
     live: 'https://medium.com/@ay387/implementing-flash-attentions-backward-pass-in-raw-cuda-what-i-learned-34514b7c8b5f',
@@ -91,7 +105,11 @@ export const PROJECTS: Project[] = [
       { val: '0', label: 'central points of failure' },
     ],
     stack: ['Python', 'NumPy', 'Matplotlib', 'Clohessy-Wiltshire', 'Gossip protocol'],
-    sim: 'osehs',
+    thumb: { src: '/work/osehs-dashboard.jpg', alt: 'OSEHS simulation dashboard: the swarm in 3D beside plots of swarm health, power, battery and orbital drift' },
+    media: [
+      { src: '/work/osehs-sim.mp4', poster: '/work/osehs-dashboard.jpg', video: true, alt: 'Recording of the OSEHS simulation running',
+        caption: 'A recording of the simulation. Left: the swarm in 3D around the Sun. Right: swarm health, total power, average battery and orbital drift as the days go by.' },
+    ],
     github: 'https://github.com/andreay99/OSEHS-simulation',
   },
   {
@@ -108,6 +126,10 @@ export const PROJECTS: Project[] = [
       { val: 'Real-time', label: 'joint tracking' },
     ],
     stack: ['Python', 'MediaPipe', 'FastAPI', 'scikit-learn', 'React', 'TypeScript'],
+    thumb: { src: '/work/romcom-score.jpg', alt: 'ROM-COM showing a live FMA-UE score of 52 out of 66' },
+    media: [
+      { src: '/work/romcom-score.jpg', alt: 'A live FMA-UE score of 52 out of 66 with the severity bands', caption: 'The live FMA-UE score from the scoring engine I built, with the clinical severity bands.' },
+    ],
     diagram: ROMCOM,
     github: 'https://github.com/tomiwaaluko/ROM-com',
   },
@@ -124,6 +146,11 @@ export const PROJECTS: Project[] = [
       { val: '36 hrs', label: 'to ship' },
     ],
     stack: ['Next.js', 'TypeScript', 'FastAPI', 'Gemini'],
+    thumb: { src: '/work/offscript-interview.jpg', alt: 'OffScript live interview: problem, code editor and interviewer transcript side by side', position: 'left top' },
+    media: [
+      { src: '/work/offscript-interview.jpg', alt: 'A live OffScript interview with the problem, code editor and transcript', caption: 'A live interview: the problem, your code and the AI interviewer’s transcript side by side.' },
+      { src: '/work/offscript-score.jpg', alt: 'OffScript scorecard with scores for communication, problem solving and implementation', caption: 'The scorecard after a session.' },
+    ],
     diagram: OFFSCRIPT,
     github: 'https://github.com/Smit2553/Offscript',
     live: 'https://offscript.codestacx.com', liveLabel: 'Try it',

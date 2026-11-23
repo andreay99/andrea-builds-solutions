@@ -1,10 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { X, ArrowUpRight, ArrowRight } from 'lucide-react';
-import { OSEHSSim } from '@/components/OSEHSSim';
-import { AttentionSim } from '@/components/AttentionSim';
-import { RecallSim } from '@/components/RecallSim';
-import { TellaSim } from '@/components/TellaSim';
+import { CudaChart } from '@/components/CudaChart';
 import { ArchDiagram } from '@/components/ArchDiagram';
 import { OrbitButton, RollLink } from '@/components/OrbitButton';
 import { PROJECTS, type Project } from '@/data/projects';
@@ -66,21 +63,28 @@ export const ProjectReveal = ({ project, origin, onClose, onNext }: Props) => {
             ))}
           </div>
 
-          {project.sim && (
-            <button className="reveal-jump r-in" style={{ '--d': '230ms' } as React.CSSProperties}
-              onClick={() => document.getElementById('live-sim')?.scrollIntoView({ behavior: 'smooth', block: 'start' })}>
-              [ ↓ Try the interactive figure ]
-            </button>
-          )}
           <p className="reveal-text r-in" style={{ '--d': '260ms' } as React.CSSProperties}>{project.description}</p>
           <p className="reveal-highlight r-in" style={{ '--d': '300ms' } as React.CSSProperties}>{project.highlight}</p>
 
-          <div id="live-sim" className="r-in" style={{ '--d': '340ms', scrollMarginTop: 30 } as React.CSSProperties}>
-            {project.sim === 'osehs' && <div className="reveal-figure reveal-sim"><OSEHSSim /></div>}
-            {project.sim === 'attention' && <div className="reveal-figure reveal-sim"><AttentionSim /></div>}
-            {project.sim === 'recall' && <div className="reveal-figure reveal-sim"><RecallSim /></div>}
-            {project.sim === 'tella' && <div className="reveal-figure reveal-sim"><TellaSim /></div>}
-            {project.diagram && <ArchDiagram spec={project.diagram} fig={project.sim ? 2 : 1} />}
+          <div className="r-in" style={{ '--d': '340ms' } as React.CSSProperties}>
+            {project.media?.map(m => (
+              <figure key={m.src} className="reveal-media">
+                {m.video
+                  ? <video src={m.src} poster={m.poster} aria-label={m.alt} muted loop playsInline controls preload="metadata"
+                      autoPlay={!window.matchMedia('(prefers-reduced-motion: reduce)').matches} />
+                  : <img src={m.src} alt={m.alt} loading="lazy" decoding="async" />}
+                <figcaption>{m.caption}</figcaption>
+              </figure>
+            ))}
+            {project.chart && (
+              <figure className="reveal-media reveal-chart">
+                <CudaChart />
+                <figcaption>
+                  HBM traffic per forward pass, measured on an NVIDIA T4. Standard attention writes the full N×N score matrix to memory; my kernel never does, so its traffic grows with N instead of N². It is still slower on the clock at these sizes, because the inner loops aren’t tiled yet. That is the next step.
+                </figcaption>
+              </figure>
+            )}
+            {project.diagram && <ArchDiagram spec={project.diagram} />}
           </div>
 
           <p className="reveal-stack r-in" style={{ '--d': '380ms' } as React.CSSProperties}>

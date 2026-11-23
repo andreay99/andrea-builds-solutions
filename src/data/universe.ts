@@ -59,7 +59,7 @@ export const NODES: UNode[] = [
   { id: 'p-cuda', group: 'projects', label: 'CUDA Flash Attention', sub: 'Forward & backward in raw CUDA',
     desc: 'Flash Attention forward and backward passes from scratch in CUDA C++. 22.9× softmax speedup and 86× less HBM traffic at seq_len=4096, gradients verified to <4e-7.',
     tags: ['CUDA', 'C++', 'PyTorch'], route: '/projects/cuda-flash-attention',
-    links: ['s-cuda', 's-cpp', 's-pytorch', 'w-flash', 'r-hf'] },
+    links: ['s-cuda', 's-cpp', 's-pytorch', 'w-flash'] },
 
   // ── Experience
   { id: 'x-nasa', group: 'experience', label: 'Undergraduate Researcher', sub: 'NJIT CSTR · NASA MIRO · Sept 2025 – Aug 2026',
@@ -83,10 +83,6 @@ export const NODES: UNode[] = [
   { id: 'r-paraview', group: 'research', label: '3D flare visualization', sub: 'ParaView',
     desc: 'Visualizations of 3D field structures and flare eruption dynamics for analysis and research talks.',
     tags: ['ParaView'] },
-  { id: 'r-hf', group: 'research', label: 'Hugging Face Transformers', sub: 'Open-source PR #45856',
-    desc: 'Migrated the PyTorch CUDA backend from the deprecated allow_tf32 flags to the new fp32_precision API.',
-    tags: ['PyTorch', 'Open source'], links: ['s-pytorch', 's-python'],
-    href: 'https://github.com/huggingface/transformers/pull/45856', hrefLabel: 'View PR' },
 
   // ── Hackathons
   { id: 'h-hpf26', group: 'hackathons', label: 'HackPrinceton Fall 2026', sub: 'Won Best Education Hack · 1,000+ students', prize: 1,

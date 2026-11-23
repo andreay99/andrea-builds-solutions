@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { PROJECTS, type Project } from '@/data/projects';
-import { WorkThumb } from '@/components/WorkThumbs';
+import { WorkThumb, hasThumb } from '@/components/WorkThumb';
 
 /* Work as an index: big titles in a list. Hovering a row brings out a preview card that trails
    the cursor and leans with its speed, while the other rows dim. Tap or click opens the project. */
@@ -45,7 +45,7 @@ export const WorkIndex = ({ onOpen }: { onOpen: (p: Project, at: { x: number; y:
       {/* the headline win gets the stage before the list */}
       {PROJECTS.filter(pr => pr.award?.tier === 1).map(pr => (
         <button key={pr.slug} className="windex-feature" onClick={e => onOpen(pr, { x: e.clientX, y: e.clientY })}>
-          <span className="windex-feature-art"><WorkThumb slug={pr.slug} /></span>
+          <span className="windex-feature-art"><WorkThumb project={pr} /></span>
           <span className="windex-feature-text">
             <span className="windex-prize"><b>Winner</b> {pr.award!.title}</span>
             <span className="windex-prize-detail">{pr.award!.detail}</span>
@@ -72,10 +72,10 @@ export const WorkIndex = ({ onOpen }: { onOpen: (p: Project, at: { x: number; y:
 
       {/* portaled so the page's entrance transform can't offset a fixed element */}
       {fine && createPortal(
-        <div ref={cardRef} className={`windex-card${p ? ' show' : ''}`} aria-hidden>
-          {PROJECTS.map((proj, i) => (
-            <div key={proj.slug} className={`windex-card-art${hover === i ? ' on' : ''}`}>
-              <WorkThumb slug={proj.slug} />
+        <div ref={cardRef} className={`windex-card${p && hasThumb(p) ? ' show' : ''}`} aria-hidden>
+          {PROJECTS.filter(hasThumb).map(proj => (
+            <div key={proj.slug} className={`windex-card-art${p?.slug === proj.slug ? ' on' : ''}`}>
+              <WorkThumb project={proj} />
             </div>
           ))}
           <div className="windex-card-foot">

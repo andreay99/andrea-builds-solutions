@@ -81,7 +81,7 @@ export const ArchDiagram = ({ spec, fig, bare }: { spec: ArchSpec; fig?: number;
 
   return (
     <figure className="arch">
-      <figcaption className="arch-head"><span>Figure{fig ? ` ${fig}` : ''}</span> {spec.title}</figcaption>
+      <figcaption className="arch-head"><span>{fig ? `Figure ${fig}` : 'Architecture'}</span> {spec.title}</figcaption>
       <div className="arch-scroll">{drawing}</div>
       <p className="arch-caption">{spec.caption} <span className="arch-key">Filled dots are code I wrote, hollow dots are outside services, squares are data. The gold line is one request, in order.</span></p>
     </figure>
