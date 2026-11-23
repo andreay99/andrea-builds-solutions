@@ -122,7 +122,7 @@ interface GalaxyProps {
 
 const ease = (cur: number, to: number, k: number) => cur + (to - cur) * k;
 
-export const Galaxy = ({ groups, wheelZoom = false, centerLabel = 'Andrea', height = '100%', centerY = 0.5, focusId, onOpen }: GalaxyProps) => {
+export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%', centerY = 0.5, focusId, onOpen }: GalaxyProps) => {
   const navigate = useNavigate();
   const wrapRef = useRef<HTMLDivElement>(null);
   const starRef = useRef<HTMLCanvasElement>(null);
@@ -533,7 +533,7 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel = 'Andrea', heig
           <div className="galaxy-label-count">{g.count} {g.count === 1 ? 'item' : 'items'}</div>
         </div>
       ))}
-      <div ref={centerRef} className="galaxy-center">{centerLabel}</div>
+      {centerLabel && <div ref={centerRef} className="galaxy-center">{centerLabel}</div>}
       <div ref={tipRef} className="galaxy-tip">{tipNode?.label}</div>
 
       <div className="galaxy-controls" onPointerDown={e => e.stopPropagation()}>
