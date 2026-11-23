@@ -284,7 +284,7 @@ body::before {
 .galaxy-label, .galaxy-center, .galaxy-tip { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
 .galaxy-label { text-align: center; transition: opacity 0.4s; }
 .galaxy-label-name { font-family: var(--font-display); font-size: 12.5px; font-weight: 600; color: #f4f5fa; letter-spacing: 0.02em; text-shadow: 0 0 12px #000; }
-.galaxy-label-count { font-size: 10.5px; color: rgba(240,240,245,0.45); margin-top: 2px; }
+.galaxy-label-count { font-size: 10.5px; color: rgba(240,240,245,0.72); margin-top: 2px; text-shadow: 0 0 8px #000, 0 0 3px #000; }
 .galaxy-center, .galaxy-tip {
   font-size: 11px; color: #f4f5fa; padding: 4px 10px; border-radius: 999px;
   background: rgba(20,22,30,0.7); border: 1px solid rgba(255,255,255,0.12);

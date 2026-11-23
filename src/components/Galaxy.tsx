@@ -102,9 +102,34 @@ void main(){
 const rng = (seed: number) => () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
 const gauss = (r: () => number) => Math.sqrt(-2 * Math.log(r() + 1e-9)) * Math.cos(2 * Math.PI * r());
 
-interface Star { x: number; y: number; z: number; s: number; a: number; tw: number; ph: number; }
+/* ── spiral arms from the density wave model: every star sits on an ellipse, and each ellipse is
+   turned a little more than the one inside it. Where neighbouring ellipses crowd together, arms appear.
+   (After Ingo Berg's galaxy renderer, beltoforion.de/en/spiral_galaxy_renderer.) ── */
+const CORE = 0.32, EDGE = 1.25, TWIST = 3.6;
+const orbit = (a: number, th: number, shift = 0) => {
+  const q = a < CORE ? 1 - (a / CORE) * 0.35 : 0.65 + Math.min(1, (a - CORE) / (EDGE - CORE)) * 0.2;  // minor/major axis
+  const x = a * Math.cos(th), z = q * a * Math.sin(th), rot = a * TWIST + shift;
+  return [x * Math.cos(rot) - z * Math.sin(rot), x * Math.sin(rot) + z * Math.cos(rot)] as const;
+};
+
+/* ── star colour from temperature (Tanner Helland's blackbody fit), mixed a quarter toward white like a camera sees it ── */
+const TEMPS = [3300, 4200, 5200, 6200, 7500, 10000, 16000];
+const kelvin = (k: number) => {
+  const t = k / 100;
+  const r = t <= 66 ? 255 : 329.7 * Math.pow(t - 60, -0.1332);
+  const g = t <= 66 ? 99.47 * Math.log(t) - 161.12 : 288.12 * Math.pow(t - 60, -0.0755);
+  const b = t >= 66 ? 255 : t <= 19 ? 0 : 138.52 * Math.log(t - 10) - 305.04;
+  return [r, g, b].map(v => Math.round(Math.max(0, Math.min(255, v)) * 0.75 + 255 * 0.25));
+};
+const TINTS = TEMPS.map(kelvin);
+const TINT_CSS = TINTS.map(([r, g, b]) => `rgb(${r},${g},${b})`);
+// old stars in the bulge run cool and yellow; the arms are where young, hot, blue stars are born
+const OLD = [0.22, 0.3, 0.26, 0.13, 0.06, 0.03, 0];
+const YOUNG = [0.1, 0.15, 0.17, 0.18, 0.15, 0.14, 0.11];
+
+interface Star { x: number; y: number; z: number; s: number; a: number; b: number; big: boolean; }
+interface Cloud { x: number; z: number; r: number; a: number; t: number; }
 interface Placed extends UNode { x: number; y: number; z: number; sx: number; sy: number; vis: number; }
-interface Comet { R: number; inc: number; node: number; spd: number; ph: number; }
 
 interface GalaxyProps {
   groups?: GroupId[];
@@ -184,29 +209,52 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
     return m;
   }, [edges]);
 
-  /* ── background dust + comets, generated once ── */
-  const { dust, comets, web } = useMemo(() => {
+  /* ── background stars, glow and dust, generated once ── */
+  const { dust, clouds, lanes, web } = useMemo(() => {
     const r = rng(42);
+    const pick = (w: number[]) => { let x = r(); for (let i = 0; i < w.length; i++) { x -= w[i]; if (x <= 0) return i; } return w.length - 1; };
+    // most stars are faint and a few are very bright, like a real magnitude distribution
+    const star = (x: number, y: number, z: number, young: boolean, boost = 0): Star => {
+      const lum = Math.min(1, Math.pow(r(), 5) + boost);
+      // kept well below the project stars, which are the brightest things in the sky
+      return { x, y, z, s: 0.45 + lum * 1.3, a: 0.22 + lum * 0.55, b: pick(young ? YOUNG : OLD), big: lum > 0.55 };
+    };
+    // an exponential disc: crowded in the middle, thinning toward the edge
+    const radius = (min: number) => min + Math.min(1.25 - min, -Math.log(1 - r() * 0.97) * 0.36);
+    // a star moves slowest at the far ends of its ellipse, so it spends most of its time there. Those
+    // ends line up into the arms, so most positions are drawn near them.
+    const phase = () => r() < 0.7 ? (r() < 0.5 ? 0 : Math.PI) + gauss(r) * 0.45 : r() * Math.PI * 2;
+
     const d: Star[] = [];
-    for (let i = 0; i < 3200; i++) {
-      const arm = Math.floor(r() * 2);
-      const rad = 0.24 + Math.pow(r(), 0.8) * 0.95;
-      const a = arm * Math.PI + rad * 3.2 + gauss(r) * 0.55;
-      d.push({ x: Math.cos(a) * rad, y: gauss(r) * 0.03, z: Math.sin(a) * rad,
-        s: 0.35 + r() * r() * 1.4, a: 0.18 + r() * 0.7, tw: r() < 0.3 ? 1 + r() * 2.5 : 0, ph: r() * 6.28 });
+    for (let i = 0; i < 4600; i++) {
+      const a = radius(0.2); const [x, z] = orbit(a, phase());
+      const j = 0.012 + a * 0.018;
+      d.push(star(x + gauss(r) * j, gauss(r) * (a < CORE ? 0.05 : 0.02), z + gauss(r) * j, a > CORE));
     }
+    // soft light of unresolved stars: a warm bulge, bluish arms and small pink star-forming knots
+    const cl: Cloud[] = [];
+    for (let i = 0; i < 40; i++) {
+      const a = 0.12 + r() * 0.25, th = r() * Math.PI * 2;
+      cl.push({ x: Math.cos(th) * a, z: Math.sin(th) * a, r: 0.14 + r() * 0.1, a: 0.035, t: 0 });
+    }
+    for (let i = 0; i < 520; i++) {
+      const a = radius(CORE); const [x, z] = orbit(a, phase());
+      if (r() < 0.12) cl.push({ x, z, r: 0.02 + r() * 0.022, a: 0.18 + r() * 0.14, t: 2 });
+      else cl.push({ x, z, r: 0.06 + r() * 0.06, a: 0.04 + r() * 0.035, t: 1 });
+    }
+    // dark dust lanes running along the inside edge of the arms
+    const ln: Cloud[] = [];
+    for (let i = 0; i < 320; i++) {
+      const a = 0.3 + r() * 0.85; const [x, z] = orbit(a, (r() < 0.5 ? 0 : Math.PI) + gauss(r) * 0.35, -0.22);
+      ln.push({ x, z, r: 0.03 + r() * 0.045, a: 0.25 + r() * 0.2, t: 0 });
+    }
+
     const web: [number, number][] = [];
     Object.values(groupCenters).forEach(c => {
-      for (let i = 0; i < 300; i++) {
-        d.push({ x: c.x + gauss(r) * 0.095, y: gauss(r) * 0.025, z: c.z + gauss(r) * 0.095,
-          s: 0.5 + r() * r() * 1.5, a: 0.35 + r() * 0.6, tw: r() < 0.35 ? 1 + r() * 2 : 0, ph: r() * 6.28 });
-      }
+      for (let i = 0; i < 220; i++) d.push(star(c.x + gauss(r) * 0.095, gauss(r) * 0.025, c.z + gauss(r) * 0.095, true, 0.04));
       // brighter "idea" stars, each tied to its two nearest neighbours
       const first = d.length;
-      for (let i = 0; i < 46; i++) {
-        d.push({ x: c.x + gauss(r) * 0.085, y: gauss(r) * 0.02, z: c.z + gauss(r) * 0.085,
-          s: 1.1 + r() * 1.2, a: 0.85, tw: r() < 0.5 ? 0.8 + r() * 1.5 : 0, ph: r() * 6.28 });
-      }
+      for (let i = 0; i < 46; i++) d.push(star(c.x + gauss(r) * 0.085, gauss(r) * 0.02, c.z + gauss(r) * 0.085, true, 0.12));
       for (let i = first; i < d.length; i++) {
         const near = [];
         for (let j = first; j < d.length; j++) if (j !== i) near.push([(d[i].x - d[j].x) ** 2 + (d[i].z - d[j].z) ** 2, j]);
@@ -214,10 +262,7 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
         near.slice(0, 2).forEach(([, j]) => { if (i < j) web.push([i, j]); });
       }
     });
-    const cm: Comet[] = Array.from({ length: 10 }, () => ({
-      R: 1.45 + r() * 0.55, inc: (r() - 0.5) * 1.2, node: r() * 6.28, spd: 0.05 + r() * 0.07, ph: r() * 6.28,
-    }));
-    return { dust: d, comets: cm, web };
+    return { dust: d, clouds: cl, lanes: ln, web };
   }, [groupCenters]);
 
   /* ── the render loop ── */
@@ -246,17 +291,35 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
     }
 
-    // soft nebula smoke, painted once
-    const neb = document.createElement('canvas'); neb.width = neb.height = 512;
-    const nctx = neb.getContext('2d')!; const nr = rng(9);
-    for (let i = 0; i < 150; i++) {
-      const x = 180 + nr() * 332, y = 120 + nr() * 392, rad = 30 + nr() * 120;
-      const grey = 150 + nr() * 50;
-      const g = nctx.createRadialGradient(x, y, 0, x, y, rad);
-      g.addColorStop(0, `rgba(${grey},${grey},${grey + 8},${0.025 + nr() * 0.05})`);
-      g.addColorStop(1, 'rgba(0,0,0,0)');
-      nctx.fillStyle = g; nctx.fillRect(0, 0, 512, 512);
-    }
+    // sprites painted once. A bright star is a white-hot core inside a coloured halo, the way a
+    // telescope's point spread function smears it; glow and dust are soft Gaussian blobs.
+    const sprite = ([R, G, B]: number[], stops: [number, number][], hot = false) => {
+      const c = document.createElement('canvas'); c.width = c.height = 64;
+      const x = c.getContext('2d')!, g = x.createRadialGradient(32, 32, 0, 32, 32, 32);
+      if (hot) g.addColorStop(0, 'rgba(255,255,255,1)');
+      stops.forEach(([at, al]) => g.addColorStop(at, `rgba(${R},${G},${B},${al})`));
+      x.fillStyle = g; x.fillRect(0, 0, 64, 64); return c;
+    };
+    const PSF: [number, number][] = [[0.06, 0.95], [0.16, 0.3], [0.4, 0.07], [1, 0]];
+    const SOFT: [number, number][] = [[0, 1], [0.25, 0.6], [0.5, 0.22], [0.75, 0.05], [1, 0]];
+    const starSprites = TINTS.map(t => sprite(t, PSF, true));
+    const cloudSprites = [sprite([255, 205, 150], SOFT), sprite([140, 165, 255], SOFT), sprite([255, 120, 175], SOFT)];
+    const laneSprite = sprite([3, 4, 9], SOFT);
+    // diffraction spikes: the cross a telescope's support struts put on its brightest stars. Only the
+    // project stars get them, so the stars you can open read as the bright foreground stars.
+    const spikes = ([R, G, B]: number[]) => {
+      const c = document.createElement('canvas'); c.width = c.height = 128;
+      const x = c.getContext('2d')!;
+      for (const horiz of [true, false]) {
+        const g = horiz ? x.createLinearGradient(0, 0, 128, 0) : x.createLinearGradient(0, 0, 0, 128);
+        [[0, 0], [0.3, 0.12], [0.46, 0.55], [0.5, 1], [0.54, 0.55], [0.7, 0.12], [1, 0]].forEach(([at, al]) =>
+          g.addColorStop(at, `rgba(${R},${G},${B},${al})`));
+        x.fillStyle = g;
+        if (horiz) x.fillRect(0, 62.5, 128, 3); else x.fillRect(62.5, 0, 3, 128);
+      }
+      return c;
+    };
+    const spikeWhite = spikes([225, 235, 255]), spikeGold = spikes([255, 217, 160]);
 
     let W = 0, H = 0, dpr = 1, bhPx = 0, raf = 0;
     const start = performance.now();
@@ -294,11 +357,30 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       ctx.globalCompositeOperation = 'source-over';
       ctx.fillStyle = '#030409'; ctx.fillRect(0, 0, W, H);
 
-      // nebula
-      ctx.globalAlpha = 0.9;
-      const ns = Math.max(W, H) * 1.5;
-      ctx.save(); ctx.translate(W * 0.5, H * 0.52); ctx.rotate(t * 0.004);
-      ctx.drawImage(neb, -ns / 2, -ns / 2, ns, ns); ctx.restore();
+      // glow and dust lie in the disc, so they flatten as the view tips toward edge-on
+      const flat = Math.max(0.12, Math.abs(se));
+      const blob = (list: Cloud[], pick: (c: Cloud) => HTMLCanvasElement) => {
+        for (const cl of list) {
+          const [px, py, k] = proj(cl.x, 0, cl.z);
+          const rw = cl.r * base * k, rh = rw * flat;
+          if (px < -rw || py < -rh || px > W + rw || py > H + rh) continue;
+          ctx.globalAlpha = cl.a; ctx.drawImage(pick(cl), px - rw, py - rh, rw * 2, rh * 2);
+        }
+      };
+      ctx.globalCompositeOperation = 'lighter';
+      blob(clouds, cl => cloudSprites[cl.t]);
+      // the bulge: a galaxy's core is its brightest part, a yellow glow of old stars that the black hole
+      // sits inside. It lies in the disc, so it flattens with the view like the clouds do.
+      {
+        const [bx, by, bk] = proj(0, 0, 0), br = 0.5 * base * bk;
+        ctx.save(); ctx.translate(bx, by); ctx.scale(1, flat);
+        const bg = ctx.createRadialGradient(0, 0, 0, 0, 0, br);
+        bg.addColorStop(0, 'rgba(255,214,160,0.34)'); bg.addColorStop(0.35, 'rgba(255,200,145,0.14)');
+        bg.addColorStop(0.7, 'rgba(240,190,150,0.04)'); bg.addColorStop(1, 'rgba(240,190,150,0)');
+        ctx.globalAlpha = 1; ctx.fillStyle = bg; ctx.fillRect(-br, -br, br * 2, br * 2); ctx.restore();
+      }
+      ctx.globalCompositeOperation = 'source-over';
+      blob(lanes, () => laneSprite);
       ctx.globalAlpha = 1;
 
       ctx.globalCompositeOperation = 'lighter';
@@ -314,36 +396,18 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       }
       ctx.stroke();
 
-      // dust
+      // stars: faint ones are single points, bright ones get the core-and-halo sprite. No twinkling:
+      // that comes from Earth's air, and there is none out here.
+      const zs = Math.min(1.6, 0.7 + c.zoom * 0.35);
       for (let i = 0; i < dust.length; i++) {
         const s = dust[i]; const [px, py, k] = proj(s.x, s.y, s.z);
-        if (px < -4 || py < -4 || px > W + 4 || py > H + 4) continue;
-        let a = s.a; if (s.tw) a *= 0.6 + 0.4 * Math.sin(t * s.tw + s.ph);
-        const sz = s.s * k * Math.min(1.6, 0.7 + c.zoom * 0.35);
-        ctx.fillStyle = `rgba(225,232,255,${a.toFixed(3)})`;
-        ctx.fillRect(px - sz / 2, py - sz / 2, sz, sz);
+        if (px < -12 || py < -12 || px > W + 12 || py > H + 12) continue;
+        const sz = s.s * k * zs;
+        ctx.globalAlpha = s.a;
+        if (s.big) { const g = sz * 3.4; ctx.drawImage(starSprites[s.b], px - g, py - g, g * 2, g * 2); }
+        else { ctx.fillStyle = TINT_CSS[s.b]; ctx.fillRect(px - sz / 2, py - sz / 2, sz, sz); }
       }
-
-      // comets on tilted orbits
-      for (const m of comets) {
-        const ci = Math.cos(m.inc), si = Math.sin(m.inc), cn = Math.cos(m.node), sn = Math.sin(m.node);
-        const pos = (th: number) => {
-          const ox = Math.cos(th) * m.R, oz = Math.sin(th) * m.R;
-          const y = oz * si, z0 = oz * ci;
-          return proj(ox * cn - z0 * sn, y, ox * sn + z0 * cn);
-        };
-        const head = m.ph + t * m.spd;
-        ctx.lineWidth = 1.1;
-        for (let j = 0; j < 40; j++) {
-          const [x1, y1] = pos(head - j * 0.016), [x2, y2] = pos(head - (j + 1) * 0.016);
-          ctx.strokeStyle = `rgba(235,240,255,${(0.55 * (1 - j / 40) ** 1.5).toFixed(3)})`;
-          ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
-        }
-        const [hx, hy] = pos(head);
-        const g = ctx.createRadialGradient(hx, hy, 0, hx, hy, 5);
-        g.addColorStop(0, 'rgba(255,255,255,0.95)'); g.addColorStop(1, 'rgba(255,255,255,0)');
-        ctx.fillStyle = g; ctx.fillRect(hx - 5, hy - 5, 10, 10);
-      }
+      ctx.globalAlpha = 1;
 
       // project nodes
       const sel = L.selected, hov = L.hovered;
@@ -365,15 +429,19 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
         const on = !focus || n.id === focus || rel?.has(n.id);
         const big = n.id === focus;
         const prize = n.prize ?? 0;
-        const r0 = (n.minor ? 1.0 : 1.5) * n.vis * (big ? 1.5 : 1) * (prize === 1 ? 1.9 : prize === 2 ? 1.35 : 1);
-        const glow = r0 * (n.minor ? 4 : 5.5);
+        const r0 = (n.minor ? 1.4 : 2.1) * n.vis * (big ? 1.4 : 1) * (prize === 1 ? 1.5 : prize === 2 ? 1.2 : 1);
+        const glow = r0 * 6;
         const a = on ? 1 : 0.3;
         const g = ctx.createRadialGradient(n.sx, n.sy, 0, n.sx, n.sy, glow);
-        g.addColorStop(0, `rgba(255,255,255,${0.95 * a})`);
-        g.addColorStop(0.12, `rgba(255,255,255,${0.85 * a})`);
-        g.addColorStop(0.3, prize ? `rgba(255,217,160,${0.32 * a})` : `rgba(220,230,255,${0.18 * a})`);
+        g.addColorStop(0, `rgba(255,255,255,${a})`);
+        g.addColorStop(0.14, `rgba(255,255,255,${0.95 * a})`);
+        g.addColorStop(0.3, prize ? `rgba(255,217,160,${0.4 * a})` : `rgba(220,230,255,${0.26 * a})`);
         g.addColorStop(1, prize ? 'rgba(255,200,130,0)' : 'rgba(180,200,255,0)');
         ctx.fillStyle = g; ctx.fillRect(n.sx - glow, n.sy - glow, glow * 2, glow * 2);
+        const sl = r0 * (n.minor ? 6 : 9);
+        ctx.globalAlpha = a * (n.minor ? 0.55 : 0.9);
+        ctx.drawImage(prize ? spikeGold : spikeWhite, n.sx - sl, n.sy - sl, sl * 2, sl * 2);
+        ctx.globalAlpha = 1;
         // the headline win wears a slow gold ring
         if (prize === 1) {
           const ph = (t * 0.5) % 1;
@@ -406,8 +474,9 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       if (gl && prog) {
         const px = Math.min(480, Math.round(bhSize * Math.min(dpr, 1.5))), pw = Math.round(px * 2.2);
         if (px !== bhPx) { bc.width = pw; bc.height = bhPx = px; gl.viewport(0, 0, pw, px); }
-        // looking down on the galaxy = more open disk; edge-on = Interstellar shot
-        const tilt = 0.04 + (c.elev - 0.35) * 0.12;
+        // the accretion disk lies in the galaxy's plane, so it tips with the same camera. It opens half as
+        // far as the galaxy does, which keeps the lensed arc over the top and the whole disk on its canvas.
+        const tilt = c.elev * 0.5;
         gl.uniform2f(gl.getUniformLocation(prog, 'u_res'), pw, px);
         gl.uniform1f(gl.getUniformLocation(prog, 'u_time'), L.paused ? 0 : t);
         gl.uniform1f(gl.getUniformLocation(prog, 'u_tilt'), tilt);
@@ -490,7 +559,7 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       gl?.getExtension('WEBGL_lose_context')?.loseContext();
       bc.remove();
     };
-  }, [placed, edges, byId, related, dust, comets, web, groupCenters, wheelZoom, centerY]);
+  }, [placed, edges, byId, related, dust, clouds, lanes, web, groupCenters, wheelZoom, centerY]);
 
   /* ── fly toward the selected star ── */
   useEffect(() => {
