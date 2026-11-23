@@ -18,6 +18,12 @@ float hash3(vec3 p){ return fract(sin(dot(p,vec3(127.1,311.7,74.7)))*43758.5453)
 float noise(vec2 p){ vec2 i=floor(p),f=fract(p); f=f*f*(3.-2.*f);
   return mix(mix(hash(i),hash(i+vec2(1,0)),f.x),mix(hash(i+vec2(0,1)),hash(i+vec2(1,1)),f.x),f.y); }
 float fbm(vec2 p){ float v=0.,a=.5; for(int i=0;i<5;i++){ v+=a*noise(p); p=p*2.03+vec2(1.7,9.2); a*=.5; } return v; }
+// noise around the disk. The angle jumps from +pi to -pi on the left, which left a hard seam, so near
+// there it blends with the same noise read one turn over; at the jump both sides agree.
+float ringfbm(float rr,float ang,float spin,vec2 k){
+  float w=smoothstep(2.36,3.1416,abs(ang))*.5;
+  return mix(fbm(vec2(rr*k.x,(ang-spin)*k.y)),fbm(vec2(rr*k.x,(ang-sign(ang)*6.2832-spin)*k.y)),w);
+}
 
 // colour of a glowing body at temperature t (in thousands of kelvin)
 vec3 blackbody(float t){
@@ -55,10 +61,10 @@ void main(){
       float rr=length(hit.xz);
       if(rr>RIN && rr<ROUT){
         float ang=atan(hit.z,hit.x);
-        float swirl=ang-u_time*5./pow(rr,1.5);
-        float turb=fbm(vec2(rr*2.2,swirl*3.));
+        float spin=u_time*5./pow(rr,1.5);
+        float turb=ringfbm(rr,ang,spin,vec2(2.2,3.));
         float streak=.8+.2*sin(rr*9.+turb*12.);
-        float fine=fbm(vec2(rr*5.5,swirl*4.5));          // clumps and filaments, not rings
+        float fine=ringfbm(rr,ang,spin,vec2(5.5,4.5));   // clumps and filaments, not rings
         float dens=streak*(.2+1.1*fine*fine)*(.5+.8*turb);
         // thin-disk temperature profile, hottest just outside the inner edge
         float T=pow(rr/RIN,-.75)*pow(max(1.-sqrt(RIN/rr),0.),.25)*2.1;
@@ -97,6 +103,9 @@ void main(){
   col+=(hash(gl_FragCoord.xy+fract(u_time))-.5)/160.;   // film grain hides banding
   gl_FragColor=vec4(col,1.);
 }`;
+
+/** the u_tilt values public/black-hole.jpg was rendered at, one 704×320 frame each */
+const STILL_TILTS = [0.175, 0.285, 0.395, 0.505, 0.615, 0.725];
 
 /* ── deterministic randomness so the galaxy looks the same every visit ── */
 const rng = (seed: number) => () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
@@ -275,21 +284,35 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
     const ctx = sc.getContext('2d')!;
     const gl = bc.getContext('webgl', { antialias: false, alpha: false, premultipliedAlpha: false });
 
+    // WebGL can be missing (hardware acceleration off, a blocklisted GPU) or be taken away mid-visit (the
+    // GPU resets, or Chrome reclaims contexts). In any of those cases the 2D fallback below draws the hole.
     let prog: WebGLProgram | null = null;
-    if (gl) {
-      const mk = (src: string, t: number) => { const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s); return s; };
-      prog = gl.createProgram()!;
-      gl.attachShader(prog, mk(BH_VS, gl.VERTEX_SHADER));
-      gl.attachShader(prog, mk(BH_FS, gl.FRAGMENT_SHADER));
-      gl.linkProgram(prog);
-      gl.useProgram(prog);
+    const initGL = () => {
+      prog = null;
+      if (!gl || gl.isContextLost()) return;
+      const mk = (src: string, t: number) => {
+        const s = gl.createShader(t)!; gl.shaderSource(s, src); gl.compileShader(s);
+        if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) console.warn('black hole shader:', gl.getShaderInfoLog(s));
+        return s;
+      };
+      const p = gl.createProgram()!;
+      gl.attachShader(p, mk(BH_VS, gl.VERTEX_SHADER));
+      gl.attachShader(p, mk(BH_FS, gl.FRAGMENT_SHADER));
+      gl.linkProgram(p);
+      if (!gl.getProgramParameter(p, gl.LINK_STATUS)) { console.warn('black hole program:', gl.getProgramInfoLog(p)); return; }
+      gl.useProgram(p);
       const buf = gl.createBuffer();
       gl.bindBuffer(gl.ARRAY_BUFFER, buf);
       gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
-      const loc = gl.getAttribLocation(prog, 'a');
+      const loc = gl.getAttribLocation(p, 'a');
       gl.enableVertexAttribArray(loc);
       gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
-    }
+      prog = p; bhPx = 0;
+    };
+    const lost = (e: Event) => { e.preventDefault(); prog = null; };   // preventDefault asks for it back
+    const restored = () => initGL();
+    bc.addEventListener('webglcontextlost', lost);
+    bc.addEventListener('webglcontextrestored', restored);
 
     // sprites painted once. A bright star is a white-hot core inside a coloured halo, the way a
     // telescope's point spread function smears it; glow and dust are soft Gaussian blobs.
@@ -322,6 +345,8 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
     const spikeWhite = spikes([225, 235, 255]), spikeGold = spikes([255, 217, 160]);
 
     let W = 0, H = 0, dpr = 1, bhPx = 0, raf = 0;
+    let still: HTMLImageElement | null = null;
+    initGL();
     const start = performance.now();
     let last = start;
 
@@ -471,7 +496,23 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       // black hole canvas follows the galaxy centre
       bc.style.width = bhW + 'px'; bc.style.height = bhSize + 'px';
       bc.style.transform = `translate(${ox - bhW / 2}px, ${oy - bhSize / 2}px)`;
-      if (gl && prog) {
+      const webgl = !!(gl && prog && !gl.isContextLost());
+      bc.style.visibility = webgl ? 'visible' : 'hidden';
+      if (!webgl) {
+        // without WebGL: frames of this same shader, rendered ahead of time at six tilts (public/black-hole.jpg,
+        // 704×320 each, top to bottom). It can't swirl, but it is the real picture, and it still tips
+        // with the camera by blending the two nearest frames. Only downloaded when it's needed.
+        if (!still) { still = new Image(); still.src = '/black-hole.jpg'; }
+        if (still.complete && still.naturalWidth) {
+          const f = Math.max(0, Math.min(STILL_TILTS.length - 1.001, (c.elev * 0.5 - STILL_TILTS[0]) / (STILL_TILTS[1] - STILL_TILTS[0])));
+          const i = Math.floor(f), mix = f - i;
+          ctx.globalCompositeOperation = 'screen';   // same as the WebGL canvas's mix-blend-mode
+          ctx.globalAlpha = 1 - mix; ctx.drawImage(still, 0, i * 320, 704, 320, ox - bhW / 2, oy - bhSize / 2, bhW, bhSize);
+          ctx.globalAlpha = mix; ctx.drawImage(still, 0, (i + 1) * 320, 704, 320, ox - bhW / 2, oy - bhSize / 2, bhW, bhSize);
+          ctx.globalAlpha = 1; ctx.globalCompositeOperation = 'source-over';
+        }
+      }
+      if (gl && prog && webgl) {
         const px = Math.min(480, Math.round(bhSize * Math.min(dpr, 1.5))), pw = Math.round(px * 2.2);
         if (px !== bhPx) { bc.width = pw; bc.height = bhPx = px; gl.viewport(0, 0, pw, px); }
         // the accretion disk lies in the galaxy's plane, so it tips with the same camera. It opens half as
@@ -589,6 +630,8 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       wrap.removeEventListener('pointerleave', leave);
       wrap.removeEventListener('wheel', wheel);
       // this canvas is discarded right after, so freeing its context is safe
+      bc.removeEventListener('webglcontextlost', lost);
+      bc.removeEventListener('webglcontextrestored', restored);
       gl?.getExtension('WEBGL_lose_context')?.loseContext();
       bc.remove();
     };
