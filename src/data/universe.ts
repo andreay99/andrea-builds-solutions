@@ -62,8 +62,8 @@ export const NODES: UNode[] = [
     links: ['s-cuda', 's-cpp', 's-pytorch', 'w-flash', 'r-hf'] },
 
   // ── Experience
-  { id: 'x-nasa', group: 'experience', label: 'Undergraduate Researcher', sub: 'NJIT CSTR · NASA MIRO · Sept 2025 – now',
-    desc: 'Training multimodal transformers on decades of NASA SDO and SOHO data to forecast solar eruptions.',
+  { id: 'x-nasa', group: 'experience', label: 'Undergraduate Researcher', sub: 'NJIT CSTR · NASA MIRO · Sept 2025 – Aug 2026',
+    desc: 'Trained multimodal transformers on decades of NASA SDO and SOHO data to forecast solar eruptions.',
     tags: ['Python', 'PyTorch', 'ParaView'], route: '/experience',
     links: ['r-solar', 'r-pinn', 'r-paraview', 's-python', 's-pytorch', 'e-njit'] },
   { id: 'x-apple-ts', group: 'experience', label: 'Technical Specialist', sub: 'Apple · Aug 2024 – Mar 2026',

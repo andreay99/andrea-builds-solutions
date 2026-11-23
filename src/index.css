@@ -480,6 +480,8 @@ body::before {
 .log-section { position: relative; max-width: 1000px; margin: 0 auto; padding: 80px 28px 40px; }
 .log-section .section-title { margin-bottom: 32px; }
 .log-award { color: rgba(255,214,150,0.85) !important; }
+.log-outside { max-width: 560px; }
+.log-outside .log-numbers { margin-top: 18px; }
 .log-school { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 40px 56px; }
 
 @media (max-width: 760px) {

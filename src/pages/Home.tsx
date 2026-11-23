@@ -52,7 +52,7 @@ const Home = () => {
         <div className="home-intro">
           <h1 className="serif-name">Andrea Yanez Soto</h1>
           <p className="home-lede">
-            Computer science at NJIT. I forecast solar eruptions from NASA data, write CUDA by hand, and build at hackathons.
+            Computer science at NJIT. I write CUDA by hand, build at hackathons, and spent a year forecasting solar eruptions from NASA data.
           </p>
           <div className="home-links">
             <OrbitButton icon={<ArrowRight size={14} style={{ transform: 'rotate(90deg)' }} />}
@@ -67,7 +67,7 @@ const Home = () => {
         <Reveal>
           <p className="home-summary">
             {say(PROJECTS.length)[0].toUpperCase() + say(PROJECTS.length).slice(1)} projects and {say(PRIZES)} prizes so far.
-            I do research at NJIT’s Center for Solar-Terrestrial Research with NASA data, and I worked at Apple from 2024 to 2026 as a technical specialist and training lead.
+            I spent a year on research at NJIT’s Center for Solar-Terrestrial Research with NASA data, worked at Apple from 2024 to 2026 as a technical specialist and training lead, and now create content and recruit creators on TikTok.
           </p>
         </Reveal>
 

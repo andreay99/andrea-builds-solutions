@@ -17,10 +17,10 @@ interface Entry {
 
 const LOG: Entry[] = [
   {
-    year: '2025', period: 'Sept 2025 – now',
+    year: '2025', period: 'Sept 2025 – Aug 2026',
     title: 'Undergraduate Researcher',
     org: 'NJIT Center for Solar-Terrestrial Research · NASA MIRO',
-    summary: 'I train multimodal transformers on decades of NASA SDO and SOHO observations to forecast solar eruptions.',
+    summary: 'I trained multimodal transformers on decades of NASA SDO and SOHO observations to forecast solar eruptions.',
     notes: [
       'Systematic experiment tracking that improved eruption forecast accuracy by 20%.',
       'Python pipelines over 3D magnetic field data, computing current density and magnetic twist maps for physics-informed neural network reconstruction of the corona.',
@@ -206,7 +206,7 @@ const Experience = () => {
       </section>
 
       {/* ── School ── */}
-      <section className="log-section" style={{ paddingBottom: 120 }}>
+      <section className="log-section">
         <Reveal><h2 className="section-title">School</h2></Reveal>
         <div className="log-school">
           {SCHOOL.map(s => (
@@ -219,6 +219,24 @@ const Experience = () => {
             </Reveal>
           ))}
         </div>
+      </section>
+
+      {/* ── Outside engineering ── */}
+      <section className="log-section" style={{ paddingBottom: 120 }}>
+        <Reveal><h2 className="section-title">Outside engineering</h2></Reveal>
+        <Reveal>
+          <div className="log-outside">
+            <p className="log-meta">Jul 2026 – now · TikTok</p>
+            <h3 className="log-title" style={{ fontSize: 'clamp(1.6rem,3vw,2.1rem)' }}>Content Creator &amp; Talent Recruiter</h3>
+            <p className="log-summary" style={{ fontSize: 15 }}>
+              I make content and host live streams on TikTok, and I recruit new creators for the agency I work under.
+            </p>
+            <div className="log-numbers">
+              <div><b>11.4K</b><span>followers</span></div>
+              <div><b>1,000+</b><span>creators recruited by our team</span></div>
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {open && (
