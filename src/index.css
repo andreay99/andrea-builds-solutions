@@ -279,7 +279,11 @@ body::before {
 }
 
 /* ── GALAXY ─────────────────────────────────────────────── */
-.galaxy { position: relative; width: 100%; overflow: hidden; background: #030409; cursor: grab; user-select: none; -webkit-user-select: none; }
+/* pan-y: up/down swipes still scroll the page; sideways swipes and pinches go to the galaxy */
+.galaxy { position: relative; width: 100%; overflow: hidden; background: #030409; cursor: grab; user-select: none; -webkit-user-select: none;
+  touch-action: pan-y; -webkit-tap-highlight-color: transparent; -webkit-touch-callout: none; }
+.galaxy-hint .hint-touch { display: none; }
+@media (hover: none) and (pointer: coarse) { .galaxy-hint .hint-mouse { display: none; } .galaxy-hint .hint-touch { display: inline; } }
 .galaxy:active { cursor: grabbing; }
 .galaxy-label, .galaxy-center, .galaxy-tip { position: absolute; left: 0; top: 0; pointer-events: none; will-change: transform; }
 .galaxy-label { text-align: center; transition: opacity 0.4s; }

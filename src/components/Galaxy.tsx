@@ -498,10 +498,17 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       }
     };
 
-    /* ── pointer controls: drag to orbit/tilt, tap a star to open it ── */
+    /* ── pointer controls: drag to orbit/tilt, tap a star to open it.
+       On touch screens the galaxy fills the first screen, so it must not trap the page: CSS gives it
+       touch-action: pan-y, which leaves one-finger up/down swipes to the browser for scrolling and hands
+       us sideways swipes (orbit) and two-finger gestures (pinch to zoom, drag up/down to tilt). ── */
     let dragging = false, moved = 0, lx = 0, ly = 0;
-    const pick = (x: number, y: number) => {
-      let best: Placed | null = null, bd = 18 * 18;
+    const touches = new Map<number, { x: number; y: number }>();
+    let pinchD = 0, pinchZoom = 1, pinchY = 0, pinchElev = 0;
+    const two = () => { const [a, b] = [...touches.values()]; return { d: Math.hypot(a.x - b.x, a.y - b.y) || 1, y: (a.y + b.y) / 2 }; };
+    const pick = (x: number, y: number, finger = false) => {
+      // a fingertip covers far more than a mouse pointer, so taps get a bigger target
+      let best: Placed | null = null, bd = finger ? 32 * 32 : 18 * 18;
       for (const n of placed) { const d = (n.sx - x) ** 2 + (n.sy - y) ** 2; if (d < bd) { bd = d; best = n; } }
       return best;
     };
@@ -510,9 +517,30 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
     // runs before React's stopPropagation, so without this check a click on "Enter" would also count
     // as a click on empty sky and close the panel before the button ever fired.
     const isUi = (t: EventTarget | null) => !!(t as HTMLElement | null)?.closest?.('.galaxy-panel, .galaxy-controls, .galaxy-index-btn');
-    const down = (e: PointerEvent) => { if (isUi(e.target)) return; dragging = true; moved = 0; lx = e.clientX; ly = e.clientY; };
+    const down = (e: PointerEvent) => {
+      if (isUi(e.target)) return;
+      if (e.pointerType === 'touch') {
+        touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+        if (touches.size === 2) {
+          // second finger down: stop orbiting and start pinching
+          dragging = false; moved = 99;
+          const g = two(), c = cam.current;
+          pinchD = g.d; pinchZoom = c.tZoom; pinchY = g.y; pinchElev = c.tElev;
+          return;
+        }
+        if (touches.size > 2) return;
+      }
+      dragging = true; moved = 0; lx = e.clientX; ly = e.clientY;
+    };
     const move = (e: PointerEvent) => {
       const r = rect();
+      if (touches.has(e.pointerId)) touches.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (touches.size === 2) {
+        const g = two(), c = cam.current;
+        c.tZoom = Math.max(0.6, Math.min(3, pinchZoom * g.d / pinchD));
+        c.tElev = Math.max(0.35, Math.min(1.45, pinchElev + (g.y - pinchY) * 0.004));
+        return;
+      }
       if (dragging) {
         const dx = e.clientX - lx, dy = e.clientY - ly; lx = e.clientX; ly = e.clientY; moved += Math.abs(dx) + Math.abs(dy);
         if (moved > 4) {
@@ -527,11 +555,12 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       }
     };
     const up = (e: PointerEvent) => {
+      const finger = touches.delete(e.pointerId);
       if (!dragging) return;
       dragging = false;
       if (moved > 6) return;
       const r = rect();
-      const n = pick(e.clientX - r.left, e.clientY - r.top);
+      const n = pick(e.clientX - r.left, e.clientY - r.top, finger || e.pointerType === 'touch');
       setSelected(n ? n.id : null);
     };
     const wheel = (e: WheelEvent) => {
@@ -540,10 +569,13 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       const c = cam.current; c.tZoom = Math.max(0.6, Math.min(3, c.tZoom * Math.exp(-e.deltaY * 0.0015)));
     };
     const leave = () => setHovered(null);
+    // the browser took the gesture over (an up/down swipe became a page scroll): drop it, no tap
+    const cancel = (e: PointerEvent) => { touches.delete(e.pointerId); dragging = false; };
 
     wrap.addEventListener('pointerdown', down);
     window.addEventListener('pointermove', move);
     window.addEventListener('pointerup', up);
+    window.addEventListener('pointercancel', cancel);
     wrap.addEventListener('pointerleave', leave);
     wrap.addEventListener('wheel', wheel, { passive: false });
     raf = requestAnimationFrame(frame);
@@ -553,6 +585,7 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
       wrap.removeEventListener('pointerdown', down);
       window.removeEventListener('pointermove', move);
       window.removeEventListener('pointerup', up);
+      window.removeEventListener('pointercancel', cancel);
       wrap.removeEventListener('pointerleave', leave);
       wrap.removeEventListener('wheel', wheel);
       // this canvas is discarded right after, so freeing its context is safe
@@ -615,7 +648,10 @@ export const Galaxy = ({ groups, wheelZoom = false, centerLabel, height = '100%'
           </button>
         )}
       </div>
-      <p className="galaxy-hint">Drag to orbit · tap a star</p>
+      <p className="galaxy-hint">
+        <span className="hint-mouse">Drag to orbit · tap a star</span>
+        <span className="hint-touch">Swipe to orbit · pinch to zoom</span>
+      </p>
 
       <button className="galaxy-index-btn" onPointerDown={e => e.stopPropagation()}
         onClick={() => { setSelected(null); setIndexOpen(o => !o); setTimeout(() => searchRef.current?.focus(), 30); }}>
